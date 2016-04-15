@@ -1,0 +1,22 @@
+@import "~styles/variables";
+
+.Panel {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  &__container {
+    width: 100%;
+    padding: 10px 20px;
+  }
+}
+
+.outer-box-container, .resize-handler {
+  height: 100vh;
+}
+
+.resize-handler {
+  width: 4px !important;
+  background: #fff;
+  border: 1px solid $accent-4;
+}

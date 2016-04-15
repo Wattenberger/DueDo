@@ -1,0 +1,45 @@
+@import "~styles/variables";
+@import "~styles/mixins";
+
+.Task {
+  position: relative;
+  &:hover {
+    background: $accent-1;
+  }
+  &--important {
+    &:before {
+      content: "★";
+      @include abs(6px, auto, auto, -6px);
+      font-size: 12px;
+      color: $accent-4;
+    }
+  }
+  &__text {
+    flex: 1;
+  }
+  &__title, &__context {
+    margin: 0;
+    padding: 0;
+  }
+  &__title {
+    color: $accent-4;
+  }
+  &__overview {
+    padding: 13px;
+  }
+  &__description {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+  }
+  &__details {
+    max-height: 0;
+    padding: 0 13px;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    &--expanded {
+      padding: 13px;
+      max-height: 200px;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import "~styles/variables";
+
+.Button {
+  display: inline-block;
+  margin: 0.2em 0.6em 0 0;
+  padding: 0.6em 0.8em;
+  background: $accent-4;
+  color: $bgc;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1.1em;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  cursor: pointer;
+}

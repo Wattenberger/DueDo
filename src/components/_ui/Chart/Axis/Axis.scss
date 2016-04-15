@@ -1,0 +1,11 @@
+@import "~styles/variables";
+
+.Axis {
+  text {
+    fill: $accent-3;
+    font-size: $font-size-xsmall;
+  }
+  .domain {
+    fill: none;
+  }
+}

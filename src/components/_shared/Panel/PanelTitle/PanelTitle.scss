@@ -1,0 +1,33 @@
+@import "~styles/variables";
+
+.PanelTitle {
+  margin: -10px -20px 20px;
+  padding: 10px 30px;
+  color: $accent-4;
+  background: #fff;
+  .Select {
+    max-width: 230px;
+    &-control, &-menu-outer {
+      color: $accent-4;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      cursor: pointer;
+    }
+    &-control:hover {
+      background: $bgc;
+    }
+    .Select-option {
+      color: $accent-4;
+      &:hover {
+        background: $accent-2;
+        color: #fff;
+
+      }
+      &.is-selected {
+        background: $accent-4;
+        color: #fff;
+      }
+    }
+  }
+}

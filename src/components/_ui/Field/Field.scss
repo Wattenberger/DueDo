@@ -1,0 +1,107 @@
+@import "~styles/variables";
+@import "~styles/mixins";
+@import "~styles/animations";
+
+.Field {
+  padding: 0.4em 0;
+  &__label {
+    flex: 1;
+    font-size: 12px;
+  }
+  &__input {
+    flex: 3;
+    input, textarea {
+      display: block;
+      width: 100% !important;
+      padding: 0.5em 0.6em 0.4em;
+      font-size: 16px;
+      line-height: 1em;
+      color: $gray-dark;
+      border: 1px solid $bgc;
+      &:focus, &:active {
+        border-color: $accent-2;
+        outline: $accent-2;
+      }
+    }
+  }
+  .Select {
+    .Select-placeholder {
+      line-height: 2.3em;
+    }
+    &-input {
+      height: auto;
+      width: 100%;
+      margin: 0;
+    }
+    &-control, &-menu-outer {
+      display: flex;
+      height: auto;
+      color: $accent-4;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      cursor: pointer;
+    }
+     &-menu-outer {
+       display: flex;
+       flex-direction: column;
+     }
+    &-control:hover {
+      background: $bgc;
+    }
+    .Select-value {
+      flex: 1;
+      display: flex;
+      margin: 0.3em;
+      line-height: 1.3em;
+    }
+    input {
+      height: auto;
+      padding: 0.3em 0;
+      &:focus, &:active {
+        border-color: transparent;
+        outline: none;
+      }
+    }
+    .Select-option {
+      font-size: 16px;
+      color: $accent-4;
+      &:hover {
+        background: $accent-2;
+        color: #fff;
+
+      }
+      &.is-selected {
+        background: $accent-4;
+        color: #fff;
+      }
+    }
+  }
+  &--checkbox {
+    input {
+      position: relative;
+      height: 1.6em;
+      width: 1.6em !important;
+      appearance: none;
+      background: #fff;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease-out;
+      &:before {
+        content: "✓";
+        @include abs(0, 0.15em);
+        font-size: 1.3em;
+        line-height: 1.2em;
+        color: #fff;
+        opacity: 0.2;
+      }
+      &:checked {
+        background: $accent-4;
+        animation: popIn 0.3s ease-out;
+        &:before {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
