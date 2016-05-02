@@ -1,4 +1,5 @@
 @import "~styles/variables";
+@import "~styles/mixins";
 
 .Panel {
   display: flex;
@@ -9,14 +10,51 @@
     width: 100%;
     padding: 10px 20px;
   }
+  &--left {
+    background: $accent-4;
+
+    .Task {
+      background: $accent-3;
+      border-color: $accent-3;
+      color: $bgc;
+      opacity: 0.8;
+      &:hover {
+        background: $accent-3;
+        opacity: 1;
+      }
+      &__title {
+        color: #fff;
+      }
+
+      .Button {
+        color: #fff;
+        &:hover {
+          background: #fff;
+          color: $accent-4;
+        }
+      }
+    }
+  }
+  &--photo-background {
+    &:before {
+      content: "";
+      @include abs(-60px, 0, -60px, -60px);
+      background: url('https://unsplash.it/1000?random'), linear-gradient(to right top, $accent-2, $gray);
+      background-size: cover;
+      -webkit-filter: blur(30px);
+      // opacity: 0.3;
+      pointer-events: none;
+      background-blend-mode: hue;
+    }
+  }
 }
 
 .outer-box-container, .resize-handler {
   height: 100vh;
 }
 
-.resize-handler {
-  width: 4px !important;
-  background: #fff;
-  border: 1px solid $accent-4;
-}
+// .resize-handler {
+//   width: 4px !important;
+//   background: #fff;
+//   border: 1px solid $accent-4;
+// }

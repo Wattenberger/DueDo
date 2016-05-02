@@ -1,14 +1,22 @@
 import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
+import moment from "moment"
 import Flex from "components/_ui/Flex/Flex"
+import Button from "components/_ui/Button/Button"
 import Tag from "components/_ui/Tag/Tag"
+
+import {updateTask, editTask, deleteTask, finishTask} from "actions/taskActions"
+import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Task.scss')
 
+const dateFormat = "MM/DD/YYYY"
+const today = moment().format(airtableDateFormat)
+
 @connect(state => ({
-  tags: state.tasks.tags,
-  contexts: state.tasks.contexts
+  tags: state.tasks.get('tags'),
+  contexts: state.tasks.get('contexts')
 }))
 class Task extends Component {
   constructor(props) {
@@ -45,9 +53,30 @@ class Task extends Component {
     this.setState({expanded: !expanded})
   }
 
+  editTask = () => {
+    let {dispatch, task} = this.props
+    dispatch(editTask(task.id, task.fields))
+  }
+
+  deleteTask = () => {
+    let {dispatch, task} = this.props
+    dispatch(deleteTask(task.id))
+  }
+
+  finishTask = () => {
+    let {dispatch, task} = this.props
+    dispatch(finishTask(task.id))
+  }
+
+  moveTaskToToday = () => {
+    let {dispatch, task} = this.props
+    dispatch(updateTask(task.id, {When: today}))
+  }
+
   renderDetails() {
     let {fields} = this.props.task
     return <div className={this.getDetailsClassName()}>
+        {fields.When && <div className="Task__date">{moment(fields.When).format(dateFormat)}</div>}
         <p className="Task__description">{fields.Description}</p>
         <ul>
           {fields.Tags && fields.Tags.map(this.renderTag)}
@@ -70,6 +99,12 @@ class Task extends Component {
         <Flex className="Task__overview" direction="row" onClick={this.toggleExpanded}>
           <div className="Task__text">
             <h6 className="Task__title">{fields.Title}</h6>
+            <div className="Task__buttons">
+              {fields.When != today && <Button onClick={this.moveTaskToToday}>⏰</Button>}
+              <Button onClick={this.editTask}>🖉</Button>
+              <Button onClick={this.deleteTask}>🗑</Button>
+              <Button onClick={this.finishTask}>✓</Button>
+            </div>
           </div>
           <div>
             {fields.Context && <h6 className="Task__context">{contexts[fields.Context[0]]}</h6>}

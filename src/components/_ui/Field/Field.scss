@@ -3,21 +3,27 @@
 @import "~styles/animations";
 
 .Field {
+  width: 100%;
   padding: 0.4em 0;
+
   &__label {
     flex: 1;
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 2.5em;
   }
   &__input {
+    display: flex;
+    align-items: center;
     flex: 3;
+
     input, textarea {
       display: block;
       width: 100% !important;
-      padding: 0.5em 0.6em 0.4em;
+      padding: 0.5em 0.6em;
       font-size: 16px;
       line-height: 1em;
       color: $gray-dark;
-      border: 1px solid $bgc;
+      border: 1px solid $gray-medium;
       &:focus, &:active {
         border-color: $accent-2;
         outline: $accent-2;
@@ -25,6 +31,8 @@
     }
   }
   .Select {
+    width: 100%;
+    
     .Select-placeholder {
       line-height: 2.3em;
     }
@@ -32,12 +40,21 @@
       height: auto;
       width: 100%;
       margin: 0;
+      padding: 0 10px;
+      input {
+        line-height: 2em;
+        border: none;
+      }
+    }
+    .Select-item + .Select-input {
+      padding: 0;
     }
     &-control, &-menu-outer {
       display: flex;
       height: auto;
       color: $accent-4;
-      border: none;
+      line-height: 2.3em;
+      border: 1px solid $gray-medium;
       border-radius: 0;
       box-shadow: none;
       cursor: pointer;
@@ -54,6 +71,15 @@
       display: flex;
       margin: 0.3em;
       line-height: 1.3em;
+    }
+    &-item {
+      display: flex;
+      margin-bottom: 5px;
+      line-height: 1em;
+      align-items: center;
+      &-icon {
+        padding: 1px 5px;
+      }
     }
     input {
       height: auto;

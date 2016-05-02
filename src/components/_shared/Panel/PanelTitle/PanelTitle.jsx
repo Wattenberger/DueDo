@@ -11,13 +11,14 @@ require('react-select/dist/react-select.min.css')
 require('./PanelTitle.scss')
 
 @connect(state => ({
-  panels: state.panels,
-  day: state.panels.day
+  panels: state.panels.toJS()
 }))
 class PanelTitle extends Component {
   static propTypes = {
     title: PropTypes.string,
-    panel: PropTypes.string
+    panel: PropTypes.string,
+    side: PropTypes.string,
+    controls: PropTypes.element
   };
 
   getClassName() {
@@ -26,26 +27,27 @@ class PanelTitle extends Component {
     )
   }
 
-  getSide() {
-    let {panel, panels} = this.props
-    return panels.left === panel ? "left" : "right"
+  onPanelChange = (newPanel) => {
+    let {side} = this.props
+    this.props.dispatch(changePanel(side, newPanel))
   }
 
-  onPanelChange = (newPanel) => {
-    let side = this.getSide()
-    this.props.dispatch(changePanel(side, newPanel.value))
+  renderControls() {
+    let {controls} = this.props
+    return controls
   }
 
   render() {
-    let {title, panel} = this.props
-    let panelOptions = panelsList.map(panel => ({
+    let {title, panel, controls, side} = this.props
+
+    let panelOptions = panelsList[side].map(panel => ({
       value: panel,
       label: panel.substr(0,1).toUpperCase() + panel.slice(1)
     }))
 
     return (
-      <Flex className={this.getClassName()} direction="column">
-        <h4 className="Panel__title">
+      <Flex className={this.getClassName()} direction="row">
+        <h4 className="PanelTitle__select">
           <Select
             name="panels-list-select"
             value={panel}
@@ -54,6 +56,7 @@ class PanelTitle extends Component {
             onChange={this.onPanelChange}
             />
         </h4>
+        {!!controls && this.renderControls()}
       </Flex>
     )
   }

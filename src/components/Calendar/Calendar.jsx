@@ -31,7 +31,7 @@ class Calendar extends Component {
   render() {
     return (
       <div className={this.getClassName()}>
-        <PanelTitle title="Calendar" panel="calendar" />
+        <PanelTitle title="Calendar" panel="calendar" side="right" />
         <Month
           dayComponent={this.renderDay}
         />

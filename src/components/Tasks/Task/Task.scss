@@ -3,19 +3,35 @@
 
 .Task {
   position: relative;
+  cursor: pointer;
+  background: #fff;
+  margin: 10px 0;
+  padding: 3px 6px;
+  border: 1px solid #f4f4f4;
+
   &:hover {
-    background: $accent-1;
+    background: #fff;
+  }
+  &:hover &__buttons {
+    opacity: 1;
   }
   &--important {
     &:before {
       content: "★";
-      @include abs(6px, auto, auto, -6px);
+      @include abs(17px, auto, auto, -6px);
       font-size: 12px;
       color: $accent-4;
     }
   }
   &__text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex: 1;
+  }
+  &__buttons {
+    opacity: 0;
+    transition: opacity $transition-fast;
   }
   &__title, &__context {
     margin: 0;
@@ -32,13 +48,18 @@
     margin: 0;
     padding: 0;
   }
+
+  &__date {
+    margin: 0 0 10px;
+    font-size: 12px;
+  }
   &__details {
     max-height: 0;
     padding: 0 13px;
     overflow: hidden;
     transition: all 0.3s ease-out;
     &--expanded {
-      padding: 13px;
+      padding-bottom: 13px;
       max-height: 200px;
     }
   }

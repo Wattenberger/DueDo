@@ -2,15 +2,23 @@
 
 .Button {
   display: inline-block;
-  margin: 0.2em 0.6em 0 0;
-  padding: 0.6em 0.8em;
-  background: $accent-4;
-  color: $bgc;
+  padding: 0.5em 0.6em;
+  border: 1px solid $accent-4;
+  background: none;
+  color: $accent-4;
   font-size: 14px;
+  font-weight: 600;
   text-transform: uppercase;
-  line-height: 1.1em;
-  border: none;
+  line-height: 1em;
   outline: none;
-  border-radius: 2px;
   cursor: pointer;
+  border-radius: 2px;
+  transition: background $transition-fast;
+  &:hover {
+    background: $accent-4;
+    color: $bgc;
+  }
+  & + .Button {
+    margin-left: 0.3em;
+  }
 }

@@ -1,7 +1,10 @@
 import React, {Component, PropTypes} from "react"
+import ReactDOM from 'react-dom'
 import classNames from "classnames"
+import _ from "lodash"
 import Flex from "components/_ui/Flex/Flex"
 import Select from "react-select"
+import DateInput from "./DateInput/DateInput"
 
 require('./Field.scss')
 
@@ -14,8 +17,10 @@ class Field extends Component {
       PropTypes.array,
       PropTypes.object
     ]),
-    type: PropTypes.oneOf(["text", "number", "checkbox", "textarea", "select"]),
-    selectOptions: PropTypes.object,
+    options: PropTypes.array,
+    type: PropTypes.oneOf(["text", "number", "date", "checkbox", "textarea", "select"]),
+    fieldOptions: PropTypes.object,
+    autoFocus: PropTypes.bool,
     onChange: PropTypes.func
   }
 
@@ -30,8 +35,19 @@ class Field extends Component {
     )
   }
 
+  componentDidMount() {
+    let {autoFocus} = this.props
+
+    if (autoFocus && this.refs.input) {
+      setTimeout(() => {
+        ReactDOM.findDOMNode(this.refs.input).focus();
+      }, 100)
+    }
+  }
+
   onChange = (e) => {
     let newVal = e.target.value
+    e.preventDefault()
     this.props.onChange(newVal)
   }
 
@@ -45,11 +61,13 @@ class Field extends Component {
   }
 
   renderInput = () => {
-    let {value, type} = this.props
+    let {value, type, autoFocus} = this.props
+
     if (type === "checkbox") return this.renderCheckbox()
     if (type === "textarea") return this.renderTextArea()
     if (type === "select") return this.renderSelect()
-    return <input type={type} value={value} onChange={this.onChange} />
+    if (type === "date") return this.renderDateInput()
+    return <input type={type} value={value} onChange={this.onChange} ref="input" />
   }
 
   renderCheckbox() {
@@ -63,14 +81,25 @@ class Field extends Component {
   }
 
   renderSelect() {
-    let {value, options, selectOptions} = this.props
+    let {value, options, fieldOptions} = this.props
+
     return <Select
         name="select"
         value={value}
         clearable={false}
         options={options}
-        {...selectOptions}
+        {...fieldOptions}
         onChange={this.onSelectChange}
+      />
+  }
+
+  renderDateInput() {
+    let {value, fieldOptions, onChange} = this.props
+
+    return <DateInput
+        value={value}
+        {...fieldOptions}
+        onChange={onChange}
       />
   }
 

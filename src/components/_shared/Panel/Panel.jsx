@@ -5,12 +5,15 @@ require('./Panel.scss')
 
 class Panel extends Component {
   static propTypes = {
-    component: PropTypes.func.isRequired
+    component: PropTypes.func.isRequired,
+    photoBackground: PropTypes.bool
   };
 
   getClassName() {
     return classNames(
-      "Panel", this.props.className
+      "Panel", {
+        "Panel--photo-background": this.props.photoBackground
+      }, this.props.className
     )
   }
 

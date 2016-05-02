@@ -52,9 +52,10 @@
     "react-addons-perf": "^15.0.1",
     "react-calendar": "^1.0.4",
     "react-dom": "^15.0.1",
+    "react-modal": "^1.1.1",
     "react-redux": "^4.4.2",
     "react-router": "^2.0.1",
-    "react-select": "^1.0.0-beta12",
+    "react-select": "^0.9.1",
     "react-sortable-pane": "^0.2.3",
     "redux": "^3.4.0",
     "redux-actions": "^0.9.1",
@@ -63,6 +64,7 @@
     "redux-thunk": "^2.0.1",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
+    "unsplash-js": "^3.2.1",
     "webpack": "^1.12.14"
   },
   "devDependencies": {

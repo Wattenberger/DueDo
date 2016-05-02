@@ -1,0 +1,28 @@
+@import "~styles/variables";
+@import "~styles/mixins";
+
+.TasksFilters {
+	background: $accent-3;
+	margin: -20px -20px 0;
+	padding: 20px 40px;
+	color: $bgc;
+
+	&__current {
+		margin: -20px -40px;
+		padding: 20px 40px;
+		cursor: pointer;
+	}
+
+	&__details {
+		margin: 0 -20px 0;
+		padding: 0 20px;
+		max-height: 0;
+		overflow: hidden;
+		transition: all $transition-fast;
+
+		&--expanded {
+			max-height: 300px;
+			padding: 20px 20px 0;
+		}
+	}
+}

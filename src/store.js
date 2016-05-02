@@ -1,11 +1,14 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux'
+// import {combineReducers} from 'redux-immutablejs'
 import {mapValues} from 'lodash'
 import thunkMiddleware from 'redux-thunk'
 import logger from 'redux-logger'
 import promiseMiddleware from 'redux-promise'
 
 import {default as app} from "reducers/appReducer"
+import {default as modal} from "reducers/modalReducer"
 import {default as panels} from "reducers/panelsReducer"
+import {default as photo} from "reducers/taskReducer"
 import {default as tasks} from "reducers/taskReducer"
 
 const loggerMiddleware = logger({
@@ -24,7 +27,9 @@ const createStoreWithMiddleware = applyMiddleware(
 
 const rootReducer = combineReducers({
   app,
+  modal,
   panels,
+  photo,
   tasks
 })
 

@@ -1,6 +1,21 @@
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 @keyframes fadeInRight {
   0% { transform: translate3d(-100px, 0, 0); opacity: 0; }
   100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% { transform: translate3d(0, 10px, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes fadeInUpModal {
+  0% { transform: translate3d(-50%,-30%, 0); opacity: 0; }
+  100% { transform: translate3d(-50%,-50%, 0); opacity: 1; }
 }
 
 @keyframes popIn {

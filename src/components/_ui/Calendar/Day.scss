@@ -3,16 +3,38 @@
 
 .Day {
   flex: 1;
-  height: 100px;
+  height: 8vw;
   margin: 4px;
   padding: 10px;
   font-size: 12px;
   line-height: 1em;
   background: #fff;
   border: 1px solid transparent;
-  transition: all 0.2s ease-out;
+  overflow: hidden;
+  transition: all $transition-fast;
+  cursor: pointer;
+
   &:hover {
     border-color: $accent-2;
+    opacity: 1;
     transform: scale3d(1.03, 1.03, 1);
+  }
+
+  &--weekend {
+    opacity: 0.6;
+  }
+
+  &--another-month {
+    opacity: 0.4;
+  }
+
+  &__task {
+    margin: 6px 6px 0 0;
+    color: $accent-4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity $transition-fast;
+    animation: fadeInUp 0.3s;
   }
 }

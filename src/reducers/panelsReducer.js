@@ -1,23 +1,23 @@
 import moment from "moment"
+import Immutable from "immutable"
 
-export const panelsList = ["tasks", "addTask", "habits", "calendar", "day"]
-
-const initialState = {
-  left: "tasks",
-  right: "addTask",
-  day: moment()
+export const panelsList = {
+  left: ["tasks", "habits"],
+  right: ["calendar", "day"]
 }
+
+const initialState = Immutable.Map({
+  left: "tasks",
+  right: "calendar",
+  day: Immutable.Map(moment())
+})
 
 function panels(state = initialState, action) {
   switch (action.type) {
     case "CHANGE_PANEL":
-      return Object.assign({}, state, {
-        [action.side]: action.panel
-      })
+      return state.set(action.side, action.panel)
     case "CHANGE_DAY":
-      return Object.assign({}, state, {
-        day: action.day
-      })
+      return state.set('day', Immutable.Map(action.day))
     default:
       return state
   }

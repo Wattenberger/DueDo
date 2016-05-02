@@ -1,0 +1,23 @@
+export default {
+  "m": 1,
+  "mon": 1,
+  "monday": 1,
+  "t": 2,
+  "tues": 2,
+  "tuesday": 2,
+  "w": 3,
+  "wed": 3,
+  "wednesday": 3,
+  "t": 4,
+  "thurs": 4,
+  "thursday": 4,
+  "f": 5,
+  "fri": 5,
+  "friday": 5,
+  "s": 6,
+  "sat": 6,
+  "saturday": 6,
+  "su": 7,
+  "sun": 7,
+  "sunday": 7
+}

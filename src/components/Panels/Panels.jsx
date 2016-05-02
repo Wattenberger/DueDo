@@ -3,18 +3,19 @@ import classNames from "classnames"
 import {connect} from "react-redux"
 import {changePanel} from 'actions/panelActions'
 import ResizableComponent from 'components/_ui/ResizableComponent/ResizableComponent';
+import Modal from "components/_shared/Modal/Modal"
 import Panel from "components/_shared/Panel/Panel"
 import Tasks from "components/Tasks/Tasks"
-import AddTask from "components/Tasks/AddTask/AddTask"
+import TaskForm from "components/Tasks/TaskForm/TaskForm"
 import Calendar from "components/Calendar/Calendar"
 import DayView from "components/DayView/DayView"
 
 require('./Panels.scss')
+
 const initPanelRatio = 0.3
 const panelsMap = {
   tasks: Tasks,
   habits: Tasks,
-  addTask: AddTask,
   calendar: Calendar,
   day: DayView
 }
@@ -23,8 +24,7 @@ const resizableComponentOptions = {
 }
 
 @connect(state => ({
-  panels: state.panels,
-  day: state.panels.day
+  panels: state.panels.toJS()
 }))
 class Panels extends Component {
   getClassName() {
@@ -35,7 +35,10 @@ class Panels extends Component {
     let {panels} = this.props
     let component = panelsMap[panels[side]]
     if (!component) return
-    return <Panel className={`Panel--${side}`} component={component} />
+    return <Panel
+                className={`Panel--${side}`}
+                component={component}
+           />
   }
 
   onDuringResize = (width) => {
@@ -48,6 +51,7 @@ class Panels extends Component {
 
     return (
       <div className={this.getClassName()}>
+        <Modal id="taskForm" component={TaskForm} />
         <ResizableComponent
           height="100%"
           width={initialWidth}
