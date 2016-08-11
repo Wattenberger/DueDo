@@ -7,6 +7,8 @@
   color: $accent-4;
   background: #fff;
   z-index: 2;
+  flex: none;
+
   &__select {
     flex: 1;
     padding-right: 10px;

@@ -17,7 +17,8 @@ const today = moment()
 
 @connect(state => ({
   day: moment(state.panels.get('day').toJS()),
-  tasks: state.tasks.get('list')
+  tasks: state.tasks.get('list'),
+  events: state.googleCalendar.get('events')
 }))
 class DayView extends Component {
   getClassName() {
@@ -32,6 +33,11 @@ class DayView extends Component {
 
   changeDayToToday = () => {
     this.props.dispatch(changeDay(today))
+  }
+
+  getDaysEvents() {
+    let {day, events} = this.props
+    return events.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
   }
 
   renderTitleControls() {
@@ -56,6 +62,17 @@ class DayView extends Component {
       )
   }
 
+  renderEvents() {
+    return <div className="DayView__events">
+      {this.getDaysEvents().map(event =>
+        <div className="DayView__event" key={event.id}>
+          <span className="DayView__event__time">{moment(event.start.dateTime).format("h:mm A")}</span>
+          {event.summary}
+        </div>
+      )}
+    </div>
+  }
+
   render() {
     let {day, tasks} = this.props
 
@@ -69,6 +86,7 @@ class DayView extends Component {
         />
         Hi, it's {day.format(dateFormat)}
         {this.renderTasks()}
+        {this.renderEvents()}
       </div>
     )
   }

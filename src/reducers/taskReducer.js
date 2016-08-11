@@ -6,7 +6,7 @@ const initialState = Immutable.Map({
   tags: Immutable.List(),
   contexts: Immutable.List(),
   filters: Immutable.Map({
-    Done: false
+    // Done: false
   }),
   formId: null,
   form: Immutable.Map()

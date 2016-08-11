@@ -15,4 +15,21 @@
       text-overflow: ellipsis;
     }
   }
+
+  &__events {
+    margin-top: 15px;
+  }
+
+  &__event {
+    margin: 7px 0 0 0;
+    color: $gray_dark;
+
+    &__time {
+      display: inline-block;
+      width: 5em;
+      font-weight: 900;
+      padding-right: 0.3em;
+      color: $accent-2;
+    }
+  }
 }

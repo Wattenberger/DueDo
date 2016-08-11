@@ -3,6 +3,7 @@ import classNames from "classnames"
 import {connect} from "react-redux"
 import _ from "lodash"
 import moment from "moment"
+import ScrollableContainer from "components/_ui/ScrollableContainer/ScrollableContainer"
 import Keypress, {KEYS} from 'components/_ui/Keypress/Keypress'
 import PanelTitle from "components/_shared/Panel/PanelTitle/PanelTitle"
 import Button from "components/_ui/Button/Button"
@@ -17,7 +18,8 @@ require('./Tasks.scss')
 @connect(state => ({
   day: moment(state.panels.get('day').toJS()).format(airtableDateFormat),
   filters: state.tasks.get('filters').toJS(),
-  tasks: state.tasks.get('list')
+  tasks: state.tasks.get('list'),
+  contexts: state.tasks.get('contexts')
 }))
 class Tasks extends Component {
   componentWillMount() {
@@ -54,6 +56,29 @@ class Tasks extends Component {
       })
   }
 
+  filterByContext(tasks, context) {
+    return tasks.filter(task =>  _.includes(task.fields.Contexts, context))
+  }
+
+  renderAllUndoneTasks() {
+    let {tasks, contexts} = this.props
+    let usedContexts = _.chain(tasks)
+      .map(task => task.fields.Contexts)
+      .flatten()
+      .uniq()
+      .value()
+
+    return usedContexts.map((context, idx) =>
+      <div className="Tasks__context" key={`task-contexts--${context}`}>
+        <h6>{contexts[context]}</h6>
+        <ul>
+          {this.filterByContext(tasks.filter(task => !task.fields.Done), context).map(this.renderTask)}
+        </ul>
+      </div>
+    )
+  }
+
+
   addTask = () => {
     let {day} = this.props
 
@@ -65,6 +90,12 @@ class Tasks extends Component {
     [KEYS.n]: this.addTask
   }
 
+  renderTasks() {
+    return _.keys(this.props.filters).length
+      ? <ul>{this.getFilteredTasks().map(this.renderTask)}</ul>
+      : this.renderAllUndoneTasks()
+  }
+
   renderTask(task) {
     return <Task task={task} key={task.id} />
   }
@@ -74,16 +105,14 @@ class Tasks extends Component {
   }
 
   render() {
-    let filteredTasks = this.getFilteredTasks()
-
     return (
       <div className={this.getClassName()}>
         <Keypress keys={this.keypresses} />
         <PanelTitle title="Tasks" panel="tasks" controls={this.renderAddTask()} side="left" />
-        <TasksFilters />
-        <ul>
-          {filteredTasks.map(this.renderTask)}
-        </ul>
+          <TasksFilters />
+          <ScrollableContainer className="Tasks__ScrollableContainer">
+            {this.renderTasks()}
+        </ScrollableContainer>
       </div>
     )
   }

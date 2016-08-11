@@ -20,6 +20,10 @@
     transform: scale3d(1.03, 1.03, 1);
   }
 
+  &--today {
+    border-color: $accent-4;
+  }
+
   &--weekend {
     opacity: 0.6;
   }
@@ -28,13 +32,25 @@
     opacity: 0.4;
   }
 
-  &__task {
-    margin: 6px 6px 0 0;
+  &__task, &__event {
+    margin: 6px 6px -3px 0;
+    line-height: 1.2em;
+    padding: 0;
     color: $accent-4;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     transition: opacity $transition-fast;
     animation: fadeInUp 0.3s;
+
+    &--done {
+      &:before {
+        content: "✓ ";
+      }
+    }
+  }
+
+  &__event {
+    color: $gray_medium;
   }
 }

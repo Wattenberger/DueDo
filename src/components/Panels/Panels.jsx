@@ -10,6 +10,8 @@ import TaskForm from "components/Tasks/TaskForm/TaskForm"
 import Calendar from "components/Calendar/Calendar"
 import DayView from "components/DayView/DayView"
 
+import {auth, getCalendarEvents} from "actions/googleActions"
+
 require('./Panels.scss')
 
 const initPanelRatio = 0.3
@@ -29,6 +31,11 @@ const resizableComponentOptions = {
 class Panels extends Component {
   getClassName() {
     return classNames("Panels")
+  }
+
+  componentDidMount = () => {
+    this.props.dispatch(auth())
+    this.props.dispatch(getCalendarEvents())
   }
 
   renderPanel(side) {

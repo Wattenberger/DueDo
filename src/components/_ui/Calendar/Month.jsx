@@ -20,7 +20,7 @@ class Month extends Component {
 
   getWeeksInMonth(date) {
     let weeksInMonth = [];
-    let startDate = moment(date).startOf("month")
+    let startDate = moment(date).startOf("month").startOf("week")
     let endDate = moment(date).endOf("month")
     let numWeeksInMonth = endDate.diff(startDate, "weeks") + 1
     _.times(numWeeksInMonth, n => {

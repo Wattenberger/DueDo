@@ -105,6 +105,7 @@ export function finishTask(taskId) {
 export function createNewOption(slug, name) {
   return async (dispatch, getState) => {
     let res = await(airtableAPI.createNewOption(slug, name))
+    console.log(slug, name, res)
     dispatch({ type: CREATE_NEW_OPTION, name: res })
     return res
   }
@@ -128,18 +129,17 @@ export function changeFormField(field, newVal) {
   return { type: CHANGE_FORM_FIELD, field, newVal }
 }
 
-const parseOptions = (slug, options, list) => {
-  if (!options || _.isArray(options)) return
-
-  return options.split(",").map(option => {
-    return !list[option] ?
-      this.props.dispatch(createNewOption(slug.toLowerCase(), option)).id :
-      option
-    })
-}
-
 export function submitForm() {
   return async (dispatch, getState) => {
+
+    const parseOptions = (slug, options, list) => {
+      if (!options || _.isArray(options)) return
+      return options.split(",").map(option => {
+        return !list[option] ?
+          dispatch(createNewOption(slug.toLowerCase(), option)).id :
+          option
+        })
+    }
 
     let formFields = getState().tasks.get('form').toJS()
     let formId = getState().tasks.get('formId')

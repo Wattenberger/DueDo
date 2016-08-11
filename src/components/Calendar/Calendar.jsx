@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
 import moment from "moment"
+import ScrollableContainer from "components/_ui/ScrollableContainer/ScrollableContainer"
 import PanelTitle from "components/_shared/Panel/PanelTitle/PanelTitle"
 import Tag from "components/_ui/Tag/Tag"
 import Month from "components/_ui/Calendar/Month"
@@ -32,9 +33,11 @@ class Calendar extends Component {
     return (
       <div className={this.getClassName()}>
         <PanelTitle title="Calendar" panel="calendar" side="right" />
-        <Month
-          dayComponent={this.renderDay}
-        />
+        <ScrollableContainer className="Tasks__ScrollableContainer">
+          <Month
+            dayComponent={this.renderDay}
+          />
+      </ScrollableContainer>
       </div>
     )
   }

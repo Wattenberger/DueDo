@@ -1,3 +1,5 @@
+process.chdir(__dirname)
+
 // Require babel to have ES6 support on the server
 require("babel-core/register")
 

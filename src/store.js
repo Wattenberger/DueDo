@@ -10,6 +10,7 @@ import {default as modal} from "reducers/modalReducer"
 import {default as panels} from "reducers/panelsReducer"
 import {default as photo} from "reducers/taskReducer"
 import {default as tasks} from "reducers/taskReducer"
+import {default as googleCalendar} from "reducers/googleCalendarReducer"
 
 const loggerMiddleware = logger({
   stateTransformer: state => mapValues(state, val => val && typeof val.toJS === "function"
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   modal,
   panels,
   photo,
-  tasks
+  tasks,
+  googleCalendar,
 })
 
 // create a Redux instance using the dispatcher function
