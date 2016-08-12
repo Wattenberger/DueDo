@@ -10,7 +10,7 @@ import TaskForm from "components/Tasks/TaskForm/TaskForm"
 import Calendar from "components/Calendar/Calendar"
 import DayView from "components/DayView/DayView"
 
-import {auth, getCalendarEvents} from "actions/googleActions"
+import {auth, fetchEvents} from "actions/googleActions"
 
 require('./Panels.scss')
 
@@ -34,8 +34,12 @@ class Panels extends Component {
   }
 
   componentDidMount = () => {
-    this.props.dispatch(auth())
-    this.props.dispatch(getCalendarEvents())
+    setTimeout(() => {
+      this.props.dispatch(auth())
+      setTimeout(() => {
+        this.props.dispatch(fetchEvents())
+      }, 2000)
+    }, 1000)
   }
 
   renderPanel(side) {

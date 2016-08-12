@@ -7,6 +7,7 @@ import Button from "components/_ui/Button/Button"
 import Tag from "components/_ui/Tag/Tag"
 
 import {updateTask, editTask, deleteTask, finishTask} from "actions/taskActions"
+import {startPomodoro} from "actions/pomodoroActions"
 import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Task.scss')
@@ -51,6 +52,11 @@ class Task extends Component {
   toggleExpanded = () => {
     let {expanded} = this.state
     this.setState({expanded: !expanded})
+  }
+
+  startPomodoro = () => {
+    let {dispatch, task} = this.props
+    dispatch(startPomodoro(task.id))
   }
 
   editTask = () => {
@@ -100,6 +106,7 @@ class Task extends Component {
           <div className="Task__text">
             <h6 className="Task__title">{fields.Title}</h6>
             <div className="Task__buttons">
+                <Button onClick={this.startPomodoro}>🍅</Button>
               {fields.When != today && <Button onClick={this.moveTaskToToday}>⏰</Button>}
               <Button onClick={this.editTask}>🖉</Button>
               <Button onClick={this.deleteTask}>🗑</Button>

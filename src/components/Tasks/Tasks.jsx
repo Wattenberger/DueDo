@@ -9,6 +9,7 @@ import PanelTitle from "components/_shared/Panel/PanelTitle/PanelTitle"
 import Button from "components/_ui/Button/Button"
 import Task from "./Task/Task"
 import TasksFilters from "./TasksFilters/TasksFilters"
+import Pomodoro from "components/Pomodoro/Pomodoro"
 
 import {addNewTask, getTasks, getHabits, getTags, getContexts, changeFormField} from "actions/taskActions"
 import {airtableDateFormat} from "api/airtableAPI"
@@ -110,6 +111,7 @@ class Tasks extends Component {
         <Keypress keys={this.keypresses} />
         <PanelTitle title="Tasks" panel="tasks" controls={this.renderAddTask()} side="left" />
           <TasksFilters />
+          <Pomodoro />
           <ScrollableContainer className="Tasks__ScrollableContainer">
             {this.renderTasks()}
         </ScrollableContainer>

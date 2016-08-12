@@ -10,6 +10,7 @@ import {default as modal} from "reducers/modalReducer"
 import {default as panels} from "reducers/panelsReducer"
 import {default as photo} from "reducers/taskReducer"
 import {default as tasks} from "reducers/taskReducer"
+import {default as pomodoro} from "reducers/pomodoroReducer"
 import {default as googleCalendar} from "reducers/googleCalendarReducer"
 
 const loggerMiddleware = logger({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   panels,
   photo,
   tasks,
+  pomodoro,
   googleCalendar,
 })
 
