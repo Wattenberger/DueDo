@@ -82,7 +82,7 @@ class DayView extends Component {
           title={day.format(dateFormat)}
           panel="day"
           controls={this.renderTitleControls()}
-          side="right"
+          side="left"
         />
         Hi, it's {day.format(dateFormat)}
         {this.renderTasks()}

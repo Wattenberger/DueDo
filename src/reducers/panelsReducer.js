@@ -2,13 +2,13 @@ import moment from "moment"
 import Immutable from "immutable"
 
 export const panelsList = {
-  left: ["tasks", "habits"],
-  right: ["calendar", "day"]
+  left: ["calendar", "day"],
+  right: ["tasks", "habits"]
 }
 
 const initialState = Immutable.Map({
-  left: "tasks",
-  right: "calendar",
+  left: "calendar",
+  right: "tasks",
   day: Immutable.Map(moment())
 })
 

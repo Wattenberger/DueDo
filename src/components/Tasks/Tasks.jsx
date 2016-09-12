@@ -58,13 +58,13 @@ class Tasks extends Component {
   }
 
   filterByContext(tasks, context) {
-    return tasks.filter(task =>  _.includes(task.fields.Contexts, context))
+    return tasks.filter(task =>  task && task.fields && _.includes(task.fields.Contexts, context))
   }
 
   renderAllUndoneTasks() {
     let {tasks, contexts} = this.props
     let usedContexts = _.chain(tasks)
-      .map(task => task.fields.Contexts)
+      .map(task => task && task.fields && task.fields.Contexts)
       .flatten()
       .uniq()
       .value()
@@ -109,7 +109,7 @@ class Tasks extends Component {
     return (
       <div className={this.getClassName()}>
         <Keypress keys={this.keypresses} />
-        <PanelTitle title="Tasks" panel="tasks" controls={this.renderAddTask()} side="left" />
+        <PanelTitle title="Tasks" panel="tasks" controls={this.renderAddTask()} side="right" />
           <TasksFilters />
           <Pomodoro />
           <ScrollableContainer className="Tasks__ScrollableContainer">

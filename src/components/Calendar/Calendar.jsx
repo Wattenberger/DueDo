@@ -22,7 +22,7 @@ class Calendar extends Component {
 
   onDayClick = (date, e) => {
     this.props.dispatch(changeDay(date))
-    this.props.dispatch(changePanel("right", "day"))
+    this.props.dispatch(changePanel("left", "day"))
   }
 
   renderDay = (day) => {
@@ -32,7 +32,7 @@ class Calendar extends Component {
   render() {
     return (
       <div className={this.getClassName()}>
-        <PanelTitle title="Calendar" panel="calendar" side="right" />
+        <PanelTitle title="Calendar" panel="calendar" side="left" />
         <ScrollableContainer className="Tasks__ScrollableContainer">
           <Month
             dayComponent={this.renderDay}

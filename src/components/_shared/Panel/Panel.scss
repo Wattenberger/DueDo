@@ -11,8 +11,10 @@
     padding: 10px 20px;
   }
   &--left {
+    background: $bgc;
+  }
+  &--right {
     background: $accent-4;
-
     .Task {
       background: $accent-3;
       border-color: $accent-3;

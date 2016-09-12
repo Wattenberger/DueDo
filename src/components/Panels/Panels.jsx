@@ -14,7 +14,7 @@ import {auth, fetchEvents} from "actions/googleActions"
 
 require('./Panels.scss')
 
-const initPanelRatio = 0.3
+const initPanelRatio = 0.76
 const panelsMap = {
   tasks: Tasks,
   habits: Tasks,
@@ -38,7 +38,7 @@ class Panels extends Component {
       this.props.dispatch(auth())
       setTimeout(() => {
         this.props.dispatch(fetchEvents())
-      }, 2000)
+      }, 3000)
     }, 1000)
   }
 
