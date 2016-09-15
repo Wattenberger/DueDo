@@ -67,6 +67,7 @@ class Tasks extends Component {
       .map(task => task && task.fields && task.fields.Contexts)
       .flatten()
       .uniq()
+      .sortBy(slug => (contexts[slug] || "").toLowerCase())
       .value()
 
     return usedContexts.map((context, idx) =>

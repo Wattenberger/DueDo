@@ -3,6 +3,7 @@ import classNames from "classnames"
 import {connect} from "react-redux"
 import moment from "moment"
 import PanelTitle from "components/_shared/Panel/PanelTitle/PanelTitle"
+import Keypress, {KEYS} from 'components/_ui/Keypress/Keypress'
 import Flex from "components/_ui/Flex/Flex"
 import Button from "components/_ui/Button/Button"
 import Task from "components/Tasks/Task/Task"
@@ -33,6 +34,14 @@ class DayView extends Component {
 
   changeDayToToday = () => {
     this.props.dispatch(changeDay(today))
+  }
+
+  exitToCalendar = () => {
+    this.props.dispatch(changePanel("left", "calendar"))
+  }
+
+  keypresses = {
+      [KEYS.ESC]: this.exitToCalendar
   }
 
   getDaysEvents() {
@@ -78,6 +87,7 @@ class DayView extends Component {
 
     return (
       <div className={this.getClassName()}>
+        <Keypress keys={this.keypresses} />
         <PanelTitle
           title={day.format(dateFormat)}
           panel="day"

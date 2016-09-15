@@ -32,7 +32,7 @@
   }
   .Select {
     width: 100%;
-    
+
     .Select-placeholder {
       line-height: 2.3em;
     }
@@ -48,6 +48,9 @@
     }
     .Select-item + .Select-input {
       padding: 0;
+    }
+    .Select-item-label {
+        white-space: nowrap;
     }
     &-control, &-menu-outer {
       display: flex;

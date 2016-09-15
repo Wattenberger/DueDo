@@ -3,17 +3,23 @@ import classNames from "classnames"
 
 class Keypress extends Component {
   static propTypes = {
-    keys: PropTypes.object.isRequired
+    keys: PropTypes.object.isRequired,
+    elem: PropTypes.elem
   };
 
+  static defaultProps = {
+      elem: document
+  }
+
   componentWillMount() {
-    document.addEventListener("keydown", this.onKeydown)
+    let {elem} = this.props
+    elem.addEventListener("keydown", this.onKeydown)
   }
 
   onKeydown = (e) => {
-    if (e.target.tagName === "INPUT") return
-    
-    let {keys} = this.props
+    let {keys, elem} = this.props
+    if (e.target.tagName === "INPUT" && elem != e.target) return
+
     let pressedKey = e.keyCode
     let onKeypress = keys[pressedKey]
 
@@ -21,7 +27,8 @@ class Keypress extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.onKeydown)
+    let {elem} = this.props
+    elem.removeEventListener("keydown", this.onKeydown)
   }
 
   render() {

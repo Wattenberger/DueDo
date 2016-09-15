@@ -5,7 +5,7 @@
   position: relative;
   cursor: pointer;
   background: #fff;
-  margin: 10px 0;
+  margin: 6px 0;
   padding: 3px 6px;
   border: 1px solid #f4f4f4;
 
@@ -30,6 +30,7 @@
     flex: 1;
   }
   &__buttons {
+    display: flex;
     opacity: 0;
     transition: opacity $transition-fast;
   }
@@ -39,9 +40,10 @@
   }
   &__title {
     color: $accent-4;
+    white-space: nowrap;
   }
   &__overview {
-    padding: 13px;
+    padding: 6px 13px;
   }
   &__description {
     font-size: 12px;

@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
 import moment from "moment"
+import Keypress, {KEYS} from 'components/_ui/Keypress/Keypress'
 import days from "./daysOfTheWeek"
 import strings from "./dayStrings"
 
@@ -27,11 +28,15 @@ class DateInput extends Component {
   static propTypes = {
     value: PropTypes.string,
     dateFormat: PropTypes.string,
+    canBeEmpty: PropTypes.bool,
+    onSanitize: PropTypes.func,
     onChange: PropTypes.func
   }
 
   static defaultProps = {
-    dateFormat: "MM/DD/YYYY"
+    dateFormat: "MM/DD/YYYY",
+    canBeEmpty: true,
+    onSanitize: () => {}
   }
 
   getClassName() {
@@ -57,13 +62,14 @@ class DateInput extends Component {
     possibleFormats.forEach(format => {
       if (date) return
       let possDate = moment(str, format)
-      if (possDate.isValid()) console.log(format); date = possDate.format(dateFormat)
+      if (possDate.isValid()) date = possDate.format(dateFormat)
     })
     return date || moment().format(dateFormat)
   }
 
   stringToDate(str) {
-    let {dateFormat} = this.props
+    let {dateFormat, canBeEmpty} = this.props
+    if (!str && canBeEmpty) return null
     str = str.toLowerCase()
 
     return days[str] ? this.getDayFromWeekday(days[str]) :
@@ -79,6 +85,10 @@ class DateInput extends Component {
     this.props.onChange(newVal)
   }
 
+  keypresses = {
+    [KEYS.ENTER]: this.onBlur
+  }
+
   onChange = (e) => {
     let newVal = e.target.value
     this.setState({value: newVal})
@@ -92,12 +102,16 @@ class DateInput extends Component {
     let {value} = this.state
 
     return (
-      <input
-        className={this.getClassName()}
-        value={value}
-        onChange={this.onChange}
-        onBlur={this.onBlur}
-      />
+      <span>
+          <Keypress keys={this.keypresses} elem={this.refs.input} />
+          <input
+            ref="input"
+            className={this.getClassName()}
+            value={value}
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+          />
+      </span>
     )
   }
 }
