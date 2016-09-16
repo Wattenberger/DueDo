@@ -105,7 +105,6 @@ export function finishTask(taskId) {
 export function createNewOption(slug, name) {
   return async (dispatch, getState) => {
     let res = await(airtableAPI.createNewOption(slug, name))
-    console.log(slug, name, res)
     dispatch({ type: CREATE_NEW_OPTION, name: res })
     return res
   }
@@ -132,21 +131,23 @@ export function changeFormField(field, newVal) {
 export function submitForm() {
   return async (dispatch, getState) => {
 
-    const parseOptions = (slug, options, list) => {
+    const parseOptions = async (slug, options, list) => {
       if (!options || _.isArray(options)) return
-      return options.split(",").map(option => {
-        return !list[option] ?
-          dispatch(createNewOption(slug.toLowerCase(), option)).id :
-          option
-        })
+      var parsedOptions = options.split(",");
+      parsedOptions = await Promise.all(parsedOptions.map(async (option, i) => {
+        return list[option] ?
+                 option :
+                 (await dispatch(createNewOption(slug.toLowerCase(), option))).id
+      }))
+      return parsedOptions
     }
 
     let formFields = getState().tasks.get('form').toJS()
     let formId = getState().tasks.get('formId')
     let tags = getState().tasks.get('tags')
     let contexts = getState().tasks.get('contexts')
-    formFields.Tags = parseOptions("Tags", formFields.Tags, tags)
-    formFields.Contexts = parseOptions("Contexts", formFields.Contexts, contexts)
+    formFields.Tags = await parseOptions("Tags", formFields.Tags, tags)
+    formFields.Contexts = await parseOptions("Contexts", formFields.Contexts, contexts)
     if (formId) {
       dispatch(updateTask(formId, formFields))
     } else {

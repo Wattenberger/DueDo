@@ -99,7 +99,7 @@ class Task extends Component {
     let {task, contexts} = this.props
     let {fields} = task
     let {expanded} = this.state
-    let contextList = fields.Contexts && fields.Contexts.map(context => contexts[context])
+    let contextList = (fields.Contexts && fields.Contexts.map(context => contexts[context])) || []
     const isBucketList = contextList.includes("ｼ bucketlist")
 
     return (
