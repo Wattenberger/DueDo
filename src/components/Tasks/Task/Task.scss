@@ -8,6 +8,7 @@
   margin: 6px 0;
   padding: 3px 6px;
   border: 1px solid #f4f4f4;
+  overflow: hidden;
 
   &:hover {
     background: #fff;
@@ -41,6 +42,12 @@
   &__title {
     color: $accent-4;
     white-space: nowrap;
+  }
+  &__context-marker {
+      display: block;
+      position: absolute;
+      left: 0.6em;
+      opacity: 0.6;
   }
   &__overview {
     padding: 6px 13px;

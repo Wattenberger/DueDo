@@ -99,12 +99,17 @@ class Task extends Component {
     let {task, contexts} = this.props
     let {fields} = task
     let {expanded} = this.state
+    let contextList = fields.Contexts && fields.Contexts.map(context => contexts[context])
+    const isBucketList = contextList.includes("ｼ bucketlist")
 
     return (
       <div className={this.getClassName()}>
         <Flex className="Task__overview" direction="row" onClick={this.toggleExpanded}>
           <div className="Task__text">
-            <h6 className="Task__title">{fields.Title}</h6>
+            <h6 className="Task__title">
+              {isBucketList && <span className="Task__context-marker">ｼ</span>}
+              {fields.Title}
+            </h6>
             <div className="Task__buttons">
                 <Button onClick={this.startPomodoro}>🍅</Button>
               {fields.When != today && <Button onClick={this.moveTaskToToday}>⏰</Button>}
@@ -112,9 +117,6 @@ class Task extends Component {
               <Button onClick={this.deleteTask}>🗑</Button>
               <Button onClick={this.finishTask}>✓</Button>
             </div>
-          </div>
-          <div>
-            {fields.Context && <h6 className="Task__context">{contexts[fields.Context[0]]}</h6>}
           </div>
         </Flex>
         {this.renderDetails()}

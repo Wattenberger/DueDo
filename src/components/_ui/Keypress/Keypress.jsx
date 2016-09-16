@@ -4,7 +4,7 @@ import classNames from "classnames"
 class Keypress extends Component {
   static propTypes = {
     keys: PropTypes.object.isRequired,
-    elem: PropTypes.elem
+    elem: PropTypes.element
   };
 
   static defaultProps = {

@@ -1,3 +1,4 @@
+import _ from "lodash"
 import {GOOGLE_API_KEY as API_KEY} from "config/config"
 import {GOOGLE_CLIENT_ID as CLIENT_ID} from "config/config"
 
@@ -39,6 +40,8 @@ var executeRequest = (req) => {
 }
 
 export async function fetchEvents() {
+  if(!_.has(gapi, 'client.calendar.events')) return {}
+
   var request = gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (new Date()).toISOString(),
