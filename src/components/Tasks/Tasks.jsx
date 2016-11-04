@@ -17,7 +17,7 @@ import {airtableDateFormat} from "api/airtableAPI"
 require('./Tasks.scss')
 
 @connect(state => ({
-  day: moment(state.panels.get('day').toJS()).format(airtableDateFormat),
+  day: moment(state.dayView.get('day').toJS()).format(airtableDateFormat),
   filters: state.tasks.get('filters').toJS(),
   tasks: state.tasks.get('list'),
   contexts: state.tasks.get('contexts')

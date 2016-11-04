@@ -18,6 +18,20 @@
     border-color: $accent-2;
     opacity: 1;
     transform: scale3d(1.03, 1.03, 1);
+
+    .Day__dow {
+      opacity: 1;
+    }
+  }
+
+  &__header {
+    display: flex;
+  }
+
+  &__dow {
+    padding-left: 6px;
+    opacity: 0;
+    transition: opacity $transition-fast;
   }
 
   &--today {

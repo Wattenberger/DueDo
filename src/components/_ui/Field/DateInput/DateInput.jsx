@@ -6,15 +6,17 @@ import days from "./daysOfTheWeek"
 import strings from "./dayStrings"
 
 const possibleFormats = [
-  "MMMM DD",
-  "Do",
+  "YYYY-MM-DD",
   "MMM DD",
   "MM DD",
   "MM/DD",
   "MM/DD/YYYY",
   "MM/DD/YY",
   "DD",
-  "YYYY-MM-DD"
+  "MMMM DD",
+  "Do",
+  "YYYY/MM/DD",
+  "YYYY-MM-D"
 ]
 
 class DateInput extends Component {
@@ -47,6 +49,9 @@ class DateInput extends Component {
 
   getDayFromWeekday(day) {
     let {dateFormat} = this.props
+    // make sure it's the next DOW in the future
+    let dow = moment().day()
+    if (day < dow) day += 7
     return moment().day(day).format(dateFormat)
   }
 

@@ -9,7 +9,7 @@ import Button from "components/_ui/Button/Button"
 import Task from "components/Tasks/Task/Task"
 import {airtableDateFormat} from "api/airtableAPI"
 
-import {changePanel, changeDay} from "actions/panelActions"
+import {changeDay} from "actions/dayViewActions"
 
 require('./DayView.scss')
 
@@ -17,7 +17,7 @@ const dateFormat = "dddd MMMM Do YYYY"
 const today = moment()
 
 @connect(state => ({
-  day: moment(state.panels.get('day').toJS()),
+  day: moment(state.dayView.get('day').toJS()),
   tasks: state.tasks.get('list'),
   events: state.googleCalendar.get('events')
 }))
@@ -36,12 +36,9 @@ class DayView extends Component {
     this.props.dispatch(changeDay(today))
   }
 
-  exitToCalendar = () => {
-    this.props.dispatch(changePanel("left", "calendar"))
-  }
-
   keypresses = {
-      [KEYS.ESC]: this.exitToCalendar
+      [KEYS.LEFT]:  this.changeDay.bind(this, -1),
+      [KEYS.RIGHT]: this.changeDay.bind(this, 1)
   }
 
   getDaysEvents() {
@@ -53,9 +50,18 @@ class DayView extends Component {
     let {day} = this.props
 
     return <Flex className="DayView__title-controls">
-      {!day.isSame(today) && <Button onClick={this.changeDayToToday}>Today</Button>}
       <Button onClick={this.changeDay.bind(this, -1)}>↤</Button>
+      {
+        !day.isSame(today) &&
+        day.isBefore(today) &&
+          <Button onClick={this.changeDayToToday}>Today</Button>
+     }
       <span className="DayView__title-controls__text">{day.format(dateFormat)}</span>
+      {
+        !day.isSame(today) &&
+        !day.isBefore(today) &&
+          <Button onClick={this.changeDayToToday}>Today</Button>
+     }
       <Button onClick={this.changeDay.bind(this, 1)}>↦</Button>
     </Flex>
   }
@@ -88,13 +94,7 @@ class DayView extends Component {
     return (
       <div className={this.getClassName()}>
         <Keypress keys={this.keypresses} />
-        <PanelTitle
-          title={day.format(dateFormat)}
-          panel="day"
-          controls={this.renderTitleControls()}
-          side="left"
-        />
-        Hi, it's {day.format(dateFormat)}
+        {this.renderTitleControls()}
         {this.renderTasks()}
         {this.renderEvents()}
       </div>

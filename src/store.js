@@ -8,6 +8,7 @@ import promiseMiddleware from 'redux-promise'
 import {default as app} from "reducers/appReducer"
 import {default as modal} from "reducers/modalReducer"
 import {default as panels} from "reducers/panelsReducer"
+import {default as dayView} from "reducers/dayViewReducer"
 import {default as photo} from "reducers/taskReducer"
 import {default as tasks} from "reducers/taskReducer"
 import {default as pomodoro} from "reducers/pomodoroReducer"
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   app,
   modal,
   panels,
+  dayView,
   photo,
   tasks,
   pomodoro,

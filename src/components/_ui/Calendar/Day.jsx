@@ -83,7 +83,10 @@ class Day extends Component {
 
     return (
       <div {...this.props} className={this.getClassName()} onClick={this.onClick}>
-        <div className="Day__number">{day.format("D")}</div>
+        <div className="Day__header">
+          <div className="Day__number">{day.format("D")}</div>
+          <div className="Day__dow">{day.format("dddd")}</div>
+        </div>
         {this.renderTasks()}
         {this.renderEvents()}
       </div>

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
 import Flex from "components/_ui/Flex/Flex"
-import Select from "react-select"
+import Toggle from "components/_ui/Toggle/Toggle"
 import {panelsList} from "reducers/panelsReducer"
 
 import {changePanel} from 'actions/panelActions'
@@ -29,6 +29,7 @@ class PanelTitle extends Component {
 
   onPanelChange = (newPanel) => {
     let {side} = this.props
+    console.log(newPanel)
     this.props.dispatch(changePanel(side, newPanel))
   }
 
@@ -47,15 +48,11 @@ class PanelTitle extends Component {
 
     return (
       <Flex className={this.getClassName()} direction="row">
-        <h4 className="PanelTitle__select">
-          <Select
-            name="panels-list-select"
+          <Toggle
             value={panel}
-            clearable={false}
             options={panelOptions}
             onChange={this.onPanelChange}
-            />
-        </h4>
+          />
         {!!controls && this.renderControls()}
       </Flex>
     )
