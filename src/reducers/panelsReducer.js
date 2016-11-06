@@ -2,7 +2,7 @@ import Immutable from "immutable"
 
 export const panelsList = {
   left: ["calendar"],
-  right: ["tasks", "habits"]
+  right: ["tasks"]
 }
 
 const initialState = Immutable.Map({

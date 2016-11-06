@@ -35,7 +35,9 @@ class Task extends Component {
     let {task} = this.props
     return classNames(
       "Task", {
-        "Task--important": task.fields.Important
+        "Task--important": task.fields.Important,
+        "Task--blocked":   task.fields.Blocked,
+        "Task--done":      task.fields.Done
       }, this.props.className
     )
   }
@@ -71,7 +73,7 @@ class Task extends Component {
 
   finishTask = () => {
     let {dispatch, task} = this.props
-    dispatch(finishTask(task.id))
+    dispatch(finishTask(task))
   }
 
   moveTaskToToday = () => {
@@ -99,8 +101,7 @@ class Task extends Component {
     let {task, contexts} = this.props
     let {fields} = task
     let {expanded} = this.state
-    let contextList = (fields.Contexts && fields.Contexts.map(context => contexts[context])) || []
-    const isBucketList = contextList.includes("ｼ bucketlist")
+    const isBucketList = task.fields.Type == "bucketlist"
 
     return (
       <div className={this.getClassName()}>

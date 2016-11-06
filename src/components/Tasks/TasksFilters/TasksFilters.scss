@@ -4,15 +4,23 @@
 .TasksFilters {
   flex: none;
   margin: -20px -20px 0;
-  padding: 20px 40px;
+  padding: 20px 40px 14px;
   background: $accent-3;
 	color: $bgc;
 
 	&__current {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 		margin: -20px -40px;
 		padding: 20px 40px;
 		cursor: pointer;
 	}
+
+    &__toggle {
+        padding-bottom: 6px;
+        pointer-events: all;
+    }
 
 	&__details {
 		margin: 0 -20px 0;

@@ -46,21 +46,25 @@ class DayView extends Component {
     return events.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
   }
 
+  renderTodayButton() {
+    return <Button onClick={this.changeDayToToday}>Today</Button>
+  }
+
   renderTitleControls() {
     let {day} = this.props
 
     return <Flex className="DayView__title-controls">
       <Button onClick={this.changeDay.bind(this, -1)}>↤</Button>
       {
-        !day.isSame(today) &&
-        day.isBefore(today) &&
-          <Button onClick={this.changeDayToToday}>Today</Button>
+        !day.isSame(today, 'day') &&
+        day.isBefore(today, 'day') &&
+        this.renderTodayButton()
      }
       <span className="DayView__title-controls__text">{day.format(dateFormat)}</span>
       {
-        !day.isSame(today) &&
-        !day.isBefore(today) &&
-          <Button onClick={this.changeDayToToday}>Today</Button>
+        !day.isSame(today, 'day') &&
+        !day.isBefore(today, 'day') &&
+        this.renderTodayButton()
      }
       <Button onClick={this.changeDay.bind(this, 1)}>↦</Button>
     </Flex>

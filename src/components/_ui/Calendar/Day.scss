@@ -46,7 +46,7 @@
     opacity: 0.4;
   }
 
-  &__task, &__event {
+  &__task, &__event, &__habit {
     margin: 6px 6px -3px 0;
     line-height: 1.2em;
     padding: 0;
@@ -65,6 +65,18 @@
   }
 
   &__event {
-    color: $gray_medium;
+    color: $gray-dark;
+  }
+
+  &__habit {
+    color: $gray-medium;
+
+    &--missed {
+      color: $accent-2;
+    }
+
+    &--done {
+      color: $accent-3;
+    }
   }
 }

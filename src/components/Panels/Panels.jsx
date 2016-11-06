@@ -18,6 +18,7 @@ const initPanelRatio = 0.76
 const panelsMap = {
   tasks: Tasks,
   habits: Tasks,
+  bucketlist: Tasks,
   calendar: Calendar,
   day: DayView
 }

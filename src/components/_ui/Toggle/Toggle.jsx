@@ -9,7 +9,7 @@ class Toggle extends Component {
     value: PropTypes.string,
     options: PropTypes.array,
     onChange: PropTypes.func
-  }  
+  }
 
   static defaultProps = {
   }
@@ -30,8 +30,8 @@ class Toggle extends Component {
     )
   }
 
-  onChange(option) {
-    this.props.onChange(option.value)
+  onChange = (option, e) => {
+    this.props.onChange(option.value, e)
   }
 
   render() {
@@ -40,7 +40,8 @@ class Toggle extends Component {
     return (
       <div {...this.props} className={this.getClassName()}>
         {options.map((option, idx) =>
-          (<Button className={this.getOptionClassName(option.value)}
+          (<Button type="button"
+                   className={this.getOptionClassName(option.value)}
                    onClick={this.onChange.bind(this, option)}
           >
             {option.label}

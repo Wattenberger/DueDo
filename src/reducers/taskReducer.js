@@ -1,23 +1,35 @@
 import Immutable from "immutable"
+import moment from "moment"
+import {airtableDateFormat} from "api/airtableAPI"
 
 const initialState = Immutable.Map({
   list: Immutable.List(),
+  tasks: Immutable.List(),
   habits: Immutable.List(),
+  bucketlist: Immutable.List(),
   tags: Immutable.List(),
   contexts: Immutable.List(),
   filters: Immutable.Map({
-    // Done: false
+    Type: "task",
+    Done: false,
   }),
   formId: null,
-  form: Immutable.Map()
+  form: Immutable.Map({
+    Type: "task",
+  })
 })
 
 function tasks(state = initialState, action) {
   switch (action.type) {
     case "REPLACE_TASKS":
-      return state.set('list', action.tasks)
-    case "REPLACE_HABITS":
-      return state.set('habits', action.tags)
+      let tasks = action.tasks.filter(task => !task.fields.Type)
+      let habits = action.tasks.filter(task => task.fields.Type == "habit")
+      let bucketlist = action.tasks.filter(task => task.fields.Type == "bucketlist")
+      return state
+        .set('list', action.tasks)
+        .set('tasks', tasks)
+        .set('habits', habits)
+        .set('bucketlist', bucketlist)
     case "REPLACE_TAGS":
       return state.set('tags', action.tags)
     case "REPLACE_CONTEXTS":

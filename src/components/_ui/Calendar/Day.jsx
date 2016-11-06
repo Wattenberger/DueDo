@@ -10,6 +10,7 @@ const weekends = ["Fr", "Sa", "Su"]
 
 @connect(state => ({
   tasks: state.tasks.get('list'),
+  habits: state.tasks.get('habits'),
   events: state.googleCalendar.get('events')
 }))
 class Day extends Component {
@@ -32,6 +33,17 @@ class Day extends Component {
   getTaskClassName(task) {
     return classNames("Day__task", {
       "Day__task--done": task.fields.Done
+    })
+  }
+
+  getHabitClassName(habit) {
+    let {day} = this.props
+    let date = moment(day).format(airtableDateFormat)
+
+    return classNames("Day__habit", {
+      "Day__habit--done": _.includes(habit.fields["Habit--Done"], date),
+      "Day__habit--missed": !_.includes(habit.fields["Habit--Done"], date) &&
+                            moment(day).isBefore(moment())
     })
   }
 
@@ -71,6 +83,15 @@ class Day extends Component {
       )
   }
 
+  renderHabits() {
+    let {day, habits} = this.props
+    let date = moment(day).format(airtableDateFormat)
+
+    return habits
+      .filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")))
+      .map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>{habit.fields.Title}</div>)
+  }
+
   renderEvents() {
     return this.getDaysEvents().map(event =>
       <div className="Day__event" key={event.id}>{event.summary}</div>
@@ -89,6 +110,7 @@ class Day extends Component {
         </div>
         {this.renderTasks()}
         {this.renderEvents()}
+        {this.renderHabits()}
       </div>
     )
   }

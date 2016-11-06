@@ -24,6 +24,19 @@
       color: $accent-4;
     }
   }
+  &--blocked {
+    &:before {
+      content: "■";
+      @include abs(11px, auto, auto, 7px);
+      font-size: 12px;
+      color: $accent-4;
+    }
+  }
+  &--done {
+    .Task__title {
+      text-decoration: line-through;
+    }
+  }
   &__text {
     display: flex;
     justify-content: space-between;

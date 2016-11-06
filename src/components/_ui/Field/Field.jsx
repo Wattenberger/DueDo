@@ -4,6 +4,7 @@ import classNames from "classnames"
 import _ from "lodash"
 import Flex from "components/_ui/Flex/Flex"
 import Select from "react-select"
+import Toggle from "components/_ui/Toggle/Toggle"
 import DateInput from "./DateInput/DateInput"
 
 require('./Field.scss')
@@ -18,7 +19,7 @@ class Field extends Component {
       PropTypes.object
     ]),
     options: PropTypes.array,
-    type: PropTypes.oneOf(["text", "number", "date", "checkbox", "textarea", "select"]),
+    type: PropTypes.oneOf(["text", "number", "date", "checkbox", "textarea", "select", "toggle"]),
     fieldOptions: PropTypes.object,
     autoFocus: PropTypes.bool,
     onChange: PropTypes.func
@@ -46,8 +47,11 @@ class Field extends Component {
   }
 
   onChange = (e) => {
-    let newVal = e.target.value
     e.preventDefault()
+    let {type} = this.props
+    let newVal = e.target.value
+
+    if (type == "number") newVal = +newVal
     this.props.onChange(newVal)
   }
 
@@ -60,12 +64,17 @@ class Field extends Component {
     this.props.onChange(newVal)
   }
 
+  onToggleChange = (newVal, e) => {
+    this.props.onChange(newVal, e)
+  }
+
   renderInput = () => {
     let {value, type, autoFocus} = this.props
 
     if (type === "checkbox") return this.renderCheckbox()
     if (type === "textarea") return this.renderTextArea()
     if (type === "select") return this.renderSelect()
+    if (type === "toggle") return this.renderToggle()
     if (type === "date") return this.renderDateInput()
     return <input type={type} value={value} onChange={this.onChange} ref="input" />
   }
@@ -93,6 +102,17 @@ class Field extends Component {
       />
   }
 
+  renderToggle() {
+    let {value, options, fieldOptions} = this.props
+
+    return <Toggle
+        value={value}
+        options={options}
+        {...fieldOptions}
+        onChange={this.onToggleChange}
+      />
+  }
+
   renderDateInput() {
     let {value, fieldOptions, onChange} = this.props
 
@@ -108,7 +128,7 @@ class Field extends Component {
 
     return (
       <Flex className={this.getClassName()} direction="row">
-        <label className="Field__label">{label}</label>
+        {label && <label className="Field__label">{label}</label>}
         <div className="Field__input">
           {this.renderInput()}
         </div>

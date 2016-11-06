@@ -1,6 +1,6 @@
 @import "~styles/variables";
 
-.Toggle {
+.ButtonGroup {
   & > .Button {
     border-radius: 2px 0 0 2px;
 
@@ -15,10 +15,8 @@
     }
   }
 
-  &__option--selected {
+  .Button--active {
     background: $accent-4;
     color: $bgc;
-    cursor: default;
-    // pointer-events: none;
   }
 }

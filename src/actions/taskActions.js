@@ -13,7 +13,6 @@ export const dateFormat = {
  */
 
 let REPLACE_TASKS = 'REPLACE_TASKS'
-let REPLACE_HABITS = 'REPLACE_HABITS'
 let REPLACE_TAGS = 'REPLACE_TAGS'
 let REPLACE_CONTEXTS = 'REPLACE_CONTEXTS'
 
@@ -40,17 +39,12 @@ export async function clearTasks() {
   return { type: REPLACE_TASKS, tasks: [] }
 }
 
-export function getTasks() {
+export function getTasks(type) {
   return async (dispatch, getState) => {
     dispatch(clearTasks())
     let res = await(airtableAPI.fetchTasks())
     dispatch({ type: REPLACE_TASKS, tasks: res.records })
   }
-}
-
-export async function getHabits() {
-  let res = await(airtableAPI.fetchHabits())
-  return { type: REPLACE_HABITS, habits: res.records }
 }
 
 export async function getTags() {
@@ -95,10 +89,16 @@ export function deleteTask(taskId) {
   }
 }
 
-export function finishTask(taskId) {
+export function finishTask(task) {
   return async (dispatch, getState) => {
-    dispatch(updateTask(taskId, {Done: moment().format(dateFormat.airtable)}))
-    dispatch({ type: FINISH_TASK, taskId })
+    let today = moment().format(dateFormat.airtable)
+
+    if (task.fields.Type == "habit") {
+      dispatch(updateTask(task.id, {"Habit--Done": `${task.fields["Habit--Done"] + ',' || ""}${today}`}))
+    } else {
+      dispatch(updateTask(task.id, {Done: today}))
+      dispatch({ type: FINISH_TASK, taskId: task.id })
+    }
   }
 }
 
@@ -148,6 +148,14 @@ export function submitForm() {
     let contexts = getState().tasks.get('contexts')
     formFields.Tags = await parseOptions("Tags", formFields.Tags, tags)
     formFields.Contexts = await parseOptions("Contexts", formFields.Contexts, contexts)
+    if (formFields.Type == "habit") {
+      formFields["When"] = null
+    } else {
+      formFields["Interval--Times"] = null
+      formFields["Interval--Number"] = null
+      formFields["Interval--Unit"] = null
+    }
+
     if (formId) {
       dispatch(updateTask(formId, formFields))
     } else {
