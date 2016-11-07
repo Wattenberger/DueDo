@@ -3,6 +3,7 @@ import moment from "moment"
 import _ from "lodash"
 import {openModal, closeModal} from "actions/modalActions"
 
+const taskTableFields = ["Title", "Description", "Tags", "When", "Contexts", "Poms", "Blocked", "Important", "Done", "Type", "Habit--Done", "Habit--DOW"]
 export const dateFormat = {
   form: airtableDateFormat,
   airtable: airtableDateFormat
@@ -155,6 +156,9 @@ export function submitForm() {
       formFields["Interval--Number"] = null
       formFields["Interval--Unit"] = null
     }
+    Object.keys(formFields).forEach(key => {
+      if (!_.includes(taskTableFields, key)) delete formFields[key]
+    })
 
     if (formId) {
       dispatch(updateTask(formId, formFields))
