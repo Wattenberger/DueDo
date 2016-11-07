@@ -88,7 +88,8 @@ class Day extends Component {
     let date = moment(day).format(airtableDateFormat)
 
     return habits
-      .filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")))
+      .filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")) &&
+                       moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date)))
       .map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>{habit.fields.Title}</div>)
   }
 
