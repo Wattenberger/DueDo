@@ -19,11 +19,23 @@ const today = moment()
 @connect(state => ({
   day: moment(state.dayView.get('day').toJS()),
   tasks: state.tasks.get('list'),
+  habits: state.tasks.get('habits'),
   events: state.googleCalendar.get('events')
 }))
 class DayView extends Component {
   getClassName() {
     return classNames("DayView")
+  }
+
+  getHabitClassName(habit) {
+    let {day} = this.props
+    let date = moment(day).format(airtableDateFormat)
+
+    return classNames("Day__habit", {
+      "Day__habit--done": _.includes(habit.fields["Habit--Done"], date),
+      "Day__habit--missed": !_.includes(habit.fields["Habit--Done"], date) &&
+                            moment(day).isBefore(moment())
+    })
   }
 
   changeDay(diff) {
@@ -92,6 +104,20 @@ class DayView extends Component {
     </div>
   }
 
+  renderHabits() {
+    let {day, habits} = this.props
+    let date = moment(day).format(airtableDateFormat)
+    habits = habits.filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")) &&
+                                      moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date)))
+
+    return <div className="DayView__events">
+      {habits.map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>
+          {habit.fields.Title}
+        </div>
+      )}
+    </div>
+  }
+
   render() {
     let {day, tasks} = this.props
 
@@ -101,6 +127,7 @@ class DayView extends Component {
         {this.renderTitleControls()}
         {this.renderTasks()}
         {this.renderEvents()}
+        {this.renderHabits()}
       </div>
     )
   }

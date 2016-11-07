@@ -40,7 +40,8 @@ class Toggle extends Component {
     return (
       <div {...this.props} className={this.getClassName()}>
         {options.map((option, idx) =>
-          (<Button type="button"
+          (<Button key={idx}
+                   type="button"
                    className={this.getOptionClassName(option.value)}
                    onClick={this.onChange.bind(this, option)}
           >
