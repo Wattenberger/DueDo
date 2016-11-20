@@ -23,7 +23,7 @@
       font-size: 16px;
       line-height: 1em;
       color: $gray-dark;
-      border: 1px solid $gray-medium;
+      border: 1px solid $gray-light;
       &:focus, &:active {
         border-color: $accent-2;
         outline: $accent-2;
@@ -57,7 +57,7 @@
       height: auto;
       color: $accent-4;
       line-height: 2.3em;
-      border: 1px solid $gray-medium;
+      border: 1px solid $gray-light;
       border-radius: 0;
       box-shadow: none;
       cursor: pointer;

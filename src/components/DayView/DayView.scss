@@ -26,6 +26,10 @@
     margin: 7px 0 0 0;
     color: $gray_dark;
 
+    &__ongoing {
+      color: $accent-5;
+    }
+
     &__time {
       display: inline-block;
       width: 5em;

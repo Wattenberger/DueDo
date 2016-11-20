@@ -58,18 +58,24 @@
     animation: fadeInUp 0.3s;
 
     &--done {
-      &:before {
-        content: "✓ ";
-      }
+      text-decoration: line-through;
     }
   }
 
   &__event {
-    color: $gray-dark;
+    color: $accent-5;
+
+    &__ongoing {
+      &--middle-day {
+        width: 100%;
+        border-bottom: 1px solid;
+        margin: 0.6em 0;
+      }
+    }
   }
 
   &__habit {
-    color: $gray-medium;
+    color: $gray-light;
 
     &--missed {
       color: $accent-2;

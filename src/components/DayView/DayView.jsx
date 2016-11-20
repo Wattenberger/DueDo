@@ -20,7 +20,8 @@ const today = moment()
   day: moment(state.dayView.get('day').toJS()),
   tasks: state.tasks.get('list'),
   habits: state.tasks.get('habits'),
-  events: state.googleCalendar.get('events')
+  events: state.googleCalendar.get('events'),
+  ongoing: state.googleCalendar.get('ongoing'),
 }))
 class DayView extends Component {
   getClassName() {
@@ -56,6 +57,13 @@ class DayView extends Component {
   getDaysEvents() {
     let {day, events} = this.props
     return events.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
+  }
+
+  getOngoingEvents() {
+    let {day, ongoing} = this.props
+    return ongoing.filter(event => moment(event.start.date, "YYYY-MM-DD").add(-1, "day").isBefore(day, "day") &&
+                                   moment(event.end.date,   "YYYY-MM-DD").isAfter( day, "day")
+      )
   }
 
   renderTodayButton() {
@@ -104,11 +112,21 @@ class DayView extends Component {
     </div>
   }
 
+  renderOngoingEvents() {
+    return <div className="DayView__events DayView__events__ongoing">
+      {this.getOngoingEvents().map(event =>
+        <div className="DayView__event DayView__event__ongoing" key={event.id}>
+          {event.summary}
+        </div>
+      )}
+    </div>
+  }
+
   renderHabits() {
     let {day, habits} = this.props
     let date = moment(day).format(airtableDateFormat)
     habits = habits.filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")) &&
-                                      moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date)))
+                                      moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date).add("day", -1)))
 
     return <div className="DayView__events">
       {habits.map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>
@@ -125,8 +143,9 @@ class DayView extends Component {
       <div className={this.getClassName()}>
         <Keypress keys={this.keypresses} />
         {this.renderTitleControls()}
-        {this.renderTasks()}
         {this.renderEvents()}
+        {this.renderOngoingEvents()}
+        {this.renderTasks()}
         {this.renderHabits()}
       </div>
     )

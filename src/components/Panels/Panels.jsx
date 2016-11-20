@@ -34,13 +34,9 @@ class Panels extends Component {
     return classNames("Panels")
   }
 
-  componentDidMount = () => {
-    setTimeout(() => {
-      this.props.dispatch(auth())
-      setTimeout(() => {
-        this.props.dispatch(fetchEvents())
-      }, 3000)
-    }, 1000)
+  componentDidMount = async () => {
+    await(this.props.dispatch(auth()))
+    this.props.dispatch(fetchEvents())
   }
 
   renderPanel(side) {

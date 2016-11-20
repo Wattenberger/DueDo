@@ -35,10 +35,10 @@ class Toggle extends Component {
   }
 
   render() {
-    let {value, options} = this.props
+    let {value, options, onChange, ...rest} = this.props
 
     return (
-      <div {...this.props} className={this.getClassName()}>
+      <div {...rest} className={this.getClassName()}>
         {options.map((option, idx) =>
           (<Button key={idx}
                    type="button"

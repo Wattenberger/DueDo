@@ -2,9 +2,11 @@ $accent-1: #EEEEEE;
 $accent-2: #E39774;
 $accent-3: #326273;
 $accent-4: #5C9EAD;
+$accent-5: #E2B7C1;
 
 $gray: #e0e9ee;
-$gray-medium: #dadada;
+$gray-light: #dadada;
+$gray-medium: darken($gray, 16%);
 $gray-dark: #636C76;
 
 $tc: $accent-3;
