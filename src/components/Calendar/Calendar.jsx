@@ -10,6 +10,7 @@ import ScrollableContainer from "components/_ui/ScrollableContainer/ScrollableCo
 import Month from "components/_ui/Calendar/Month"
 import Day from "components/_ui/Calendar/Day"
 import DayTasks from "components/Calendar/DayTasks"
+import TaskDrop from "components/Tasks/TaskDrop/TaskDrop"
 import Modal from "components/_shared/Modal/Modal"
 import PanelTitle from "components/_shared/Panel/PanelTitle/PanelTitle"
 import DayView from "components/DayView/DayView"
@@ -77,9 +78,11 @@ class Calendar extends Component {
   }
 
   renderDay = (day) => {
-    return <Day day={day} onClick={this.onDayClick}>
-      <DayTasks day={day} />
-    </Day>
+    return <TaskDrop className="DayWrapper">
+      <Day day={day} onClick={this.onDayClick}>
+        <DayTasks day={day} />
+      </Day>
+    </TaskDrop>
   }
 
   render() {

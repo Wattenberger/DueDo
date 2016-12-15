@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
+import {DragSource} from "react-dnd"
 import moment from "moment"
+import {dragItemTypes} from "constants/ui"
 import Flex from "components/_ui/Flex/Flex"
 import Button from "components/_ui/Button/Button"
 import Tag from "components/_ui/Tag/Tag"
@@ -15,6 +17,19 @@ require('./Task.scss')
 const dateFormat = "MM/DD/YYYY"
 const today = moment().format(airtableDateFormat)
 
+const dragConfig = {
+  beginDrag(props) {
+    return {
+      task: props.task
+    }
+  }
+}
+
+
+@DragSource(dragItemTypes.TASK, dragConfig, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
 @connect(state => ({
   tags: state.tasks.get('tags'),
   contexts: state.tasks.get('contexts')
@@ -30,6 +45,9 @@ class Task extends Component {
   static propTypes = {
     task: PropTypes.object,
     dayContext: PropTypes.object,
+
+    isDragging: PropTypes.bool.isRequired,
+    connectDragSource: PropTypes.func.isRequired
   };
 
   getClassName() {
@@ -37,9 +55,9 @@ class Task extends Component {
     return classNames(
       "Task", {
         "Task--important": task.fields.Important,
+        "Task--scheduled": task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")),
         "Task--blocked":   task.fields.Blocked,
         "Task--done":      task.fields.Done,
-        "Task--scheduled": task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")),
       }, this.props.className
     )
   }
@@ -101,18 +119,19 @@ class Task extends Component {
   }
 
   render() {
-    let {task, contexts} = this.props
+    let {task, contexts, isDragging, connectDragSource} = this.props
     let {fields} = task
     let {expanded} = this.state
     const isBucketList = task.fields.Type == "bucketlist"
 
-    return (
+    return connectDragSource(
       <div className={this.getClassName()}>
         <Flex className="Task__overview" direction="row" onClick={this.toggleExpanded}>
           <div className="Task__text">
             <h6 className="Task__title">
               {isBucketList && <span className="Task__context-marker">ｼ</span>}
               {fields.Title}
+              {isDragging}
             </h6>
             <div className="Task__buttons">
                 <Button onClick={this.startPomodoro}>🍅</Button>
@@ -130,3 +149,4 @@ class Task extends Component {
 }
 
 export default Task
+// export default DragSource(ItemTypes.CARD, cardSource, collect)(Task);

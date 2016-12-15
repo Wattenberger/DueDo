@@ -1,6 +1,8 @@
 import React, {Component} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
+import {DragDropContext} from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import {changePanel} from 'actions/panelActions'
 import ResizableComponent from 'components/_ui/ResizableComponent/ResizableComponent';
 import Modal from "components/_shared/Modal/Modal"
@@ -26,6 +28,7 @@ const resizableComponentOptions = {
   minWidth: 150
 }
 
+@DragDropContext(HTML5Backend)
 @connect(state => ({
   panels: state.panels.toJS()
 }))

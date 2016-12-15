@@ -42,7 +42,7 @@ export async function clearTasks() {
 
 export function getTasks(type) {
   return async (dispatch, getState) => {
-    dispatch(clearTasks())
+    // dispatch(clearTasks())
     let res = await(airtableAPI.fetchTasks())
     dispatch({ type: REPLACE_TASKS, tasks: res.records })
   }

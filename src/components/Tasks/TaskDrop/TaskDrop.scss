@@ -1,0 +1,16 @@
+@import "~styles/variables";
+
+.TaskDrop {
+
+
+  &--is-over {
+    .Day {
+      border-color: $accent-5;
+      opacity: 1;
+
+      .Day__dow {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -32,7 +32,7 @@ class Week extends Component {
   renderDay = (day, idx) => {
     let {month, dayComponent} = this.props
     let Component = dayComponent
-    return React.cloneElement(Component(day), {month: month, key: idx})
+    return React.cloneElement(Component(day), {day: day, month: month, key: idx})
   }
 
   render() {

@@ -56,6 +56,7 @@ class DayTasks extends Component {
 
     return tasks
       .filter(task => task.fields && task.fields.When === date)
+      .sort(task => task.fields.Blocked)
       .map(task =>
         <div className={this.getTaskClassName(task)} key={task.id}>{task.fields.Title}</div>
       )

@@ -39,6 +39,10 @@ class Tasks extends Component {
     let {tasks, filters} = this.props
 
     return tasks
+      .sort(task => task.fields.Blocked ? 2 :
+                    task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")) ? 1 :
+                    0
+           )
       .filter(task => {
         let valid = true
         Object.keys(filters).forEach(key => {
