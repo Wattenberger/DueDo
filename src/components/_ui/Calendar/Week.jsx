@@ -7,6 +7,7 @@ import Flex from "components/_ui/Flex/Flex"
 class Week extends Component {
   static propTypes = {
     start: PropTypes.object,
+    month: PropTypes.object,
     dayComponent: PropTypes.func
   };
 
@@ -29,8 +30,9 @@ class Week extends Component {
   }
 
   renderDay = (day, idx) => {
-    let Component = this.props.dayComponent
-    return React.cloneElement(Component(), {day: day, key: idx})
+    let {month, dayComponent} = this.props
+    let Component = dayComponent
+    return React.cloneElement(Component(day), {month: month, key: idx})
   }
 
   render() {

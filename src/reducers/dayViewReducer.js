@@ -2,7 +2,7 @@ import moment from "moment"
 import Immutable from "immutable"
 
 const initialState = Immutable.Map({
-  day: Immutable.Map(moment())
+  day: Immutable.Map()
 })
 
 function dayView(state = initialState, action) {

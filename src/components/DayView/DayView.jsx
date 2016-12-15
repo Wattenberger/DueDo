@@ -32,9 +32,9 @@ class DayView extends Component {
     let {day} = this.props
     let date = moment(day).format(airtableDateFormat)
 
-    return classNames("Day__habit", {
-      "Day__habit--done": _.includes(habit.fields["Habit--Done"], date),
-      "Day__habit--missed": !_.includes(habit.fields["Habit--Done"], date) &&
+    return classNames("DayView__habit", {
+      "DayView__habit--done": _.includes(habit.fields["Habit--Done"], date),
+      "DayView__habit--missed": !_.includes(habit.fields["Habit--Done"], date) &&
                             moment(day).isBefore(moment())
     })
   }
@@ -97,7 +97,7 @@ class DayView extends Component {
     return tasks
       .filter(task => task.fields && task.fields.When === date)
       .map(task =>
-        <Task task={task} key={task.id} />
+        <Task task={task} dayContext={day} key={task.id} />
       )
   }
 
@@ -129,9 +129,8 @@ class DayView extends Component {
                                       moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date).add("day", -1)))
 
     return <div className="DayView__events">
-      {habits.map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>
-          {habit.fields.Title}
-        </div>
+      {habits.map(habit =>
+        <Task className={this.getHabitClassName(habit)} task={habit} dayContext={day} key={habit.id} />
       )}
     </div>
   }

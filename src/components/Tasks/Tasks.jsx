@@ -11,7 +11,7 @@ import Task from "./Task/Task"
 import TasksFilters from "./TasksFilters/TasksFilters"
 import Pomodoro from "components/Pomodoro/Pomodoro"
 
-import {addNewTask, getTasks, getTags, getContexts, changeFormField} from "actions/taskActions"
+import {addNewTask, getTasks, updateTasks, getTags, getContexts, changeFormField} from "actions/taskActions"
 import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Tasks.scss')
@@ -24,7 +24,9 @@ require('./Tasks.scss')
 }))
 class Tasks extends Component {
   componentWillMount() {
-    this.props.dispatch(getTasks())
+    this.props.dispatch(getTasks()).then(() => {
+      this.props.dispatch(updateTasks(this.props.tasks))
+    })
     this.props.dispatch(getTags())
     this.props.dispatch(getContexts())
   }
@@ -43,7 +45,7 @@ class Tasks extends Component {
           let filter = filters[key]
           if (_.isUndefined(filter)) return
           let field = task.fields[key]
-          
+
           if (
               (_.isArray(filter) && !_.intersection(filter, field).length) ||
               (_.isBoolean(filter) && !!field != filter) ||

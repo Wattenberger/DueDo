@@ -38,4 +38,13 @@
       color: $accent-2;
     }
   }
+
+  &__habit {
+    color: $accent-2;
+
+    &--done {
+      color: $gray_dark;
+      text-decoration: line-through;
+    }
+  }
 }

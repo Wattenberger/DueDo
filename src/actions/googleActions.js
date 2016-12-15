@@ -1,4 +1,5 @@
 import _ from "lodash"
+import moment from "moment"
 import {GOOGLE_API_KEY as API_KEY} from "config/config"
 import {GOOGLE_CLIENT_ID as CLIENT_ID} from "config/config"
 
@@ -20,17 +21,6 @@ let REPLACE_AUTH = 'REPLACE_AUTH'
 /*
 * action creators
 */
-
-// var checkAuth = () => {
-//   if (!gapi.auth) {
-//     setTimeout(checkAuth, 400)
-//     return
-//   }
-//   gapi.auth.authorize({client_id: CLIENT_ID, scope: SCOPES, immediate: true});
-//   gapi.client.setApiKey(API_KEY);
-// }
-//
-// checkAuth()
 
 var loadCalendarApi = () => {
   return new Promise(function(resolve, reject) {
@@ -55,16 +45,17 @@ export async function fetchEvents() {
     await loadCalendarApi()
   }
 
-  var request = gapi.client.calendar.events.list({
+  let request = gapi.client.calendar.events.list({
     'calendarId': 'primary',
-    'timeMin': (new Date()).toISOString(),
+    'timeMax': moment().add(3, "month").format(),
+    'timeMin': moment().add(-3, "month").format(),
     'showDeleted': false,
     'singleEvents': true,
-    'maxResults': 10,
+    'maxResults': 100,
     'orderBy': 'startTime'
   })
 
-  var events = await(executeRequest(request))
+  let events = await(executeRequest(request))
   return { type: POPULATE_CALENDAR_EVENTS, events }
 }
 

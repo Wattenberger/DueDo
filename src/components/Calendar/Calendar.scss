@@ -2,4 +2,18 @@
 
 .Calendar {
   height: 100vh;
+
+  .Calendar__Panel-controls {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    &__current-month {
+      margin: 0 15px;
+    }
+
+    .Button {
+      margin: 0 5px;
+    }
+  }
 }

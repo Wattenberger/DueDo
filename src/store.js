@@ -13,6 +13,7 @@ import {default as photo} from "reducers/taskReducer"
 import {default as tasks} from "reducers/taskReducer"
 import {default as pomodoro} from "reducers/pomodoroReducer"
 import {default as googleCalendar} from "reducers/googleCalendarReducer"
+import {default as calendar} from "reducers/calendarReducer"
 
 const loggerMiddleware = logger({
   stateTransformer: state => mapValues(state, val => val && typeof val.toJS === "function"
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   tasks,
   pomodoro,
   googleCalendar,
+  calendar,
 })
 
 // create a Redux instance using the dispatcher function

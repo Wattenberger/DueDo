@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
+import _ from "lodash"
 import {connect} from "react-redux"
 import ReactModal from "react-modal"
 
@@ -13,8 +14,13 @@ require('./Modal.scss')
 class Modal extends Component {
   static propTypes = {
     component: PropTypes.func,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onClose: PropTypes.func,
   };
+
+  static defaultProps = {
+    onClose: _.noOp
+  }
 
   getClassName() {
     return classNames(
@@ -37,6 +43,7 @@ class Modal extends Component {
 
   onClose = () => {
     this.props.dispatch(closeModal())
+    this.props.onClose()
   }
 
   render() {

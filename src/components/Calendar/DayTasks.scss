@@ -1,0 +1,43 @@
+@import "~styles/variables";
+
+.DayTasks {
+    &__task, &__event, &__habit {
+      margin: 6px 6px -3px 0;
+      line-height: 1.2em;
+      padding: 0;
+      color: $accent-4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: opacity $transition-fast;
+      animation: fadeInUp 0.3s;
+
+      &--done {
+        text-decoration: line-through;
+      }
+    }
+
+    &__event {
+      color: $accent-5;
+
+      &__ongoing {
+        &--middle-day {
+          width: 100%;
+          border-bottom: 1px solid;
+          margin: 0.6em 0;
+        }
+      }
+    }
+
+    &__habit {
+      color: $gray-light;
+
+      &--missed {
+        color: $accent-2;
+      }
+
+      &--done {
+        color: $accent-3;
+      }
+    }
+}

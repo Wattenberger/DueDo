@@ -48,6 +48,16 @@ export function getTasks(type) {
   }
 }
 
+export function updateTasks(tasks) {
+  return async (dispatch, getState) => {
+    let today = moment()
+    tasks.forEach(task => {
+      let inPast = !!task.fields.When && moment(task.fields.When, airtableDateFormat).add(1, "day").isBefore(today)
+      if (inPast && !task.fields.Done) dispatch(updateTask(task.id, {When: null}))
+    })
+  }
+}
+
 export async function getTags() {
   let res = await(airtableAPI.fetchTags())
   var tags = {}
@@ -90,14 +100,14 @@ export function deleteTask(taskId) {
   }
 }
 
-export function finishTask(task) {
+export function finishTask(task, dayContext) {
   return async (dispatch, getState) => {
-    let today = moment().format(dateFormat.airtable)
+    let day = (dayContext || moment()).format(dateFormat.airtable)
 
     if (task.fields.Type == "habit") {
-      dispatch(updateTask(task.id, {"Habit--Done": `${task.fields["Habit--Done"] + ',' || ""}${today}`}))
+      dispatch(updateTask(task.id, {"Habit--Done": `${task.fields["Habit--Done"] + ',' || ""}${day}`}))
     } else {
-      dispatch(updateTask(task.id, {Done: today}))
+      dispatch(updateTask(task.id, {Done: day}))
       dispatch({ type: FINISH_TASK, taskId: task.id })
     }
   }

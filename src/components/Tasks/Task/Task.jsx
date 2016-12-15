@@ -28,7 +28,8 @@ class Task extends Component {
   }
 
   static propTypes = {
-    task: PropTypes.object
+    task: PropTypes.object,
+    dayContext: PropTypes.object,
   };
 
   getClassName() {
@@ -37,7 +38,8 @@ class Task extends Component {
       "Task", {
         "Task--important": task.fields.Important,
         "Task--blocked":   task.fields.Blocked,
-        "Task--done":      task.fields.Done
+        "Task--done":      task.fields.Done,
+        "Task--scheduled": task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")),
       }, this.props.className
     )
   }
@@ -72,8 +74,9 @@ class Task extends Component {
   }
 
   finishTask = () => {
-    let {dispatch, task} = this.props
-    dispatch(finishTask(task))
+    let {dispatch, task, dayContext} = this.props
+
+    dispatch(finishTask(task, dayContext))
   }
 
   moveTaskToToday = () => {
