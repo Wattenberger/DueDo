@@ -12,7 +12,6 @@ class Week extends Component {
   };
 
   static defaultProps = {
-    date: moment()
   }
 
   getClassName() {
@@ -32,6 +31,7 @@ class Week extends Component {
   renderDay = (day, idx) => {
     let {month, dayComponent} = this.props
     let Component = dayComponent
+
     return React.cloneElement(Component(day), {day: day, month: month, key: idx})
   }
 

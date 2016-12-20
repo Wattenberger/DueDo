@@ -20,25 +20,28 @@
   &--important {
     &:before {
       content: "★";
-      @include abs(17px, auto, auto, -6px);
-      font-size: 12px;
-      color: $accent-4;
+      @include abs(19px, auto, auto, -6px);
+      font-size: 10px;
+      // color: $accent-1;
+      opacity: 0.6;
     }
   }
   &--blocked {
     &:before {
       content: "■";
-      @include abs(11px, auto, auto, 7px);
-      font-size: 12px;
-      color: $accent-4;
+      @include abs(13px, auto, auto, 7px);
+      font-size: 10px;
+      // color: $accent-1;
+      opacity: 0.6;
     }
   }
   &--scheduled {
     &:before {
       content: "🕑";
-      @include abs(10.25px, auto, auto, 6px);
-      font-size: 12px;
-      color: $accent-4;
+      @include abs(13.25px, auto, auto, 6px);
+      font-size: 10px;
+      // color: $accent-1;
+      opacity: 0.6;
     }
   }
   &--done {

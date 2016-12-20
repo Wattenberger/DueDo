@@ -21,4 +21,19 @@
     flex: 1 0 10px;
     overflow: hidden;
   }
+
+  &--weekly {
+    .Day {
+      min-height: 300px;
+      height: 50vh;
+
+      &--another-month {
+        opacity: 1;
+      }
+      
+      &--weekend {
+        opacity: 0.6;
+      }
+    }
+  }
 }

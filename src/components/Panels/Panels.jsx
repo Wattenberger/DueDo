@@ -39,6 +39,11 @@ class Panels extends Component {
 
   componentDidMount = async () => {
     await(this.props.dispatch(auth()))
+    this.retrieveEvents()
+    setTimeout(this.retrieveEvents, 1000 * 60 * 5)
+  }
+
+  retrieveEvents = () => {
     this.props.dispatch(fetchEvents())
   }
 
