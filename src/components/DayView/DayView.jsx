@@ -89,7 +89,7 @@ class DayView extends Component {
 
     return <div className="DayView__events DayView__events__ongoing">
       {getDayItems("ongoing", ongoing, day).map(event =>
-        <div className={getDayItemClassNames("event", event, day, "DayView__event")} key={event.id}>
+        <div className={getDayItemClassNames("ongoing", event, day, "DayView__event")} key={event.id}>
           {event.summary}
         </div>
       )}
@@ -98,10 +98,10 @@ class DayView extends Component {
 
   renderHabits() {
     let {day, habits} = this.props
-
+    
     return <div className="DayView__events">
       {getDayItems("habits", habits, day).map(habit =>
-        <Task className={getDayItemClassNames("habits", habits, day, "DayView__habit")}
+        <Task className={getDayItemClassNames("habit", habit, day, "DayView__habit")}
               task={habit}
               dayContext={day}
               key={habit.id}

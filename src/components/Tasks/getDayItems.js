@@ -34,7 +34,7 @@ export const getDayItemClassNames = (type, item, day, base) => {
         if (!_.has(item, "fields")) break
         classes[`${base}--done`] = _.includes(item.fields["Habit--Done"], date),
         classes[`${base}--missed`] = !_.includes(item.fields["Habit--Done"], date) &&
-                                moment(day).isBefore(moment())
+                                     moment(day).isBefore(moment())
       case "ongoing":
         if (!_.has(item, "start.date")) break
         let isMiddleDate = moment(item.start.date, airtableDateFormat).isBefore(day, "day") &&

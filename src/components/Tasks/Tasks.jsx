@@ -32,7 +32,8 @@ class Tasks extends Component {
   }
 
   getClassName() {
-    return classNames("Tasks")
+    let {className} = this.props
+    return classNames(className, "Tasks")
   }
 
   getFilteredTasks() {

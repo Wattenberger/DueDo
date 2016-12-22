@@ -51,14 +51,14 @@ class Task extends Component {
   };
 
   getClassName() {
-    let {task} = this.props
+    let {className, task} = this.props
     return classNames(
       "Task", {
         "Task--important": task.fields.Important,
         "Task--scheduled": task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")),
         "Task--blocked":   task.fields.Blocked,
         "Task--done":      task.fields.Done,
-      }, this.props.className
+      }, className
     )
   }
 
