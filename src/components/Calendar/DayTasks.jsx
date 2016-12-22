@@ -4,6 +4,7 @@ import {connect} from "react-redux"
 import _ from "lodash"
 import moment from "moment"
 import {airtableDateFormat} from "api/airtableAPI"
+import {getDayItems, getDayItemClassNames} from "components/Tasks/getDayItems"
 
 require('./DayTasks.scss')
 const weekends = ["Fr", "Sa", "Su"]
@@ -23,84 +24,49 @@ class DayTasks extends Component {
     return classNames("DayTasks", this.props.className)
   }
 
-  getTaskClassName(task) {
-    return classNames("DayTasks__task", {
-      "DayTasks__task--done": task.fields.Done
-    })
-  }
-
-  getHabitClassName(habit) {
-    let {day} = this.props
-    let date = moment(day).format(airtableDateFormat)
-
-    return classNames("DayTasks__habit", {
-      "DayTasks__habit--done": _.includes(habit.fields["Habit--Done"], date),
-      "DayTasks__habit--missed": !_.includes(habit.fields["Habit--Done"], date) &&
-                            moment(day).isBefore(moment())
-    })
-  }
-
   isSameMonth() {
     let {day} = this.props
     return moment().isSame(day, 'month')
   }
 
-  getDaysEvents() {
-    let {day, events} = this.props
-    return events.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
-  }
-
   renderTasks() {
     let {day, tasks} = this.props
-    let date = moment(day).format(airtableDateFormat)
 
-    return tasks
-      .filter(task => task.fields && task.fields.When === date)
-      .sort(task => task.fields.Blocked)
-      .map(task =>
-        <div className={this.getTaskClassName(task)} key={task.id}>{task.fields.Title}</div>
+    return getDayItems("tasks", tasks, day).map(task =>
+        <div className={getDayItemClassNames("task", task, day, "DayTasks__task")} key={task.id}>
+          {task.fields.Title}
+        </div>
       )
   }
 
   renderHabits() {
     let {day, habits} = this.props
-    let date = moment(day).format(airtableDateFormat)
 
-    return habits
-      .filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")) &&
-                       moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date).add(-1, "day")))
-      .map(habit => <div className={this.getHabitClassName(habit)} key={habit.id}>{habit.fields.Title}</div>)
-  }
-
-  renderEvents() {
-    return this.getDaysEvents().map(event =>
-      <div className="DayTasks__event" key={event.id}>{event.summary}</div>
+    return getDayItems("habits", habits, day).map(habit =>
+      <div className={getDayItemClassNames("habit", habit, day, "DayTasks__habit")} key={habit.id}>
+        {habit.fields.Title}
+      </div>
     )
   }
 
-  getOngoingEventClassName(isMiddleDate) {
-    return classNames(
-      "DayTasks__event",
-      "DayTasks__event__ongoing", {
-      "DayTasks__event__ongoing--middle-day": isMiddleDate,
-    })
-  }
+  renderEvents() {
+    let {day, events} = this.props
 
-  getOngoingEvents() {
-    let {day, ongoing} = this.props
-    return ongoing.filter(event => moment(event.start.date, "YYYY-MM-DD").add(-1, "day").isBefore(day, "day") &&
-                                   moment(event.end.date,   "YYYY-MM-DD").isAfter( day, "day")
-      )
+    return getDayItems("events", events, day).map(event =>
+      <div className={getDayItemClassNames("event", event, day, "DayTasks__event")} key={event.id}>
+        {event.summary}
+      </div>
+    )
   }
 
   renderOngoingEvents() {
-    let {day} = this.props
+    let {day, ongoing} = this.props
 
-    return this.getOngoingEvents().map(event => {
-      let isMiddleDate = moment(event.start.date, "YYYY-MM-DD").isBefore(day, "day") &&
-                         +day.format("e")
-
-      return <div className={this.getOngoingEventClassName(isMiddleDate)} key={event.id}>{!isMiddleDate && event.summary}</div>
+    return getDayItems("ongoing", ongoing, day).map(event => {
+      const classnames = getDayItemClassNames("ongoing", event, day, "DayTasks__event")
+      return <div className={classnames} key={event.id}>
+        {!_.includes(classnames, "DayTasks__event__ongoing--middle-day") && event.summary}
+      </div>
     })
   }
 

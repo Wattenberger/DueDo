@@ -21,7 +21,7 @@
     &:before {
       content: "★";
       @include abs(19px, auto, auto, -6px);
-      font-size: 10px;
+      font-size: 7px;
       // color: $accent-1;
       opacity: 0.6;
     }
@@ -29,7 +29,7 @@
   &--blocked {
     &:before {
       content: "■";
-      @include abs(13px, auto, auto, 7px);
+      @include abs(10px, auto, auto, 7px);
       font-size: 10px;
       // color: $accent-1;
       opacity: 0.6;
@@ -38,7 +38,7 @@
   &--scheduled {
     &:before {
       content: "🕑";
-      @include abs(13.25px, auto, auto, 6px);
+      @include abs(10.25px, auto, auto, 6px);
       font-size: 10px;
       // color: $accent-1;
       opacity: 0.6;
