@@ -50,11 +50,15 @@ class Calendar extends Component {
     [KEYS.RIGHT]: this.incrementInterval.bind(this, 1),
     [KEYS.UP]:  this.incrementInterval.bind(this, -1),
     [KEYS.DOWN]: this.incrementInterval.bind(this, 1),
+    [KEYS.ENTER]: this.onDayClick.bind(this, moment()),
     [KEYS.m]: this.setView.bind(this, "month"),
     [KEYS.w]: this.setView.bind(this, "week"),
   }
 
-  onDayClick = (date, e) => {
+  onDayClick(date, e) {
+    let {day} = this.props
+    if (day.get("_isValid")) return
+
     this.props.dispatch(changeDay(date))
     this.props.dispatch(openModal("dayView"))
   }
@@ -132,7 +136,7 @@ class Calendar extends Component {
 
   renderDay = (day) => {
     return <TaskDrop className="DayWrapper">
-      <Day day={day} onClick={this.onDayClick}>
+      <Day day={day} onClick={this.onDayClick.bind(this)}>
         <DayTasks day={day} />
       </Day>
     </TaskDrop>

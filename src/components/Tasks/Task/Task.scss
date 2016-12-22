@@ -38,7 +38,7 @@
   &--scheduled {
     &:before {
       content: "🕑";
-      @include abs(10.25px, auto, auto, 6px);
+      @include abs(11.25px, auto, auto, 6px);
       font-size: 10px;
       // color: $accent-1;
       opacity: 0.6;
