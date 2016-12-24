@@ -155,7 +155,7 @@ class Calendar extends Component {
           side="left"
           controls={this.renderPanelControls()}
         />
-        <ScrollableContainer className="Tasks__ScrollableContainer">
+        <ScrollableContainer className="Calendar__ScrollableContainer">
           {view == 'month' && this.renderMonth()}
           {view == 'week' && this.renderWeek()}
       </ScrollableContainer>
