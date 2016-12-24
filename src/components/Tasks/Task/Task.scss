@@ -5,11 +5,11 @@
   position: relative;
   cursor: pointer;
   background: #fff;
-  margin: 6px 0;
-  padding: 3px 6px;
-  border: 1px solid #f4f4f4;
-  overflow: hidden;
+  margin: 6px;
+  padding: 6px 6px;
   color: $accent-4;
+  border: 1px solid #f4f4f4;
+  // overflow: hidden;
 
   &:hover {
     background: #fff;
@@ -20,7 +20,7 @@
   &--important {
     &:before {
       content: "★";
-      @include abs(19px, auto, auto, -6px);
+      @include abs(16px, auto, auto, -6px);
       font-size: 7px;
       // color: $accent-1;
       opacity: 0.6;
@@ -29,7 +29,7 @@
   &--blocked {
     &:before {
       content: "■";
-      @include abs(10px, auto, auto, 7px);
+      @include abs(5.5px, auto, auto, 7px);
       font-size: 10px;
       // color: $accent-1;
       opacity: 0.6;
@@ -38,7 +38,7 @@
   &--scheduled {
     &:before {
       content: "🕑";
-      @include abs(11.25px, auto, auto, 6px);
+      @include abs(7.25px, auto, auto, 6px);
       font-size: 10px;
       // color: $accent-1;
       opacity: 0.6;
@@ -56,9 +56,25 @@
     flex: 1;
   }
   &__buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 4px 2px;
+    background: $bgc;
     display: flex;
+    flex-direction: column;
+    width: 170px;
     opacity: 0;
     transition: opacity $transition-fast;
+    z-index: 2;
+    &__button {
+      width: 100%;
+      margin: 0 0 2px;
+      text-align: left;
+      & + .Task__buttons__button {
+        margin: 0 0 2px;
+      }
+    }
   }
   &__title, &__context {
     margin: 0;

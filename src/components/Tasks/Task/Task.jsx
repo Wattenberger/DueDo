@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react"
+import _ from "lodash"
 import classNames from "classnames"
 import {connect} from "react-redux"
 import {DragSource} from "react-dnd"
@@ -71,9 +72,10 @@ class Task extends Component {
       })
   }
 
-  toggleExpanded = () => {
+  toggleExpanded = (newState) => {
     let {expanded} = this.state
-    this.setState({expanded: !expanded})
+    newState = _.isBoolean(newState) ? newState : !expanded
+    this.setState({expanded: newState})
   }
 
   startPomodoro = () => {
@@ -102,6 +104,20 @@ class Task extends Component {
     dispatch(updateTask(task.id, {When: today}))
   }
 
+  renderButtons() {
+    let {fields} = this.props.task
+
+    const buttons = [
+      {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: true},
+      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: fields.When != today},
+      {icon: "🗑", label: "Delete", onClick: this.deleteTask, exists: true},
+      {icon: "✓", label: "Finish", onClick: this.finishTask, exists: true},
+    ]
+    return <div className="Task__buttons">
+      {buttons.map(button => button.exists && <Button className="Task__buttons__button" onClick={button.onClick}>{button.icon} {button.label}</Button>)}
+    </div>
+  }
+
   renderDetails() {
     let {fields} = this.props.task
     return <div className={this.getDetailsClassName()}>
@@ -125,24 +141,21 @@ class Task extends Component {
     const isBucketList = task.fields.Type == "bucketlist"
 
     return connectDragSource(
-      <div className={this.getClassName()}>
-        <Flex className="Task__overview" direction="row" onClick={this.toggleExpanded}>
+      <div className={this.getClassName()}
+           onClick={this.editTask}
+           onMouseEnter={this.toggleExpanded.bind(true)}
+           onMouseLeave={this.toggleExpanded.bind(false)}>
+        <Flex className="Task__overview"
+              direction="row">
           <div className="Task__text">
             <h6 className="Task__title">
               {isBucketList && <span className="Task__context-marker">ｼ</span>}
               {fields.Title}
               {isDragging}
             </h6>
-            <div className="Task__buttons">
-                <Button onClick={this.startPomodoro}>🍅</Button>
-              {fields.When != today && <Button onClick={this.moveTaskToToday}>⏰</Button>}
-              <Button onClick={this.editTask}>🖉</Button>
-              <Button onClick={this.deleteTask}>🗑</Button>
-              <Button onClick={this.finishTask}>✓</Button>
-            </div>
           </div>
         </Flex>
-        {this.renderDetails()}
+        {this.renderButtons()}
       </div>
     )
   }
