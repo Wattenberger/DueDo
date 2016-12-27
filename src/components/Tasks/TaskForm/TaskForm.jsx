@@ -20,8 +20,17 @@ require('./TaskForm.scss')
 const typeOptions = [
   {value: "task", label: "task"},
   {value: "habit", label: "habit"},
-  {value: "bucketlist", label: "bucketlist"}
+  {value: "bucketlist", label: "bucketlist"},
+  {value: "goal", label: "goal"},
 ]
+const taskTypes = ["task", "habit", "bucketlist"]
+const goalIntervalOptions = [{value: "day"}, {value: "week"}, {value: "month"}, {value: "year"}]
+const intervalMap = {
+  day: "DDD",
+  week: "w",
+  month: "M",
+  year: "YYYY",
+}
 const daysOfTheWeek = [
   {value: 0, label: "Sunday"},
   {value: 1, label: "Monday"},
@@ -52,12 +61,14 @@ class TaskForm extends Component {
       {slug: "Type", type: "toggle", options: typeOptions},
       {render: this.renderIntervalFields, mustHaveType: "habit"},
       {slug: "Title"},
-      {slug: "Description", type: "textarea"},
-      {slug: "Tags", type: "select", options: this.getOptions("tags"), fieldOptions: {multi: true, allowCreate: true}},
-      {slug: "Contexts", type: "select", options: this.getOptions("contexts"), fieldOptions: {multi: true, allowCreate: true}},
+      {slug: "Goal--Index", label: "Index", type: "number", fieldOptions: {positive: true}, mustHaveType: "goal"},
+      {slug: "Goal--Interval", label: "Interval", type: "toggle", options: goalIntervalOptions, mustHaveType: "goal"},
+      {slug: "Description", type: "textarea", mustHaveType: taskTypes},
+      {slug: "Tags", type: "select", options: this.getOptions("tags"), fieldOptions: {multi: true, allowCreate: true}, mustHaveType: taskTypes},
+      {slug: "Contexts", type: "select", options: this.getOptions("contexts"), fieldOptions: {multi: true, allowCreate: true}, mustHaveType: taskTypes},
       {slug: "When", type: "date", fieldOptions: {dateFormat: dateFormat.form}, mustHaveType: ["task", "bucketlist"]},
-      {slug: "Blocked", type: "checkbox"},
-      {slug: "Important", type: "checkbox"},
+      {slug: "Blocked", type: "checkbox", mustHaveType: taskTypes},
+      {slug: "Important", type: "checkbox", mustHaveType: taskTypes},
     ]
 
     if (form.Type) fields = fields.filter(field =>
@@ -75,8 +86,9 @@ class TaskForm extends Component {
     }))
   }
 
-  onChange = (field, newVal) => {
-    this.props.dispatch(changeFormField(field.slug, newVal))
+  onChange = async (field, newVal) => {
+    await this.props.dispatch(changeFormField(field.slug, newVal))
+    if (_.includes(["Type", "Goal--Index", "Goal--Interval"], field.slug)) this.updateGoalFields()
   }
 
   onDowToggle = (dow) => {
@@ -100,6 +112,16 @@ class TaskForm extends Component {
     let {dispatch} = this.props
     e.preventDefault()
     this.props.dispatch(submitForm())
+  }
+
+  updateGoalFields = async () => {
+    let {form} = this.props
+    const interval = form.Type == "goal" ?
+                     form["Goal--Interval"] || "week" :
+                     undefined
+                     console.log(form["Goal--Interval"])
+    await this.props.dispatch(changeFormField("Goal--Interval", interval))
+    this.props.dispatch(changeFormField("Goal--Index", form.Type == "goal" ? +moment().format(intervalMap[interval]) : undefined))
   }
 
   renderField = (field, idx) => {

@@ -48,10 +48,13 @@ class Field extends Component {
 
   onChange = (e) => {
     e.preventDefault()
-    let {type} = this.props
+    let {type, fieldOptions} = this.props
     let newVal = e.target.value
 
-    if (type == "number") newVal = +newVal
+    if (type == "number") {
+      newVal = +newVal
+      if (fieldOptions.positive && newVal < 0) newVal = 0
+    }
     this.props.onChange(newVal)
   }
 

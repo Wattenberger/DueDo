@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react"
 import classNames from "classnames"
+import _ from "lodash"
 import Button from "components/_ui/Button/Button"
 
 require('./Toggle.scss')
@@ -45,7 +46,7 @@ class Toggle extends Component {
                    className={this.getOptionClassName(option.value)}
                    onClick={this.onChange.bind(this, option)}
           >
-            {option.label}
+            {_.isUndefined(option.label) ? option.value : option.label}
           </Button>)
         )}
       </div>
