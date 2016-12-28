@@ -16,6 +16,7 @@
   }
   &:hover &__buttons {
     opacity: 1;
+    pointer-events: all;
   }
   &--important {
     &:before {
@@ -59,11 +60,12 @@
     position: absolute;
     top: 0;
     right: 0;
-    padding: 4px 4px 2px;
-    background: $bgc;
     display: flex;
     flex-direction: column;
     width: 170px;
+    padding: 4px 4px 2px;
+    background: $bgc;
+    pointer-events: none;
     opacity: 0;
     transition: opacity $transition-fast;
     z-index: 2;

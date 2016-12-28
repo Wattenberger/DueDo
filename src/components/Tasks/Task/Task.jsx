@@ -26,7 +26,6 @@ const dragConfig = {
   }
 }
 
-
 @DragSource(dragItemTypes.TASK, dragConfig, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
   isDragging: monitor.isDragging()
@@ -46,6 +45,7 @@ class Task extends Component {
   static propTypes = {
     task: PropTypes.object,
     dayContext: PropTypes.object,
+    habitInfo: PropTypes.object,
 
     isDragging: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired
@@ -75,6 +75,7 @@ class Task extends Component {
   toggleExpanded = (newState) => {
     let {expanded} = this.state
     newState = _.isBoolean(newState) ? newState : !expanded
+    console.log(newState)
     this.setState({expanded: newState})
   }
 
@@ -105,16 +106,23 @@ class Task extends Component {
   }
 
   renderButtons() {
-    let {fields} = this.props.task
+    let {task, habitInfo, dayContext} = this.props
+    let {fields} = task
+    const isDone = (habitInfo && habitInfo.done) || fields.Done
 
     const buttons = [
-      {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: true},
-      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: fields.When != today},
+      {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: !isDone},
+      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: !isDone && (fields.When != today && !(dayContext && dayContext.isSame(moment(), "day")))},
       {icon: "🗑", label: "Delete", onClick: this.deleteTask, exists: true},
-      {icon: "✓", label: "Finish", onClick: this.finishTask, exists: true},
+      {icon: "✓", label: fields.Type == "habit" ? "Done" : "Finish", onClick: this.finishTask, exists: !isDone},
     ]
     return <div className="Task__buttons">
-      {buttons.map(button => button.exists && <Button className="Task__buttons__button" onClick={button.onClick}>{button.icon} {button.label}</Button>)}
+      {buttons.map((button, idx) =>
+        button.exists &&
+          <Button className="Task__buttons__button" onClick={button.onClick} key={idx}>
+            {button.icon} {button.label}
+          </Button>
+      )}
     </div>
   }
 
@@ -142,11 +150,11 @@ class Task extends Component {
 
     return connectDragSource(
       <div className={this.getClassName()}
-           onClick={this.editTask}
            onMouseEnter={this.toggleExpanded.bind(true)}
            onMouseLeave={this.toggleExpanded.bind(false)}>
         <Flex className="Task__overview"
-              direction="row">
+              direction="row"
+              onClick={this.editTask}>
           <div className="Task__text">
             <h6 className="Task__title">
               {isBucketList && <span className="Task__context-marker">ｼ</span>}

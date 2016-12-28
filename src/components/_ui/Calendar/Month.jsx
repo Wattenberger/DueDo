@@ -7,7 +7,7 @@ import Week from "./Week"
 
 class Month extends Component {
   static propTypes = {
-    month: PropTypes.object,
+    month: PropTypes.string,
     dayComponent: PropTypes.func
   };
 

@@ -98,12 +98,13 @@ class DayView extends Component {
 
   renderHabits() {
     let {day, habits} = this.props
-    
+
     return <div className="DayView__events">
       {getDayItems("habits", habits, day).map(habit =>
         <Task className={getDayItemClassNames("habit", habit, day, "DayView__habit")}
               task={habit}
               dayContext={day}
+              habitInfo={{done: _.includes(habit.fields["Habit--Done"], moment(day).format(airtableDateFormat))}}
               key={habit.id}
         />
       )}
