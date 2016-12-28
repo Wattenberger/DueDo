@@ -14,7 +14,7 @@ export const getDayItems = (type, list, day) => {
       return list.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
     case "habits":
       return list.filter(habit => _.includes(habit.fields["Habit--DOW"], moment(date).format("e")) &&
-                                  moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date).add(-1, "day")))
+                                  moment(habit.createdTime, moment.ISO_8601).isBefore(moment(date).add(1, "day"), "day"))
     case "ongoing":
       return list.filter(event => moment(event.start.date, "YYYY-MM-DD").add(-1, "day").isBefore(day, "day") &&
                                   moment(event.end.date,   "YYYY-MM-DD").isAfter( day, "day"))
