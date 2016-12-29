@@ -62,7 +62,7 @@ class DateInput extends Component {
   }
 
   validateDate(str, format, possDate) {
-    if (attempt == 1 && possDate.isBefore(moment())) {
+    if (possDate.isBefore(moment())) {
       if (!format.includes("Y")) {
         possDate.add(1, "year")
       } else if (!format.includes("M")) {
