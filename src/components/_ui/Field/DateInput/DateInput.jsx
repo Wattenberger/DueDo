@@ -6,15 +6,16 @@ import days from "./daysOfTheWeek"
 import strings from "./dayStrings"
 
 const possibleFormats = [
-  "YYYY-MM-DD",
+  "M/D",
   "MMM DD",
   "MM DD",
   "MM/DD",
-  "MM/DD/YYYY",
-  "MM/DD/YY",
   "DD",
   "MMMM DD",
   "Do",
+  "YYYY-MM-DD",
+  "MM/DD/YYYY",
+  "MM/DD/YY",
   "YYYY/MM/DD",
   "YYYY-MM-D"
 ]
@@ -60,6 +61,20 @@ class DateInput extends Component {
     return moment().add(diff[0], diff[1] || 'd').format(dateFormat)
   }
 
+  validateDate(str, format, possDate) {
+    if (attempt == 1 && possDate.isBefore(moment())) {
+      if (!format.includes("Y")) {
+        possDate.add(1, "year")
+      } else if (!format.includes("M")) {
+        possDate.add(1, "M")
+      } else {
+        return possDate
+      }
+      return this.validateDate(str, format, possDate)
+    }
+    return possDate
+  }
+
   getDayfromDate(str) {
     let {dateFormat} = this.props
     let date = null
@@ -67,7 +82,11 @@ class DateInput extends Component {
     possibleFormats.forEach(format => {
       if (date) return
       let possDate = moment(str, format)
-      if (possDate.isValid()) date = possDate.format(dateFormat)
+      if (possDate.isValid()) console.log(str, format)
+      if (possDate.isValid()) {
+        possDate = this.validateDate(str, format, possDate)
+        date = possDate.format(dateFormat)
+      }
     })
     return date || moment().format(dateFormat)
   }
