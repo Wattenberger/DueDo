@@ -143,14 +143,13 @@ export function submitForm() {
   return async (dispatch, getState) => {
 
     const parseOptions = async (slug, options, list) => {
-      if (!options || _.isArray(options)) return
-      var parsedOptions = options.split(",");
-      parsedOptions = await Promise.all(parsedOptions.map(async (option, i) => {
+      if (!options) return
+      options = await Promise.all(options.map(async (option, i) => {
         return list[option] ?
                  option :
                  (await dispatch(createNewOption(slug.toLowerCase(), option))).id
       }))
-      return parsedOptions
+      return options
     }
 
     let formFields = getState().tasks.get('form').toJS()
@@ -182,7 +181,16 @@ export function submitForm() {
 }
 
 export function changeFilter(field, newVal) {
-  return { type: CHANGE_FILTER, field, newVal }
+  return async (dispatch, getState) => {
+    if (_.isUndefined(newVal) ||
+        _.isNull(newVal) ||
+        (_.isObject(newVal) && _.isEmpty(newVal))
+    ) {
+      dispatch(removeFilter(field))
+      return
+    }
+    dispatch({ type: CHANGE_FILTER, field, newVal })
+  }
 }
 
 export function removeFilter(field) {

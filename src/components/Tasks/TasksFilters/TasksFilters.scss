@@ -3,35 +3,40 @@
 
 .TasksFilters {
   flex: none;
-  margin: -20px -20px 0;
-  padding: 20px 25px 14px;
+  margin: -10px -20px 0;
+  padding: 1em;
   background: $accent-3;
-	color: $bgc;
+  color: $bgc;
 
-	&__current {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-		margin: -20px -40px;
-		padding: 20px 40px;
-		cursor: pointer;
-	}
+  h6 {
+    font-size: 0.7em;
+    margin-bottom: 0;
+  }
 
-    &__toggle {
-        padding-bottom: 6px;
-        pointer-events: all;
-    }
-
-	&__details {
-		margin: 0 -20px 0;
-		padding: 0 20px;
-		max-height: 0;
-		overflow: hidden;
-		transition: all $transition-fast;
-
-		&--expanded {
-			max-height: 300px;
-			padding: 20px 20px 0;
-		}
-	}
+  &__current {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  	margin: -20px -40px;
+  	padding: 14px 40px;
+  	cursor: pointer;
+  }
+  
+  &__toggle {
+    margin-bottom: 0;
+    pointer-events: all;
+  }
+  
+  &__details {
+	margin: 0 -20px 0;
+	padding: 0 20px;
+	max-height: 0;
+	overflow: hidden;
+	transition: all $transition-fast;
+  
+  	&--expanded {
+  	  max-height: 300px;
+  	  padding: 20px 20px 0;
+  	}
+  }
 }

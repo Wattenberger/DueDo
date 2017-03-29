@@ -36,31 +36,39 @@ class Tasks extends Component {
     return classNames(className, "Tasks")
   }
 
+  filterTask = task => {
+    let {filters} = this.props
+
+    let valid = true
+    Object.keys(filters).forEach(key => {
+      let filter = filters[key]
+      if (_.isUndefined(filter)) return
+      let field = task.fields[key]
+      
+      if (
+          (_.isArray(filter) && !_.intersection(filter, field).length) ||
+          (_.isBoolean(filter) && !!field != filter) ||
+          (!_.isUndefined(field) && _.isString(filter) && field.toLowerCase().indexOf(filter.toLowerCase()) === -1)
+        ) {
+        valid = false
+        return
+      }
+    })
+    return valid
+  }
+
+  sortTask = task => task.fields.Blocked  ? "2" :
+                     task.fields.When     ? "1" + moment(task.fields.When).valueOf() :
+                                            "0" + task.fields.Title.toLowerCase()
+
   getFilteredTasks() {
-    let {tasks, filters} = this.props
+    let {tasks} = this.props
+    if (!_.isArray(tasks)) return []
 
-    return tasks
-      .sort(task => task.fields.Blocked ? 2 :
-                    task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")) ? 1 :
-                    0
-           )
-      .filter(task => {
-        let valid = true
-        Object.keys(filters).forEach(key => {
-          let filter = filters[key]
-          if (_.isUndefined(filter)) return
-          let field = task.fields[key]
-
-          if (
-              (_.isArray(filter) && !_.intersection(filter, field).length) ||
-              (_.isBoolean(filter) && !!field != filter) ||
-              (!_.isUndefined(field) && _.isString(filter) && field.toLowerCase().indexOf(filter.toLowerCase()) === -1)
-            ) {
-            valid = false
-          }
-        })
-        return valid
-      })
+    return _.chain(tasks)
+      .filter(this.filterTask)
+      .sortBy(this.sortTask)
+      .value()
   }
 
   filterByContext(tasks, context) {
@@ -109,18 +117,18 @@ class Tasks extends Component {
   }
 
   renderAddTask() {
-    return <Button onClick={this.addTask}>+</Button>
+    return <Button className="Tasks__add-task" onClick={this.addTask}>+</Button>
   }
 
   render() {
     return (
       <div className={this.getClassName()}>
         <Keypress keys={this.keypresses} />
-        <PanelTitle title="Tasks" panel="tasks" controls={this.renderAddTask()} side="right" />
-          <TasksFilters />
-          <Pomodoro />
-          <ScrollableContainer className="Tasks__ScrollableContainer">
-            {this.renderTasks()}
+        {this.renderAddTask()}
+        <TasksFilters />
+        <Pomodoro />
+        <ScrollableContainer className="Tasks__ScrollableContainer">
+          {this.renderTasks()}
         </ScrollableContainer>
       </div>
     )

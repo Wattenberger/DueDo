@@ -7,13 +7,13 @@ import strings from "./dayStrings"
 
 const possibleFormats = [
   "M/D",
+  "YYYY-MM-DD",
   "MMM DD",
   "MM DD",
   "MM/DD",
   "DD",
   "MMMM DD",
   "Do",
-  "YYYY-MM-DD",
   "MM/DD/YYYY",
   "MM/DD/YY",
   "YYYY/MM/DD",

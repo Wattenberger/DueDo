@@ -119,7 +119,6 @@ class TaskForm extends Component {
     const interval = form.Type == "goal" ?
                      form["Goal--Interval"] || "week" :
                      undefined
-                     console.log(form["Goal--Interval"])
     await this.props.dispatch(changeFormField("Goal--Interval", interval))
     this.props.dispatch(changeFormField("Goal--Index", form.Type == "goal" ? +moment().format(intervalMap[interval]) : undefined))
   }

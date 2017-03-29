@@ -15,7 +15,7 @@ import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Task.scss')
 
-const dateFormat = "MM/DD/YYYY"
+const dateFormat = "M/D/YYYY"
 const today = moment().format(airtableDateFormat)
 
 const dragConfig = {
@@ -75,7 +75,6 @@ class Task extends Component {
   toggleExpanded = (newState) => {
     let {expanded} = this.state
     newState = _.isBoolean(newState) ? newState : !expanded
-    console.log(newState)
     this.setState({expanded: newState})
   }
 
@@ -105,14 +104,21 @@ class Task extends Component {
     dispatch(updateTask(task.id, {When: today}))
   }
 
+  isScheduled = () => {
+    let {task, dayContext, habitInfo} = this.props
+    let {fields} = task
+    const isDone = (habitInfo && habitInfo.done) || fields.Done
+    return !isDone && fields.When && (fields.When != today && !(dayContext && dayContext.isSame(moment(), "day")))
+  }
+
   renderButtons() {
-    let {task, habitInfo, dayContext} = this.props
+    let {task, habitInfo} = this.props
     let {fields} = task
     const isDone = (habitInfo && habitInfo.done) || fields.Done
 
     const buttons = [
       {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: !isDone},
-      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: !isDone && (fields.When != today && !(dayContext && dayContext.isSame(moment(), "day")))},
+      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: this.isScheduled()},
       {icon: "🗑", label: "Delete", onClick: this.deleteTask, exists: true},
       {icon: "✓", label: fields.Type == "habit" ? "Done" : "Finish", onClick: this.finishTask, exists: !isDone},
     ]
@@ -143,10 +149,9 @@ class Task extends Component {
   }
 
   render() {
-    let {task, contexts, isDragging, connectDragSource} = this.props
+    let {task, contexts, connectDragSource} = this.props
     let {fields} = task
     let {expanded} = this.state
-    const isBucketList = task.fields.Type == "bucketlist"
 
     return connectDragSource(
       <div className={this.getClassName()}
@@ -156,11 +161,14 @@ class Task extends Component {
               direction="row"
               onClick={this.editTask}>
           <div className="Task__text">
-            <h6 className="Task__title">
-              {isBucketList && <span className="Task__context-marker">ｼ</span>}
-              {fields.Title}
-              {isDragging}
-            </h6>
+            <div className="Task__title">
+              <div className="Task__title__title">{fields.Title}</div>
+              {this.isScheduled() &&
+                <div className="Task__title__scheduled">
+                  {moment(fields.When).format(dateFormat)}
+                </div>
+              }
+            </div>
           </div>
         </Flex>
         {this.renderButtons()}

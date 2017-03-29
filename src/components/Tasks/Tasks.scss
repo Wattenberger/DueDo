@@ -1,14 +1,33 @@
+@import "~styles/variables";
+
 .Tasks {
   display: flex;
   flex-direction: column;
+  position: relative;
   height: 100vh;
 
   &__ScrollableContainer {
     margin: 0 -20px;
     padding: 0 0 20px;
+    font-size: 0.8em;
+  }
+
+  .TasksFilters {
+    font-size: 0.8em;
   }
 
   &__context {
     margin-top: 20px;
+  }
+
+  & .Tasks__add-task {
+    position: absolute;
+    bottom: 20px;
+    right: -10px;
+    color: $accent-1;
+
+    &:hover {
+      background: $accent-2;
+    }
   }
 }

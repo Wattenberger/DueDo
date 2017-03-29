@@ -40,11 +40,11 @@ class TasksFilter extends Component {
   }
 
   onChange = (newVal) => {
+    console.log(newVal)
     let {field, type} = this.props
     if (_.isUndefined(newVal) || _.isString(newVal) && !newVal.length) {
       this.props.dispatch(removeFilter(field))
     } else {
-      if (type === "select") newVal = newVal.split(",")
       this.props.dispatch(changeFilter(field, newVal))
     }
   }

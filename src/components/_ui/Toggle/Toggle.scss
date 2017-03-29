@@ -1,6 +1,8 @@
 @import "~styles/variables";
 
 .Toggle {
+  display: flex;
+  
   & > .Button {
     border-radius: 2px 0 0 2px;
 
@@ -15,7 +17,7 @@
     }
   }
 
-  &__option--selected {
+  & .Toggle__option--selected {
     background: $accent-4;
     color: $bgc;
     cursor: default;

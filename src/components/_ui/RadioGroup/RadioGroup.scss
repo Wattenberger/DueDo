@@ -1,29 +1,35 @@
 @import "~styles/variables";
+@import "~components/_ui/Button/Button";
 
 .RadioGroup {
-  font-size: $font-size-xsmall;
 }
 
 .RadioGroup__option {
   display: inline-block;
-  padding: 0.3em 1em;
-  border: 1px solid $accent-3;
-  border-right-width: 0;
-  cursor: pointer;
+  @extend .Button;
+  border-radius: 0;
+
   &:first-child {
     border-radius: 2px 0 0 2px;
   }
+
+  & ~ .RadioGroup__option {
+    margin-left: -1px;
+  }
+
   &:last-child {
     border-radius: 0 2px 2px 0;
     border-right-width: 1px;
   }
+
   &:hover:not(.RadioGroup__option--selected) {
-    background: #fff;
+    background: $accent-4;
+    color: $bgc;
   }
 }
 
 .RadioGroup__option--selected {
-  background: $accent-3;
+  background: $accent-4;
   color: #fff;
   cursor: default;
 }

@@ -64,7 +64,7 @@ class Field extends Component {
   }
 
   onSelectChange = (newVal) => {
-    this.props.onChange(newVal)
+    this.props.onChange(_.map(newVal, "value"))
   }
 
   onToggleChange = (newVal, e) => {

@@ -16,7 +16,7 @@ import {auth, fetchEvents} from "actions/googleActions"
 
 require('./Panels.scss')
 
-const initPanelRatio = 0.76
+const initPanelRatio = 0.8
 const panelsMap = {
   tasks: Tasks,
   habits: Tasks,

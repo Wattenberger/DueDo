@@ -6,6 +6,7 @@
   .Calendar__Panel-controls {
     display: flex;
     align-items: center;
+    width: 100%;
     margin-left: 10px;
 
     &__current-month {
@@ -15,6 +16,10 @@
     .Button {
       margin: 0 5px;
     }
+  }
+
+  &--view-radio-group {
+    margin-left: auto;
   }
 
   .DayWrapper {
@@ -32,12 +37,27 @@
       }
 
       &--weekend {
-        opacity: 0.6;
+        // opacity: 0.6;
       }
 
       &--today {
           opacity: 1;
       }
+    }
+  }
+
+  &--x-days {
+    .Calendar--days-container {
+      display: flex;
+      flex-direction: row;
+      // flex-direction: column;
+    }
+
+    .Day {
+      flex: 1;
+      min-height: 50vh;
+      margin-bottom: 10px;
+      padding-bottom: 20px;
     }
   }
 

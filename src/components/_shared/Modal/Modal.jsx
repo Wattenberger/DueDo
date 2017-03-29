@@ -43,7 +43,7 @@ class Modal extends Component {
 
   onClose = () => {
     this.props.dispatch(closeModal())
-    this.props.onClose()
+    if (_.isFunction(this.props.onClose)) this.props.onClose()
   }
 
   render() {
@@ -55,6 +55,7 @@ class Modal extends Component {
           isOpen={isOpen}
           onRequestClose={this.onClose}
           style={this.getStyles()}
+          contentLabel="Modal"
         >
           <div className="Modal__close" onClick={this.onClose}>✕</div>
           <div className="Modal__container">

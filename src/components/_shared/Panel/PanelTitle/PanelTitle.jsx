@@ -29,7 +29,6 @@ class PanelTitle extends Component {
 
   onPanelChange = (newPanel) => {
     let {side} = this.props
-    console.log(newPanel)
     this.props.dispatch(changePanel(side, newPanel))
   }
 

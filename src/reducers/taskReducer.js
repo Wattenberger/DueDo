@@ -22,7 +22,7 @@ const initialState = Immutable.Map({
 function tasks(state = initialState, action) {
   switch (action.type) {
     case "REPLACE_TASKS":
-      let tasks = action.tasks.filter(task => !task.fields.Type)
+      let tasks = action.tasks.filter(task => !task.fields.Type || task.fields.Type == "task")
       let habits = action.tasks.filter(task => task.fields.Type == "habit")
       let bucketlist = action.tasks.filter(task => task.fields.Type == "bucketlist")
       return state

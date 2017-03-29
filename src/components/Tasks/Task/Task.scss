@@ -5,8 +5,8 @@
   position: relative;
   cursor: pointer;
   background: #fff;
-  margin: 6px;
-  padding: 6px 6px;
+  margin: 0.2em;
+  padding: 0.2em 0.3em;
   color: $accent-4;
   border: 1px solid #f4f4f4;
   // overflow: hidden;
@@ -21,8 +21,8 @@
   &--important {
     &:before {
       content: "★";
-      @include abs(16px, auto, auto, -6px);
-      font-size: 7px;
+      @include abs(0.6em, auto, auto, -0.35em);
+      font-size: 0.5em;
       // color: $accent-1;
       opacity: 0.6;
     }
@@ -30,8 +30,8 @@
   &--blocked {
     &:before {
       content: "■";
-      @include abs(5.5px, auto, auto, 7px);
-      font-size: 10px;
+      @include abs(0.1em, auto, auto, 0.35em);
+      font-size: 0.6em;
       // color: $accent-1;
       opacity: 0.6;
     }
@@ -39,8 +39,8 @@
   &--scheduled {
     &:before {
       content: "🕑";
-      @include abs(7.25px, auto, auto, 6px);
-      font-size: 10px;
+      @include abs(-0.1em, auto, auto, 0.38em);
+      font-size: 0.6em;
       // color: $accent-1;
       opacity: 0.6;
     }
@@ -83,7 +83,22 @@
     padding: 0;
   }
   &__title {
+    display: flex;
+    width: 100%;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    line-height: 1.1em;
     white-space: nowrap;
+    &__title {
+      flex: 1;
+    }
+    &__scheduled {
+      font-weight: 400;
+      margin-left: auto;
+      text-align: right;
+    }
   }
   &__context-marker {
       display: block;
@@ -92,7 +107,7 @@
       opacity: 0.6;
   }
   &__overview {
-    padding: 6px 13px;
+    padding: 0.3em 0.6em;
   }
   &__description {
     font-size: 12px;

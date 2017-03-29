@@ -4,7 +4,7 @@ import _ from "lodash"
 import moment from "moment"
 
 require('./Day.scss')
-const weekends = ["Fr", "Sa", "Su"]
+const weekends = ["Sa", "Su"]
 
 class Day extends Component {
   static propTypes = {
@@ -42,7 +42,7 @@ class Day extends Component {
 
   isSameMonth() {
     let {day, month} = this.props
-    return month.isSame(day, 'month')
+    return month ? month.isSame(day, 'month') : true
   }
 
   render() {

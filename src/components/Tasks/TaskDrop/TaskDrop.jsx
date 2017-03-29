@@ -12,7 +12,6 @@ const dropConfig = {
     let {task} = monitor.getItem()
     let {day} = props
     const newField = {When: day.format(airtableDateFormat)}
-    console.log(task)
 
     props.dispatch(updateTask(task.id, newField))
   }
