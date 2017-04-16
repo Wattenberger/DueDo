@@ -18,8 +18,12 @@
     align-items: center;
     justify-content: space-between;
   	margin: -20px -40px;
-  	padding: 14px 40px;
+  	padding: 10.5px 40px;
   	cursor: pointer;
+    
+    .Toggle > .Button {
+      border-color: $accent-4;
+    }
   }
   
   &__toggle {

@@ -5,6 +5,7 @@ import _ from "lodash"
 import moment from "moment"
 import {airtableDateFormat} from "api/airtableAPI"
 import {getDayItems, getDayItemClassNames} from "components/Tasks/getDayItems"
+  import Task from "components/Tasks/Task/Task"
 
 require('./DayTasks.scss')
 const weekends = ["Fr", "Sa", "Su"]
@@ -18,6 +19,7 @@ const weekends = ["Fr", "Sa", "Su"]
 class DayTasks extends Component {
   static propTypes = {
     day: PropTypes.object,
+    detailed: PropTypes.bool,
   };
 
   getClassName() {
@@ -29,57 +31,60 @@ class DayTasks extends Component {
     return moment().isSame(day, 'month')
   }
 
-  renderTasks() {
-    let {day, tasks} = this.props
+  renderTask = (task, idx) => {
+    let {day, detailed} = this.props
 
-    return getDayItems("tasks", tasks, day).map(task =>
-        <div className={getDayItemClassNames("task", task, day, "DayTasks__task")} key={task.id}>
-          {task.fields.Title}
-        </div>
-      )
+    return detailed ? <Task className={getDayItemClassNames("task", task, day, "DayView__task")}
+                            task={task}
+                            dayContext={day}
+                            key={task.id} />
+                    : <div className={getDayItemClassNames("task", task, day, "DayTasks__task")} key={task.id}>
+                        {task.fields.Title}
+                      </div>
   }
 
-  renderHabits() {
-    let {day, habits} = this.props
+  renderHabit = (habit, idx) => {
+    let {day, detailed} = this.props
 
-    return getDayItems("habits", habits, day).map(habit =>
-      <div className={getDayItemClassNames("habit", habit, day, "DayTasks__habit")} key={habit.id}>
-        {habit.fields.Title}
-      </div>
-    )
+    return detailed ? <Task className={getDayItemClassNames("habit", habit, day, "DayView__habit")}
+                        task={habit}
+                        dayContext={day}
+                        habitInfo={{done: _.includes(habit.fields["Habit--Done"], moment(day).format(airtableDateFormat))}}
+                        key={habit.id}
+                      />
+                    : <div className={getDayItemClassNames("habit", habit, day, "DayTasks__habit")} key={habit.id}>
+                         {habit.fields.Title}
+                       </div>
   }
 
-  renderEvents() {
-    let {day, events} = this.props
+  renderEvent = (event, idx) => {
+    let {day, detailed} = this.props
 
-    return getDayItems("events", events, day).map(event =>
-      <div className={getDayItemClassNames("event", event, day, "DayTasks__event")} key={event.id}>
-        {event.summary}
-      </div>
-    )
+    return <div className={getDayItemClassNames("event", event, day, "DayTasks__event")} key={event.id}>
+              {detailed && <span className="DayView__event__time">{moment(event.start.dateTime).format("h:mm A")}</span>}
+              {event.summary}
+            </div>
   }
 
-  renderOngoingEvents() {
-    let {day, ongoing} = this.props
+  renderOngoingEvent = (event, idx) => {
+    let {day, detailed} = this.props
+    const classnames = getDayItemClassNames("ongoing", event, day, "DayTasks__event")
 
-    return getDayItems("ongoing", ongoing, day).map(event => {
-      const classnames = getDayItemClassNames("ongoing", event, day, "DayTasks__event")
-      return <div className={classnames} key={event.id}>
-        {!_.includes(classnames, "DayTasks__event__ongoing--middle-day") && event.summary}
-      </div>
-    })
+    return <div className={classnames} key={event.id}>
+      {!_.includes(classnames, "DayTasks__event__ongoing--middle-day") && event.summary}
+    </div>
   }
 
 
   render() {
-    let {day} = this.props
+    let {day, ongoing, events, tasks, habits} = this.props
 
     return (
       <div className={this.getClassName()} onClick={this.onDayClick}>
-        {this.renderOngoingEvents()}
-        {this.renderEvents()}
-        {this.renderTasks()}
-        {this.renderHabits()}
+        {getDayItems("ongoing", ongoing, day).map(this.renderOngoingEvent)}
+        {getDayItems("events", events, day).map(this.renderEvent)}
+        {getDayItems("tasks", tasks, day).map(this.renderTask)}
+        {getDayItems("habits", habits, day).map(this.renderHabit)}
       </div>
     )
   }

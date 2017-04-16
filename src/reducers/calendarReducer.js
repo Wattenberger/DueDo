@@ -7,7 +7,7 @@ export const dayFormat = "YYYY-MM-DD"
 
 const initialState = Immutable.Map({
   month: moment().format(monthFormat),
-  week: moment().format(weekFormat),
+  week: moment().add(1, "day").format(weekFormat),
   day: moment().format(dayFormat),
 })
 

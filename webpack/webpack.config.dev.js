@@ -47,6 +47,9 @@ export default {
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    }),
 
     new webpack.DefinePlugin({
       "__DEV__" : JSON.stringify(process.env.NODE_ENV === "development"),

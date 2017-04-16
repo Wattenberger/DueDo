@@ -2,12 +2,16 @@
 @import "~components/_ui/Button/Button";
 
 .RadioGroup {
+  display: flex;
 }
 
 .RadioGroup__option {
-  display: inline-block;
   @extend .Button;
+  padding-left: 1em;
+  padding-right: 1em;
+  flex: 1;
   border-radius: 0;
+  border: 1px solid $gray-light;
 
   &:first-child {
     border-radius: 2px 0 0 2px;

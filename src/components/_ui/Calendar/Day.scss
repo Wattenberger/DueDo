@@ -16,8 +16,6 @@
 
   &:hover {
     border-color: $accent-2;
-    opacity: 1;
-    transform: scale3d(1.03, 1.03, 1);
 
     .Day__dow {
       opacity: 1;
@@ -26,6 +24,7 @@
 
   &__header {
     display: flex;
+    margin-bottom: 0.4em;
   }
 
   &__dow {
@@ -48,5 +47,19 @@
 
   &--another-month {
     // opacity: 0.6;
+  }
+
+  &--detailed {
+    .DayTasks__event {
+      margin-bottom: 0.5em;
+    }
+
+    .Task {
+      font-size: 1.3em;
+    }
+
+    .DayTasks__event {
+      margin-left: 1.1em;
+    }
   }
 }

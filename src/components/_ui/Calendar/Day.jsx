@@ -27,7 +27,7 @@ class Day extends Component {
 
   onClick = (e) => {
     let {day, onClick} = this.props
-    this.props.onClick(day, e)
+    onClick && onClick(day, e)
   }
 
   isToday() {

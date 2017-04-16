@@ -15,7 +15,7 @@ import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Task.scss')
 
-const dateFormat = "M/D/YYYY"
+const dateFormat = "M/DD"
 const today = moment().format(airtableDateFormat)
 
 const dragConfig = {
@@ -28,7 +28,7 @@ const dragConfig = {
 
 @DragSource(dragItemTypes.TASK, dragConfig, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
 }))
 @connect(state => ({
   tags: state.tasks.get('tags'),
@@ -38,7 +38,6 @@ class Task extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      expanded: false
     }
   }
 
@@ -47,18 +46,20 @@ class Task extends Component {
     dayContext: PropTypes.object,
     habitInfo: PropTypes.object,
 
+    connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
-    connectDragSource: PropTypes.func.isRequired
   };
 
   getClassName() {
-    let {className, task} = this.props
+    let {className, task, isDragging} = this.props
+
     return classNames(
       "Task", {
         "Task--important": task.fields.Important,
         "Task--scheduled": task.fields.When && moment(task.fields.When).isAfter(moment().add(-1, "day")),
         "Task--blocked":   task.fields.Blocked,
         "Task--done":      task.fields.Done,
+        "Task--dragging":  isDragging,
       }, className
     )
   }
@@ -66,16 +67,7 @@ class Task extends Component {
   getDetailsClassName() {
     let {expanded} = this.state
 
-    return classNames(
-      "Task__details", {
-        "Task__details--expanded": expanded
-      })
-  }
-
-  toggleExpanded = (newState) => {
-    let {expanded} = this.state
-    newState = _.isBoolean(newState) ? newState : !expanded
-    this.setState({expanded: newState})
+    return"Task__details"
   }
 
   startPomodoro = () => {
@@ -154,9 +146,7 @@ class Task extends Component {
     let {expanded} = this.state
 
     return connectDragSource(
-      <div className={this.getClassName()}
-           onMouseEnter={this.toggleExpanded.bind(true)}
-           onMouseLeave={this.toggleExpanded.bind(false)}>
+      <div className={this.getClassName()}>
         <Flex className="Task__overview"
               direction="row"
               onClick={this.editTask}>

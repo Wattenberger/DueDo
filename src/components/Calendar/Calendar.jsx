@@ -22,6 +22,8 @@ import {openModal} from "actions/modalActions"
 import {changeDay} from "actions/dayViewActions"
 import {changePanel} from "actions/panelActions"
 
+const formats = {monthFormat, weekFormat, dayFormat}
+
 require('./Calendar.scss')
 
 @connect(state => ({
@@ -61,11 +63,14 @@ class Calendar extends Component {
     [KEYS.RIGHT]: this.incrementInterval.bind(this, 1),
     [KEYS.UP]:  this.incrementInterval.bind(this, -1),
     [KEYS.DOWN]: this.incrementInterval.bind(this, 1),
-    [KEYS.ENTER]: this.onDayClick.bind(this, moment()),
-    [KEYS.c]: this.setView.bind(this, "month"),
+    [KEYS.ENTER]: this.setView.bind(this, "days", 1),
+    [KEYS.ESC]: this.setView.bind(this, "month"),
+    [KEYS.t]: this.onTodayClick.bind(this),
+    // [KEYS.c]: this.setView.bind(this, "month"),
     [KEYS.m]: this.setView.bind(this, "month"),
     [KEYS.w]: this.setView.bind(this, "week"),
     [KEYS.d]: this.setView.bind(this, "days", 4),
+    [KEYS[1]]: this.setView.bind(this, "days", 1),
     [KEYS[2]]: this.setView.bind(this, "days", 2),
     [KEYS[3]]: this.setView.bind(this, "days", 3),
     [KEYS[4]]: this.setView.bind(this, "days", 4),
@@ -77,9 +82,10 @@ class Calendar extends Component {
   onDayClick(date, e) {
     let {day} = this.props
     if (day.get("_isValid")) return
-
-    this.props.dispatch(changeDay(date))
-    this.props.dispatch(openModal("dayView"))
+  
+    const target = date.format(dayFormat)
+    this.props.dispatch(setDay(target))
+    this.setView("days", 1)
   }
 
   onDayViewClose = () => {
@@ -103,18 +109,19 @@ class Calendar extends Component {
     view == 'days'  && this.props.dispatch(setDay(target))
   }
 
+  onTodayClick () {
+    let {view} = this.state
+    let thisInterval = moment().add(view == "week" ? 1 : 0, "day").format(formats[`${view}Format`])
+    this.setInterval(thisInterval)
+  }
+
   renderPanelControls() {
     let {firstDay, week, month} = this.props
     let {view} = this.state
-    let thisInterval = moment().format(this[`${view}Format`])
+    let thisInterval = moment().add(view == "week" ? 1 : 0, "day").format(formats[`${view}Format`])
     const buttons = ["days", "week", "month"]
 
     return <div className="Calendar__Panel-controls">
-      {this.props[view] != thisInterval &&
-        <Button onClick={this.setInterval.bind(this, thisInterval)}>
-          Today
-        </Button>
-      }
       <Button onClick={this.incrementInterval.bind(this, -1)}>↤</Button>
       <div className="Calendar__Panel-controls__current-month">
         {view == 'days'  && moment(firstDay, dayFormat).format("dddd MMMM DD YYYY")}
@@ -122,6 +129,11 @@ class Calendar extends Component {
         {view == 'month' && moment(month, monthFormat).format("MMMM YYYY")}
       </div>
       <Button onClick={this.incrementInterval.bind(this, 1)}>↦</Button>
+      {this.props[view] != thisInterval &&
+        <Button onClick={this.onTodayClick.bind(this)}>
+          Today
+        </Button>
+      }
       <RadioGroup className="Calendar--view-radio-group"
                   options={buttons}
                   value={view}
@@ -163,10 +175,15 @@ class Calendar extends Component {
     </div>
   }
 
-  renderDay = (day) => {
-    return <TaskDrop className="DayWrapper" day={day}>
-      <Day day={day} onClick={this.onDayClick.bind(this)}>
-        <DayTasks day={day} />
+  renderDay = (day, idx) => {
+    let {days, view} = this.state
+
+    const detailed = view == "days" && days < 3;
+    const className = classNames({"Day--detailed": detailed})
+
+    return <TaskDrop className="DayWrapper" day={day} key={idx}>
+      <Day day={day} className={className} onClick={this.onDayClick.bind(this, day)}>
+        <DayTasks day={day} detailed={detailed} />
       </Day>
     </TaskDrop>
   }
@@ -186,8 +203,8 @@ class Calendar extends Component {
         />
         <ScrollableContainer className="Calendar__ScrollableContainer">
           {view == 'month' && this.renderMonth()}
-          {view == 'week' && this.renderWeek()}
-          {view == 'days' && this.renderDays()}
+          {view == 'week'  && this.renderWeek()}
+          {view == 'days'  && this.renderDays()}
         </ScrollableContainer>
       </div>
     )

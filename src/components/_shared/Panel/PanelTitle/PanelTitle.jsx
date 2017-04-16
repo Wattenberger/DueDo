@@ -47,11 +47,6 @@ class PanelTitle extends Component {
 
     return (
       <Flex className={this.getClassName()} direction="row">
-          <Toggle
-            value={panel}
-            options={panelOptions}
-            onChange={this.onPanelChange}
-          />
         {!!controls && this.renderControls()}
       </Flex>
     )

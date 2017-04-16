@@ -3,6 +3,7 @@
 .ButtonGroup {
   & > .Button {
     border-radius: 2px 0 0 2px;
+    border: 1px solid $gray-light;
 
     & + .Button {
       margin-left: 0;

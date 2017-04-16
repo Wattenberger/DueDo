@@ -88,3 +88,7 @@ p {
     margin-left: 0.6em;
   }
 }
+
+[draggable] {
+  cursor: -webkit-grab;
+}

@@ -42,9 +42,9 @@ class RadioGroup extends Component {
         "RadioGroup__option--selected": option === value
       }
     )
-    return <div className={className} style={this.getOptionStyle(option)} onClick={this.props.onSelect.bind(this, option)} key={idx}>
+    return <button className={className} style={this.getOptionStyle(option)} onClick={this.props.onSelect.bind(this, option)} key={idx}>
       {isObject(option) ? option.value : option}
-    </div>
+    </button>
   }
 
   renderClear() {

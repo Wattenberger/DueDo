@@ -101,7 +101,7 @@ var ResizableComponent = React.createClass({
 	},
 
 	_startDrag: function(e) {
-		this.makeParentHighlightable(false);
+		// this.makeParentHighlightable(false);
 		this.setState({
 			mouseHeldDown: true,
 			originalY: e.clientY,
@@ -115,7 +115,7 @@ var ResizableComponent = React.createClass({
 	},
 
 	_stopDrag: function(e) {
-    	this.makeParentHighlightable(true);
+    	// this.makeParentHighlightable(true);
 		// Only invoke onStopResize if this component has started resizing
 		if (this.state.mouseHeldDown && this.props.onStopResize) {
 			this.props.onStopResize(
@@ -264,9 +264,12 @@ var ResizableComponent = React.createClass({
 		}
 
 		// Attaches event listeners to parent div
-		document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').style.userSelect = highlight ? 'all' : 'none';
-		document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').style.mozUserSelect = highlight ? 'all' : 'none';
-		document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').style.webkitUserSelect = highlight ? 'all' : 'none';
+		var state = highlight ? 'all' : 'none';
+		var elem = document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]');
+		if (!elem) return;
+		elem.style.userSelect = state;
+		elem.style.mozUserSelect = state;
+		elem.style.webkitUserSelect = state;
 	},
 
 	render: function() {
