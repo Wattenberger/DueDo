@@ -49,18 +49,17 @@
     // opacity: 0.6;
   }
 
-  .Task__title__scheduled {
-    display: none;
-  }
-
   &--detailed {
     .DayTasks__event {
       margin-bottom: 0.5em;
-      margin-left: 1.1em;
     }
 
     .Task {
       font-size: 1.3em;
+    }
+
+    .DayTasks__event {
+      margin-left: 1.1em;
     }
   }
 }

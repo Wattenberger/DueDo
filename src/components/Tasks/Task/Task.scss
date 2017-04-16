@@ -40,6 +40,8 @@
   }
   &--scheduled {
     &:before {
+      content: "■";
+      @include abs(0.8em, auto, auto, 0.35em);
       content: "🕑";
       @include abs(1.2em, auto, auto, 0.38em);
       font-size: 0.6em;
@@ -49,6 +51,8 @@
   }
   &--blocked {
     &:before {
+      content: "🕑";
+      @include abs(1.2em, auto, auto, 0.38em);
       content: "■";
       @include abs(1.2em, auto, auto, 0.35em);
       font-size: 0.6em;
