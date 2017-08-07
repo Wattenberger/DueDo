@@ -182,7 +182,7 @@ class Calendar extends Component {
     const className = classNames({"Day--detailed": detailed})
 
     return <TaskDrop className="DayWrapper" day={day} key={idx}>
-      <Day day={day} className={className} onClick={this.onDayClick.bind(this, day)}>
+      <Day day={day} className={className} onClick={view != "days" && this.onDayClick.bind(this, day)}>
         <DayTasks day={day} detailed={detailed} />
       </Day>
     </TaskDrop>

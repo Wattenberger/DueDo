@@ -15,12 +15,16 @@ import {default as pomodoro} from "reducers/pomodoroReducer"
 import {default as googleCalendar} from "reducers/googleCalendarReducer"
 import {default as calendar} from "reducers/calendarReducer"
 
+const functionsToJs = val => val && typeof val.toJS === "function"
+  ? val.toJS()
+  : val
 const loggerMiddleware = logger({
-  stateTransformer: state => mapValues(state, val => val && typeof val.toJS === "function"
-    ? val.toJS()
-    : val
-  ),
-  predicate: (getState, action) => __DEV__
+  stateTransformer: state => mapValues(state, functionsToJs),
+  predicate: (getState, action) => __DEV__,
+  collapsed: true,
+  duration: true,
+  timestamp: false,
+  diff: true,
 })
 
 const createStoreWithMiddleware = applyMiddleware(

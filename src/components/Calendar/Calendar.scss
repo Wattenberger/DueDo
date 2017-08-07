@@ -30,7 +30,7 @@
 
   &--weekly {
     .Day {
-      min-height: 300px;
+      min-height: 86vh;
       height: 50vh;
 
       &--another-month {
@@ -56,7 +56,7 @@
 
     .Day {
       flex: 1;
-      min-height: 50vh;
+      min-height: 86vh;
       margin-bottom: 10px;
       padding-bottom: 20px;
     }

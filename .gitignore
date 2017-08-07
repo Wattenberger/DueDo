@@ -34,6 +34,4 @@ node_modules
 
 .nvmrc
 
-src/config/development.js
-src/config/production.js
 dist

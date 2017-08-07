@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react"
 import ReactDOM from 'react-dom'
 import classNames from "classnames"
 import _ from "lodash"
+import {KEYS} from 'components/_ui/Keypress/Keypress'
 import Flex from "components/_ui/Flex/Flex"
 import Select from "react-select"
 import Toggle from "components/_ui/Toggle/Toggle"
@@ -64,6 +65,7 @@ class Field extends Component {
   }
 
   onSelectChange = (newVal) => {
+    // this.props.onChange(newVal)
     this.props.onChange(_.map(newVal, "value"))
   }
 
@@ -94,12 +96,18 @@ class Field extends Component {
 
   renderSelect() {
     let {value, options, fieldOptions} = this.props
+    const Component = fieldOptions.allowCreate ? Select.Creatable : Select
+    fieldOptions.showNewOptionAtTop = false
+    fieldOptions.tabSelectsValue = false
 
-    return <Select
+    return <Component
         name="select"
         value={value}
         clearable={false}
         options={options}
+        showNewOptionAtTop={false}
+        tabSelectsValue={true}
+        shouldKeyDownEventCreateNewOption={({ keyCode }) => keyCode == KEYS.enter}
         {...fieldOptions}
         onChange={this.onSelectChange}
       />

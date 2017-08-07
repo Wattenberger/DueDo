@@ -97,30 +97,36 @@ class Task extends Component {
   }
 
   isScheduled = () => {
-    let {task, dayContext, habitInfo} = this.props
+    let {task, habitInfo} = this.props
     let {fields} = task
     const isDone = (habitInfo && habitInfo.done) || fields.Done
-    return !isDone && fields.When && (fields.When != today && !(dayContext && dayContext.isSame(moment(), "day")))
+    return !isDone && fields.When
   }
 
   renderButtons() {
     let {task, habitInfo} = this.props
     let {fields} = task
     const isDone = (habitInfo && habitInfo.done) || fields.Done
+    const now = moment()
+    const isToday = moment(fields.When).isSame(now, "day")
 
     const buttons = [
       {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: !isDone},
-      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: this.isScheduled()},
+      {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: this.isScheduled() && !isToday},
       {icon: "🗑", label: "Delete", onClick: this.deleteTask, exists: true},
       {icon: "✓", label: fields.Type == "habit" ? "Done" : "Finish", onClick: this.finishTask, exists: !isDone},
     ]
     return <div className="Task__buttons">
-      {buttons.map((button, idx) =>
-        button.exists &&
-          <Button className="Task__buttons__button" onClick={button.onClick} key={idx}>
+      {buttons.map((button, idx) => {
+        const noBubbleClick = (e, ...args) => {
+          e.stopPropagation()
+          button.onClick(...args)
+        }
+        return button.exists &&
+          <Button className="Task__buttons__button" onClick={noBubbleClick} key={idx}>
             {button.icon} {button.label}
           </Button>
-      )}
+      })}
     </div>
   }
 
@@ -141,7 +147,7 @@ class Task extends Component {
   }
 
   render() {
-    let {task, contexts, connectDragSource} = this.props
+    let {task, contexts, dayContext, connectDragSource} = this.props
     let {fields} = task
     let {expanded} = this.state
 
@@ -155,7 +161,10 @@ class Task extends Component {
               <div className="Task__title__title">{fields.Title}</div>
               {this.isScheduled() &&
                 <div className="Task__title__scheduled">
-                  {moment(fields.When).format(dateFormat)}
+                  {fields.When == today || (dayContext && dayContext.isSame(moment(), "day")) ?
+                    "Today" :
+                    moment(fields.When).format(dateFormat)
+                  }
                 </div>
               }
             </div>

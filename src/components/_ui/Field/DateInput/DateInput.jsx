@@ -82,7 +82,6 @@ class DateInput extends Component {
     possibleFormats.forEach(format => {
       if (date) return
       let possDate = moment(str, format)
-      if (possDate.isValid()) console.log(str, format)
       if (possDate.isValid()) {
         possDate = this.validateDate(str, format, possDate)
         date = possDate.format(dateFormat)

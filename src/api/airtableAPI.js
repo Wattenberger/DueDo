@@ -8,9 +8,26 @@ const params = {
 }
 const expandParams = params => Object.keys(params).map(key => key + "=" + encodeURIComponent(params[key])).join("&")
 
-const airtableAPI = {
-  fetchTasks() {
+const searchNextPage = (res, url, params, tasks=[], tries=0) => {
+  tasks = _.concat(tasks, res.records)
+  tries++;
+  console.log(res, tries)
+  if (res.offset && tries < 5) {
+    params = _.clone(params)
+    params.offset = res.offset
     return fetch(`${API_ROOT}/tasks?${expandParams(params)}`)
+      .then(res => searchNextPage(res, url, params, tasks, tries))
+  } else {
+    res.records = tasks
+    return res
+  }
+}
+
+const airtableAPI = {
+  fetchTasks(extraParameters={}) {
+    const url = `${API_ROOT}/tasks?${expandParams(_.assign({}, params, extraParameters))}`
+    return fetch(url)
+      .then(res => searchNextPage(res, url, params))
   },
   fetchHabits() {
     return fetch(`${API_ROOT}/habits?${expandParams(params)}`)

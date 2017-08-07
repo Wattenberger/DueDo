@@ -7,7 +7,8 @@
   padding: 0.4em 0;
 
   &__label {
-    flex: 1;
+    flex: 1 0;
+    min-width: 25%;
     font-size: 14px;
     line-height: 2.5em;
   }
@@ -18,7 +19,7 @@
 
     input, textarea {
       display: block;
-      width: 100% !important;
+      width: 100%;
       padding: 0.5em 0.6em;
       font-size: 16px;
       line-height: 1em;
@@ -38,7 +39,7 @@
     }
     &-input {
       height: auto;
-      width: 100%;
+      // width: 100%;
       margin: 0;
       padding: 0 10px;
       input {
@@ -60,6 +61,8 @@
       border-radius: 0;
       box-shadow: none;
       cursor: pointer;
+      overflow: hidden;
+      max-width: 100%;
     }
      &-menu-outer {
        display: flex;
@@ -68,11 +71,20 @@
     &-control:hover {
       background: $bgc;
     }
+    .Select-multi-value-wrapper {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
     .Select-value {
-      flex: 1;
+      flex: 0;
       display: flex;
       margin: 0.3em;
       line-height: 1.3em;
+    }
+    .Select-value-label {
+      white-space: nowrap;
     }
     &-item {
       display: flex;

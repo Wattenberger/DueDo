@@ -43,7 +43,9 @@ export async function clearTasks() {
 export function getTasks(type) {
   return async (dispatch, getState) => {
     // dispatch(clearTasks())
-    let res = await(airtableAPI.fetchTasks())
+    const getPastDoneTasks = getState().tasks.get('filters').get('Done')
+    const extraParameters = !!getPastDoneTasks ? {} : {filterByFormula: "OR(LEN(Done) = 0, DATETIME_DIFF(Done, TODAY(), 'days') > -31)"}
+    let res = await(airtableAPI.fetchTasks(extraParameters))
     dispatch({ type: REPLACE_TASKS, tasks: res.records })
   }
 }

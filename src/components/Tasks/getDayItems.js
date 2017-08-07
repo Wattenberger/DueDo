@@ -5,11 +5,16 @@ import {airtableDateFormat} from "api/airtableAPI"
 
 export const getDayItems = (type, list, day) => {
   let date = moment(day).format(airtableDateFormat)
+  const taskSort = task => task.fields.Blocked  ? "1" :
+                                                  "0" + task.fields.Title.toLowerCase()
+
 
   switch(type) {
     case "tasks":
-      return list.filter(task => task.fields && task.fields.When === date)
-                 .sort(task => task.fields.Blocked)
+      return _.chain(list)
+              .filter(task => task && task.fields && task.fields.When === date)
+              .sortBy(taskSort)
+              .value()
     case "events":
       return list.filter(event => moment(event.start.dateTime, "YYYY-MM-DD").isSame(day, "day"))
     case "habits":

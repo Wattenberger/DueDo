@@ -5,7 +5,7 @@ import _ from "lodash"
 import Flex from "components/_ui/Flex/Flex"
 import Field from "components/_ui/Field/Field"
 
-import {changeFilter, removeFilter} from "actions/taskActions"
+import {getTasks, updateTasks, changeFilter, removeFilter} from "actions/taskActions"
 
 require('./TasksFilter.scss')
 
@@ -40,12 +40,14 @@ class TasksFilter extends Component {
   }
 
   onChange = (newVal) => {
-    console.log(newVal)
     let {field, type} = this.props
     if (_.isUndefined(newVal) || _.isString(newVal) && !newVal.length) {
       this.props.dispatch(removeFilter(field))
     } else {
       this.props.dispatch(changeFilter(field, newVal))
+      if (field == "Done" && newVal) {
+        this.props.dispatch(getTasks())
+      }
     }
   }
 

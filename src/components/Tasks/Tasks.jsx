@@ -44,7 +44,7 @@ class Tasks extends Component {
       let filter = filters[key]
       if (_.isUndefined(filter)) return
       let field = task.fields[key]
-      
+
       if (
           (_.isArray(filter) && !_.intersection(filter, field).length) ||
           (_.isBoolean(filter) && !!field != filter) ||
@@ -59,7 +59,7 @@ class Tasks extends Component {
 
   sortTask = task => task.fields.Blocked  ? "2" :
                      task.fields.When     ? "1" + moment(task.fields.When).valueOf() :
-                                            "0" + task.fields.Title.toLowerCase()
+                                            "0" + (task.fields.Title || "").toLowerCase()
 
   getFilteredTasks() {
     let {tasks} = this.props
