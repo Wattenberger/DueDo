@@ -8,8 +8,6 @@
             "@babel/plugin-proposal-decorators",
             { "legacy": true }
         ],
-        "@babel/plugin-proposal-class-properties",
-        // "extract-hoc/babel",
-        "react-hot-loader/babel"
+        "@babel/plugin-proposal-class-properties"
     ]
 }

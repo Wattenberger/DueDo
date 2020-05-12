@@ -35,3 +35,9 @@ node_modules
 .nvmrc
 
 dist
+
+src/config/development.js
+src/config/production.js
+
+# Local Netlify folder
+.netlify

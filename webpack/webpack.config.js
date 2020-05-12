@@ -28,13 +28,7 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js(x)?$/, exclude: /node_modules/, loader: "babel-loader",
-        query: {
-          plugins: ["transform-decorators-legacy"],
-          presets: ["react", "es2015", "stage-0"],
-        }
-      },
+      {test: /\js(x)?$/, exclude: /node_modules/, loader: "babel-loader" },
       {test: /\.css$/,   use: ["style-loader", "css-loader", "postcss-loader"] },
       {test: /\.scss$/,  use: ["style-loader", "css-loader", "postcss-loader", "sass-loader?include_paths[]=" + srcPath] },
       {
