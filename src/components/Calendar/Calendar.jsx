@@ -20,6 +20,7 @@ import DayView from "components/DayView/DayView"
 import {setMonth, incrementMonth, setWeek, incrementWeek, setDay, incrementDay} from "actions/calendarActions"
 import {openModal} from "actions/modalActions"
 import {changeDay} from "actions/dayViewActions"
+import {auth, fetchEvents} from "actions/googleActions"
 import {changePanel} from "actions/panelActions"
 
 const formats = {monthFormat, weekFormat, dayFormat}
@@ -82,7 +83,7 @@ class Calendar extends Component {
   onDayClick(date, e) {
     let {day} = this.props
     if (day.get("_isValid")) return
-  
+
     const target = date.format(dayFormat)
     this.props.dispatch(setDay(target))
     this.setView("days", 1)
@@ -109,10 +110,15 @@ class Calendar extends Component {
     view == 'days'  && this.props.dispatch(setDay(target))
   }
 
-  onTodayClick () {
+  onTodayClick() {
     let {view} = this.state
     let thisInterval = moment().add(view == "week" ? 1 : 0, "day").format(formats[`${view}Format`])
     this.setInterval(thisInterval)
+  }
+
+  getNewEvents() {
+    this.props.dispatch(fetchEvents())
+    this.props.dispatch(fetchEvents("amelia@polygraph.cool"))
   }
 
   renderPanelControls() {
@@ -134,11 +140,14 @@ class Calendar extends Component {
           Today
         </Button>
       }
-      <RadioGroup className="Calendar--view-radio-group"
-                  options={buttons}
-                  value={view}
-                  onSelect={this.setView}
-      />
+      <div className="Calendar__right-buttons">
+        <Button onClick={this.getNewEvents.bind(this)}>↻</Button>
+        <RadioGroup className="Calendar--view-radio-group"
+                    options={buttons}
+                    value={view}
+                    onSelect={this.setView}
+        />
+      </div>
     </div>
   }
 

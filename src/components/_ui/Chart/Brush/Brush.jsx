@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import d3 from "d3"
 import Axis from "./../Axis/Axis"
@@ -32,7 +33,7 @@ class Brush extends Component {
 
     let brush = d3.svg.brush()
       .x(xScale)
-      .on("brush", ::this.onBrush)
+      .on("brush", this.onBrush.bind(this))
 
     this.setState({brush: brush})
   }

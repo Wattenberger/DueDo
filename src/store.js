@@ -2,8 +2,9 @@ import {createStore, applyMiddleware, combineReducers} from 'redux'
 // import {combineReducers} from 'redux-immutablejs'
 import {mapValues} from 'lodash'
 import thunkMiddleware from 'redux-thunk'
-import logger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import promiseMiddleware from 'redux-promise'
+import "regenerator-runtime"
 
 import {default as app} from "reducers/appReducer"
 import {default as modal} from "reducers/modalReducer"
@@ -18,7 +19,7 @@ import {default as calendar} from "reducers/calendarReducer"
 const functionsToJs = val => val && typeof val.toJS === "function"
   ? val.toJS()
   : val
-const loggerMiddleware = logger({
+const loggerMiddleware = createLogger({
   stateTransformer: state => mapValues(state, functionsToJs),
   predicate: (getState, action) => __DEV__,
   collapsed: true,

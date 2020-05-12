@@ -37,7 +37,7 @@ var executeRequest = (req) => {
   })
 }
 
-export async function fetchEvents() {
+export async function fetchEvents(calendarId="primary") {
   if (!gapi.auth) {
     await auth()
   }
@@ -46,33 +46,82 @@ export async function fetchEvents() {
   }
 
   let request = gapi.client.calendar.events.list({
-    'calendarId': 'primary',
-    'timeMax': moment().add(3, "month").format(),
-    'timeMin': moment().add(-3, "month").format(),
+    'calendarId': calendarId,
+    'timeMax': moment().add(2, "month").format(),
+    'timeMin': moment().add(-2, "month").format(),
     'showDeleted': false,
     'singleEvents': true,
-    'maxResults': 100,
+    'maxResults': 300,
     'orderBy': 'startTime'
   })
 
   let events = await(executeRequest(request))
-  return { type: POPULATE_CALENDAR_EVENTS, events }
+  return { type: POPULATE_CALENDAR_EVENTS, events, calendarId }
+}
+
+
+var loadClient = () => {
+  return new Promise(function(resolve, reject) {
+    gapi.load('client:auth2', () => resolve())
+  })
 }
 
 export async function auth() {
-  if (!gapi.auth) {
-    return setTimeout(auth, 1000)
-  }
-  gapi.auth.authorize({client_id: CLIENT_ID, scope: SCOPES, immediate: true});
-  gapi.client.setApiKey(API_KEY);
+  // if (!gapi.auth2) {
+  //   return setTimeout(auth, 1000)
+  // }
+  await loadClient()
+  await initClient()
 
-  gapi.client.setApiKey();
-  var auth = await(gapi.auth.authorize(
-    {
+  // gapi.auth2.authorize({client_id: CLIENT_ID, scope: SCOPES, immediate: true});
+  // gapi.client.init();
+  // gapi.client.setApiKey(API_KEY);
+
+  // const params = {
+  //   'api_key': API_KEY,
+  //   'client_id': CLIENT_ID,
+  //   'calendarId': 'primary',
+  // //   'calendar_id': 'wattenberger@gmail.com',
+  //   'scope': SCOPES.join(' '),
+  //   'immediate': true
+  // }
+  // var auth = await new Promise(async function(resolve, reject) {
+  //   await gapi.auth2.authorize(params, res => {
+  //     console.log(res)
+  //     resolve(res)
+  //   })
+  // })
+
+//   })
+//   var auth = await gapi.auth2.authorize(params)
+  return { type: REPLACE_AUTH, auth: 1 }
+}
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+  new Promise(function(resolve, reject) {
+    const params = {
+      'api_key': API_KEY,
       'client_id': CLIENT_ID,
+      'calendarId': 'primary',
+    //   'calendar_id': 'wattenberger@gmail.com',
       'scope': SCOPES.join(' '),
       'immediate': true
     }
-  ))
-  return { type: REPLACE_AUTH, auth: auth.access_token }
+
+    gapi.client.init(params)
+      .then(function (res) {
+        console.log(res)
+        // Listen for sign-in state changes.
+        // gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+        // Handle the initial sign-in state.
+        resolve(gapi.auth2.getAuthInstance().isSignedIn.get())
+      }, function(error) {
+        reject(error)
+      });
+  })
 }

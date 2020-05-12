@@ -2,11 +2,14 @@ var path = require("path")
 var webpack = require("webpack")
 var _ = require("lodash")
 var config = require("../src/config/config")
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const srcPath    = path.resolve(__dirname, "../src")
 const assetsPath = path.resolve(__dirname, "../dist")
+const staticPath = path.resolve(__dirname, "../static")
 
 module.exports = {
+  mode: "production",
   entry: {
     "main": [
       "./src/client.js"
@@ -52,5 +55,9 @@ module.exports = {
       "__DEV__" : JSON.stringify(process.env.NODE_ENV === "development"),
       "__PROD__": JSON.stringify(process.env.NODE_ENV === "production")
     }),
+
+    new CopyWebpackPlugin([
+        { from: "static", to: "dist" }
+    ])
   ]
 }

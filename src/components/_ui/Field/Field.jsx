@@ -1,10 +1,12 @@
-import React, {Component, PropTypes} from "react"
-import ReactDOM from 'react-dom'
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
+import * as ReactDOM from 'react-dom'
 import classNames from "classnames"
 import _ from "lodash"
 import {KEYS} from 'components/_ui/Keypress/Keypress'
 import Flex from "components/_ui/Flex/Flex"
 import Select from "react-select"
+import Creatable from 'react-select/creatable'
 import Toggle from "components/_ui/Toggle/Toggle"
 import DateInput from "./DateInput/DateInput"
 
@@ -65,8 +67,12 @@ class Field extends Component {
   }
 
   onSelectChange = (newVal) => {
+    console.log(newVal)
     // this.props.onChange(newVal)
-    this.props.onChange(_.map(newVal, "value"))
+    const parsedVal = newVal.map
+      ? newVal.map(d => d.value)
+      : newVal.value
+    this.props.onChange(parsedVal)
   }
 
   onToggleChange = (newVal, e) => {
@@ -96,13 +102,18 @@ class Field extends Component {
 
   renderSelect() {
     let {value, options, fieldOptions} = this.props
-    const Component = fieldOptions.allowCreate ? Select.Creatable : Select
+    const Component = fieldOptions.allowCreate ? Creatable : Select
     fieldOptions.showNewOptionAtTop = false
     fieldOptions.tabSelectsValue = false
+    const parsedValue = fieldOptions.isMulti
+      ? (value || []).map(value => (
+        options.find(d => d.value == value) || {}
+      ))
+      : options.find(d => d.value == value) || {}
 
     return <Component
         name="select"
-        value={value}
+        value={parsedValue}
         clearable={false}
         options={options}
         showNewOptionAtTop={false}
@@ -110,6 +121,8 @@ class Field extends Component {
         shouldKeyDownEventCreateNewOption={({ keyCode }) => keyCode == KEYS.enter}
         {...fieldOptions}
         onChange={this.onSelectChange}
+        className="Select"
+        classNamePrefix="Select"
       />
   }
 

@@ -26,11 +26,28 @@ function googleCalendar(state = initialState, action) {
   switch (action.type) {
     case "REPLACE_AUTH":
       return state.set('auth', action.auth)
-    case "POPULATE_CALENDAR_EVENTS":
-      let {ongoing, oneDay} = separateOngoingEvents(action.events)
+    case "CLEAR_CALENDAR_EVENTS":
       return state
-        .set('events', oneDay)
+        .set('events', initialState.events)
+        .set('ongoing', initialState.ongoing)
+    case "POPULATE_CALENDAR_EVENTS":
+      let newEvents = separateOngoingEvents(action.events)
+      const events = [
+        ...(state.events || []).filter(d => d.calendarId == calendarId),
+        ...(newEvents.oneDay || []).map(d => ({...d, calendarId: action.calendarId}))
+      ]
+      const ongoing = [
+        ...(state.ongoing || []).filter(d => d.calendarId == calendarId),
+        ...(newEvents.ongoing || []).map(d => ({...d, calendarId: action.calendarId}))
+      ]
+      return state
+        .set('events', events)
         .set('ongoing', ongoing)
+    case "ADD_CALENDAR_EVENTS":
+      let additionalEvents = separateOngoingEvents(action.events)
+      return state
+        .set('events', additionalEvents.oneDay)
+        .set('ongoing', additionalEvents.ongoing)
     default:
       return state
   }

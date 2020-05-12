@@ -1,8 +1,11 @@
 import React, {Component} from "react"
 import classNames from "classnames"
 import {connect} from "react-redux"
-import {DragDropContext} from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
+
+// import {DragDropContext} from 'react-dnd'
+// import HTML5Backend from 'react-dnd-html5-backend'
 import {changePanel} from 'actions/panelActions'
 import ResizableComponent from 'components/_ui/ResizableComponent/ResizableComponent';
 import Modal from "components/_shared/Modal/Modal"
@@ -28,7 +31,7 @@ const resizableComponentOptions = {
   minWidth: 150
 }
 
-@DragDropContext(HTML5Backend)
+// @DragDropContext(HTML5Backend)
 @connect(state => ({
   panels: state.panels.toJS()
 }))
@@ -45,6 +48,7 @@ class Panels extends Component {
 
   retrieveEvents = () => {
     this.props.dispatch(fetchEvents())
+    this.props.dispatch(fetchEvents("amelia@polygraph.cool"))
   }
 
   renderPanel(side) {
@@ -66,19 +70,21 @@ class Panels extends Component {
     const initialWidth = window.innerWidth * initPanelRatio
 
     return (
-      <div className={this.getClassName()}>
-        <Modal id="taskForm" component={TaskForm} />
-        <ResizableComponent
-          height="100%"
-          width={initialWidth}
-          options={resizableComponentOptions}
-          direction="e"
-          onDuringResize={this.onDuringResize}
-        >
-          {this.renderPanel('left')}
-        </ResizableComponent>
-        {this.renderPanel('right')}
-      </div>
+      <DndProvider backend={Backend}>
+        <div className={this.getClassName()}>
+          <Modal id="taskForm" component={TaskForm} />
+          <ResizableComponent
+            height="100%"
+            width={initialWidth}
+            options={resizableComponentOptions}
+            direction="e"
+            onDuringResize={this.onDuringResize}
+          >
+            {this.renderPanel('left')}
+          </ResizableComponent>
+          {this.renderPanel('right')}
+        </div>
+      </DndProvider>
     )
   }
 }

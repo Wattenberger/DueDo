@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import numeral from "numeral"
 import {flatten, clone, isDate} from "lodash"
@@ -240,7 +241,7 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    this._setSize = ::this.setSize
+    this._setSize = this.setSize.bind(this)
     this._setSize()
     window.addEventListener("resize", this._setSize)
     setTimeout(() => {
@@ -340,7 +341,7 @@ class Chart extends Component {
         xScale={brushXScale}
         xAxisFormatting={xAxisFormatting}
         transitionDuration={transitionDuration}
-        onChange={::this.onBrush}/>
+        onChange={this.onBrush.bind(this)}/>
     </g>
   }
 
@@ -356,7 +357,7 @@ class Chart extends Component {
         xAxisFormatting={xAxisFormatting}
         renderTooltip={renderTooltip}
         hoveredPoint={hoveredPoint}
-        onTooltipChange={::this.setHoveredPoint}
+        onTooltipChange={this.setHoveredPoint.bind(this)}
     />
     </div>
   }

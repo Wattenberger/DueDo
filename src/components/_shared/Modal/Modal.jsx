@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import _ from "lodash"
 import {connect} from "react-redux"
@@ -8,10 +9,21 @@ import {closeModal} from "actions/modalActions"
 
 require('./Modal.scss')
 
+ReactModal.setAppElement('#modals')
+
 @connect(state => ({
   openModal: state.modal.get('open')
 }))
 class Modal extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+
   static propTypes = {
     component: PropTypes.func,
     id: PropTypes.string,
@@ -20,6 +32,10 @@ class Modal extends Component {
 
   static defaultProps = {
     onClose: _.noOp
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo)
   }
 
   getClassName() {
@@ -48,7 +64,10 @@ class Modal extends Component {
 
   render() {
     let {id, openModal} = this.props
+    let {hasError} = this.state
     let isOpen = openModal === id
+
+    if (hasError) return null
 
     return isOpen && <ReactModal
           className={this.getClassName()}

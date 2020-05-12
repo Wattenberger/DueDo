@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import d3 from "d3"
 
@@ -43,7 +44,7 @@ class Bars extends Component {
       .attr("x", 1)
       .attr("width", barWidth)
       .attr("height", d => height - yScale(d.yVal))
-      .on("click", ::this.onBarClick)
+      .on("click", this.onBarClick.bind(this))
 
     bar.attr("transform", d => `translate(${xScale(d.xVal) - (barWidth / 2)},${yScale(d.yVal)})`)
 

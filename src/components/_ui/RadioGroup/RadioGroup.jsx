@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import {isObject} from "lodash"
 
@@ -48,7 +49,7 @@ class RadioGroup extends Component {
   }
 
   renderClear() {
-    return <div className="RadioGroup__option RadioGroup__clear" onClick={::this.props.onClear}>x</div>
+    return <div className="RadioGroup__option RadioGroup__clear" onClick={this.props.onClear.bind(this)}>x</div>
   }
 
   render() {
@@ -56,8 +57,8 @@ class RadioGroup extends Component {
 
     return (
       <div className={this.getClassName()}>
-        {options.map(::this.renderOption)}
-        {clear && ::this.renderClear()}
+        {options.map(this.renderOption.bind(this))}
+        {clear && this.renderClear.bind(this)()}
       </div>
     )
   }

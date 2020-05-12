@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
 import classNames from "classnames"
+import Panels from "components/Panels/Panels"
 
 require('styles/app.scss')
 require('./App.scss')
@@ -14,6 +15,7 @@ class App extends Component {
   render() {
     return (
       <div className={this.getClassName()}>
+        <Panels />
         {this.props.children}
       </div>
     )

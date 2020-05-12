@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import {findDOMNode} from "react-dom"
 import classNames from "classnames"
 import {clone, isDate, filter, merge} from "lodash"
@@ -96,8 +97,8 @@ class ChartTooltip extends Component {
 
   componentDidMount() {
     d3.select(findDOMNode(this.refs.eventListenerDiv))
-      .on("mousemove", ::this.updateTooltip)
-      .on("mouseout", ::this.hideTooltip)
+      .on("mousemove", this.updateTooltip.bind(this))
+      .on("mouseout", this.hideTooltip.bind(this))
   }
 
   getClassName() {

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import {connect} from "react-redux"
 import moment from "moment"
@@ -14,7 +15,7 @@ import {closeModal} from "actions/modalActions"
 import {changePanel} from 'actions/panelActions'
 import {dateFormat, createTask, changeFormField, submitForm} from 'actions/taskActions'
 
-require('react-select/dist/react-select.min.css')
+// require('react-select/dist/react-select.min.css')
 require('./TaskForm.scss')
 
 const typeOptions = [
@@ -64,8 +65,8 @@ class TaskForm extends Component {
       {slug: "Goal--Index", label: "Index", type: "number", fieldOptions: {positive: true}, mustHaveType: "goal"},
       {slug: "Goal--Interval", label: "Interval", type: "toggle", options: goalIntervalOptions, mustHaveType: "goal"},
       {slug: "Description", type: "textarea", mustHaveType: taskTypes},
-      {slug: "Tags", type: "select", options: this.getOptions("Tags"), fieldOptions: {multi: true, allowCreate: true, promptTextCreator: label => `Make a new tag "${label}"`}, mustHaveType: taskTypes},
-      {slug: "Contexts", type: "select", options: this.getOptions("Contexts"), fieldOptions: {multi: true, allowCreate: true, promptTextCreator: label => `Make a new context "${label}"`}, mustHaveType: taskTypes},
+      {slug: "Tags", type: "select", options: this.getOptions("Tags"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Make a new tag "${label}"`}, mustHaveType: taskTypes},
+      {slug: "Contexts", type: "select", options: this.getOptions("Contexts"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Make a new context "${label}"`}, mustHaveType: taskTypes},
       {slug: "When", type: "date", fieldOptions: {dateFormat: dateFormat.form}, mustHaveType: ["task", "bucketlist"]},
       {slug: "Done", type: "date", fieldOptions: {dateFormat: dateFormat.form}, mustHaveType: ["task", "bucketlist"]},
       {slug: "Blocked", type: "checkbox", mustHaveType: taskTypes},
@@ -82,7 +83,7 @@ class TaskForm extends Component {
 
   getOptions(field) {
     let {form} = this.props
-    return Object.keys(this.props[field]).map((key, val) => ({
+    return Object.keys(this.props[field]).map(key => ({
       label: this.props[field][key],
       value: key
     })).concat((form[field] || [])

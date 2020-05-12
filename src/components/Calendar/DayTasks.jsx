@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import {connect} from "react-redux"
 import _ from "lodash"
@@ -61,7 +62,10 @@ class DayTasks extends Component {
     let {day, detailed} = this.props
 
     return <div className={getDayItemClassNames("event", event, day, "DayTasks__event")} key={event.id}>
-              {detailed && <span className="DayView__event__time">{moment(event.start.dateTime).format("h:mm A")}</span>}
+              {/* {detailed && <span className="DayView__event__time">{moment(event.start.dateTime).format("h:mm A")}</span>} */}
+              <span className="DayView__event__time">
+                {formatDate(event.start.dateTime)}
+              </span>
               {event.summary}
             </div>
   }
@@ -91,3 +95,9 @@ class DayTasks extends Component {
 }
 
 export default DayTasks
+
+const formatDate = date => (
+  !+moment(date).format("mm")
+    ? moment(date).format("H")
+    : moment(date).format("H:mm")
+)

@@ -1,6 +1,7 @@
 import WebpackDevServer from "webpack-dev-server"
 import webpack from "webpack"
 import config from "./webpack.config.dev"
+import "babel-polyfill"
 import path from "path"
 
 const WEBPACK_HOST = process.env.HOST                  || "0.0.0.0"

@@ -23,7 +23,7 @@
   }
 
   &__event {
-    margin: 7px 0 0 0;
+    margin: 0.9em 0 0 0;
     color: $gray_dark;
 
     &__ongoing {
@@ -32,7 +32,7 @@
 
     &__time {
       display: inline-block;
-      width: 5em;
+      width: 3.2em;
       font-weight: 900;
       padding-right: 0.3em;
       color: $accent-2;

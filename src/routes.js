@@ -1,23 +1,24 @@
 import React, {Component} from "react"
-import {Router, Route, Redirect, IndexRedirect} from "react-router"
+import {Router, Route, Redirect} from "react-router"
 // import appHistory from "./appHistory"
-import {browserHistory} from "react-router"
+import {BrowserRouter} from "react-router-dom"
+import "babel-polyfill"
 
 import App from "components/App/App"
-import Home from "components/Home/Home"
-import Panels from "components/Panels/Panels"
+// import Home from "components/Home/Home"
+// import Panels from "components/Panels/Panels"
 
 class Routes extends Component {
   render() {
     return (
-      <Router history={browserHistory}>
-        <Route path="/" component={App}>
-          <IndexRedirect to="home" />
-          <Route path="home" component={Home} />
-          <Route path="tasks" component={Panels} />
-        </Route>
-        <Redirect from="*" to="home" />
-      </Router>
+      <BrowserRouter>
+        <div>
+          <Route path="/" component={App} />
+          {/* <Route path="tasks" component={Panels} />
+          <Route path="home" component={Home} /> */}
+          {/* <Redirect from="*" to="home" /> */}
+        </div>
+      </BrowserRouter>
     )
   }
 }

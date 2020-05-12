@@ -1,12 +1,15 @@
-// Edited from https://github.com/wongherlung/react-resizable-component/blob/master/src/ResizableComponent.jsx
+// Edited from https://github.com/wongherlung/react-resizable-component/blob/master/src/ResizableComponent.js
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react';
+import { render, findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 
-var ResizableComponent = React.createClass({
-	getInitialState: function() {
-		return {
-			// Mouse events
+class ResizableComponent extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      // Mouse events
 			mouseHeldDown: false,
 			originalY: 0,
 			originalX: 0,
@@ -17,15 +20,15 @@ var ResizableComponent = React.createClass({
 			initialBoxWidth: this.props.width,
 			boxHeight: this.props.height,
 			boxWidth: this.props.width,
-			minHeight: this.props.options.minHeight ? this.props.options.minHeight : this.props.height,
-			minWidth: this.props.options.minWidth ? this.props.options.minWidth : this.props.width,
-			maxHeight: this.props.options.maxHeight ? this.props.options.maxHeight : Infinity,
-			maxWidth: this.props.options.maxWidth ? this.props.options.maxWidth : Infinity,
-			lockAspectRatio: this.props.options.lockAspectRatio ? this.props.options.lockAspectRatio : false,
-			fullWidth: this.props.options.fullWidth ? this.props.options.fullWidth : false,
+			minHeight: this.props.options.minHeight || this.props.height,
+			minWidth: this.props.options.minWidth || this.props.width,
+			maxHeight: this.props.options.maxHeight || Infinity,
+			maxWidth: this.props.options.maxWidth || Infinity,
+			lockAspectRatio: this.props.options.lockAspectRatio || false,
+			fullWidth: this.props.options.fullWidth || false,
 
 			// Stepping of resizing
-			step: this.props.options.step ? this.props.options.step : 1,
+			step: this.props.options.step || 1,
 			currStepY: 0,
 			currStepX: 0,
 			steppingMargin: this.props.steppingMargin,
@@ -33,75 +36,29 @@ var ResizableComponent = React.createClass({
 			originalBoxHeight: this.props.height,
 
 			// Width of resizable handle
-			cursorMargin: this.props.options.cursorMargin ? this.props.options.cursorMargin : this.props.cursorMargin,
+			cursorMargin: this.props.options.cursorMargin || this.props.cursorMargin,
 
 			// Ghost Resizing
-			allowGhostResize: this.props.options.allowGhostResize ? this.props.options.allowGhostResize : false
-		};
-	},
+			allowGhostResize: this.props.options.allowGhostResize || false
+    };
+  }
 
-	propTypes: {
-		children: React.PropTypes.element.isRequired,
-		direction: React.PropTypes.oneOf(['s', 'e', 'se']),
+	componentDidMount() {
+    var _this = this;
 
-		// Dimensions
-		width: React.PropTypes.number,
-		height: React.PropTypes.oneOfType([
-			React.PropTypes.number,
-			React.PropTypes.string,
-		]),
+    findDOMNode(this).parentNode.addEventListener('mousemove', (e) => {
+      _this._resizeDiv(e);
+    });
+    findDOMNode(this).parentNode.addEventListener('mouseup', (e) => {
+      _this._stopDrag(e);
+    });
+    findDOMNode(this).parentNode.addEventListener('mouseleave', (e) => {
+      _this._stopDrag(e);
+    });
+	}
 
-		// Styling
-		cssStyles: React.PropTypes.object,
-		ghostCssStyles: React.PropTypes.object,
-
-		// Callbacks
-		onStartResize: React.PropTypes.func,
-		onStopResize: React.PropTypes.func,
-		onEachStep: React.PropTypes.func,
-		onDuringResize: React.PropTypes.func,
-
-		// Other options
-		options: React.PropTypes.object
-	},
-
-	getDefaultProps: function() {
-		return {
-			options: {},
-			direction: 's',
-
-			height: 50,
-			width: 250,
-
-			steppingMargin: 20,
-			cursorMargin: 10
-		};
-	},
-
-	componentDidMount: function() {
-	    var _this = this;
-	    var parentAttrName = ReactDOM.findDOMNode(this).parentNode.attributes[0].name;
-	    var parentAttrValue = ReactDOM.findDOMNode(this).parentNode.attributes[0].value;
-
-	    if (ReactDOM.findDOMNode(this).parentNode.attributes.length > 1) {
-			parentAttrName = ReactDOM.findDOMNode(this).parentNode.attributes[1].name;
-			parentAttrValue = ReactDOM.findDOMNode(this).parentNode.attributes[1].value;
-		}
-
-	    // Attaches event listeners to parent div
-	    document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').addEventListener('mousemove', (e) => {
-	      _this._resizeDiv(e);
-	    });
-	    document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').addEventListener('mouseup', (e) => {
-	      _this._stopDrag(e);
-	    });
-	    document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]').addEventListener('mouseleave', (e) => {
-	      _this._stopDrag(e);
-	    });
-	},
-
-	_startDrag: function(e) {
-		// this.makeParentHighlightable(false);
+	_startDrag = (e) => {
+		this.makeParentHighlightable(false);
 		this.setState({
 			mouseHeldDown: true,
 			originalY: e.clientY,
@@ -112,10 +69,10 @@ var ResizableComponent = React.createClass({
 				(this.state.boxHeight - this.state.originalBoxHeight) / this.state.step
 			);
 		});
-	},
+	}
 
-	_stopDrag: function(e) {
-    	// this.makeParentHighlightable(true);
+	_stopDrag = (e) => {
+    this.makeParentHighlightable(true);
 		// Only invoke onStopResize if this component has started resizing
 		if (this.state.mouseHeldDown && this.props.onStopResize) {
 			this.props.onStopResize(
@@ -139,9 +96,9 @@ var ResizableComponent = React.createClass({
 			});
 		}
 
-	},
+	}
 
-	_resizeDiv: function(e) {
+	_resizeDiv = (e) => {
 		if (this.state.mouseHeldDown) {
 			var distanceY = e.clientY - this.state.originalY;
 			var distanceX = e.clientX - this.state.originalX;
@@ -209,10 +166,10 @@ var ResizableComponent = React.createClass({
 			});
 
     	}
-	},
+	}
 
 	// Styles the resize handler according to the direction given
-	getResizeHandlerStyle: function() {
+	getResizeHandlerStyle = () => {
 		var resizeHandlerStyle = {};
 
 		if (this.state.direction === 's') {
@@ -250,29 +207,16 @@ var ResizableComponent = React.createClass({
 
 		resizeHandlerStyle['zIndex'] = 1;
 		return resizeHandlerStyle;
-	},
+	}
 
 	// Helper function to make the all components in parent non-highlight-able
-	makeParentHighlightable: function(highlight) {
-		var _this = this;
-		var parentAttrName = ReactDOM.findDOMNode(this).parentNode.attributes[0].name;
-		var parentAttrValue = ReactDOM.findDOMNode(this).parentNode.attributes[0].value;
+	makeParentHighlightable = (highlight) => {
+    findDOMNode(this).parentNode.style.userSelect = highlight ? 'all' : 'none';
+    findDOMNode(this).parentNode.style.mozUserSelect = highlight ? 'all' : 'none';
+    findDOMNode(this).parentNode.style.webkitUserSelect = highlight ? 'all' : 'none';
+	}
 
-		if (ReactDOM.findDOMNode(this).parentNode.attributes.length > 1) {
-			parentAttrName = ReactDOM.findDOMNode(this).parentNode.attributes[1].name;
-			parentAttrValue = ReactDOM.findDOMNode(this).parentNode.attributes[1].value;
-		}
-
-		// Attaches event listeners to parent div
-		var state = highlight ? 'all' : 'none';
-		var elem = document.querySelector('[' + parentAttrName + '="' + parentAttrValue + '"]');
-		if (!elem) return;
-		elem.style.userSelect = state;
-		elem.style.mozUserSelect = state;
-		elem.style.webkitUserSelect = state;
-	},
-
-	render: function() {
+	render() {
 		var outerDivStyle = {
 			backgroundColor: 'transparent',
 			width: (!this.state.allowGhostResize) ? this.state.boxWidth + 'px' :
@@ -283,8 +227,8 @@ var ResizableComponent = React.createClass({
 		};
 
 		// Merge in any custom styles and overwrite existing styles (if any)
-		if (this.props.cssStyles) {
-			var customStyles = this.props.cssStyles;
+		if (this.props.style) {
+			var customStyles = this.props.style;
 			for (var prop in customStyles) outerDivStyle[prop] = customStyles[prop];
 		}
 
@@ -312,12 +256,46 @@ var ResizableComponent = React.createClass({
 			highlightDiv = <div className="ghostDiv" style={ghostDivStyles}></div>;
 		}
 
-		return <div className="outer-box-container" style={outerDivStyle}>
+		return <div className={this.props.className} style={outerDivStyle}>
 			{highlightDiv}
 			<div className="resize-handler" style={resizeHandlerStyle} onMouseDown={this._startDrag}></div>
 			{this.props.children}
 		</div>;
 	}
-});
+}
 
-module.exports = ResizableComponent;
+ResizableComponent.defaultProps = {
+  options: {},
+  direction: 's',
+
+  height: 50,
+  width: 250,
+
+  steppingMargin: 20,
+  cursorMargin: 10
+};
+
+ResizableComponent.propTypes = {
+  children: PropTypes.element.isRequired,
+  direction: PropTypes.oneOf(['s', 'e', 'se']),
+
+  // Dimensions
+  width: PropTypes.number,
+  height: PropTypes.number,
+
+  // Styling
+  className: PropTypes.string,
+  style: PropTypes.object,
+  ghostCssStyles: PropTypes.object,
+
+  // Callbacks
+  onStartResize: PropTypes.func,
+  onStopResize: PropTypes.func,
+  onEachStep: PropTypes.func,
+  onDuringResize: PropTypes.func,
+
+  // Other options
+  options: PropTypes.object
+}
+
+export default ResizableComponent;

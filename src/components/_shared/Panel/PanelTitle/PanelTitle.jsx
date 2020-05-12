@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react"
+import React, {Component} from "react"
+import PropTypes from 'prop-types';
 import classNames from "classnames"
 import {connect} from "react-redux"
 import Flex from "components/_ui/Flex/Flex"
@@ -7,7 +8,7 @@ import {panelsList} from "reducers/panelsReducer"
 
 import {changePanel} from 'actions/panelActions'
 
-require('react-select/dist/react-select.min.css')
+// require('react-select/dist/react-select.min.css')
 require('./PanelTitle.scss')
 
 @connect(state => ({
