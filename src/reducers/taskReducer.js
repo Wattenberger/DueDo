@@ -9,6 +9,7 @@ const initialState = Immutable.Map({
   bucketlist: Immutable.List(),
   tags: Immutable.List(),
   contexts: Immutable.List(),
+  projects: Immutable.List(),
   filters: Immutable.Map({
     Type: "task",
     Done: false,
@@ -34,6 +35,8 @@ function tasks(state = initialState, action) {
       return state.set('tags', action.tags)
     case "REPLACE_CONTEXTS":
       return state.set('contexts', action.contexts)
+    case "REPLACE_PROJECTS":
+      return state.set('projects', action.projects)
     case "REPLACE_FORM":
       return state
         .set('form', Immutable.Map(action.fields))
@@ -48,6 +51,12 @@ function tasks(state = initialState, action) {
       return state.setIn(['filters', action.field], undefined)
     case "CHANGE_FORM_FIELD":
       return state.setIn(['form', action.field], action.newVal)
+    case "CREATE_NEW_OPTION":
+      const newList = {
+        ...state.get(action.field) || [],
+        [action.id]: action.name,
+      }
+      return state.set(action.field, newList)
     default:
       return state
   }

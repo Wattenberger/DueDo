@@ -14,6 +14,7 @@ require('./TasksFilter.scss')
   filters: state.tasks.get('filters').toJS(),
   tags: state.tasks.get('tags'),
   contexts: state.tasks.get('contexts'),
+  projects: state.tasks.get('projects'),
 }))
 class TasksFilter extends Component {
   static propTypes = {

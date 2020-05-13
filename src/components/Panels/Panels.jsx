@@ -33,7 +33,8 @@ const resizableComponentOptions = {
 
 // @DragDropContext(HTML5Backend)
 @connect(state => ({
-  panels: state.panels.toJS()
+  panels: state.panels.toJS(),
+  auth: state.googleCalendar.get("auth"),
 }))
 class Panels extends Component {
   getClassName() {
@@ -42,13 +43,16 @@ class Panels extends Component {
 
   componentDidMount = async () => {
     await(this.props.dispatch(auth()))
-    this.retrieveEvents()
-    setTimeout(this.retrieveEvents, 1000 * 60 * 5)
   }
 
   retrieveEvents = () => {
     this.props.dispatch(fetchEvents())
     this.props.dispatch(fetchEvents("amelia@polygraph.cool"))
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.auth || !this.props.auth) return
+    this.retrieveEvents()
   }
 
   renderPanel(side) {

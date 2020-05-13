@@ -67,7 +67,6 @@ class Field extends Component {
   }
 
   onSelectChange = (newVal) => {
-    console.log(newVal)
     // this.props.onChange(newVal)
     const parsedVal = newVal.map
       ? newVal.map(d => d.value)
@@ -107,9 +106,9 @@ class Field extends Component {
     fieldOptions.tabSelectsValue = false
     const parsedValue = fieldOptions.isMulti
       ? (value || []).map(value => (
-        options.find(d => d.value == value) || {}
+        (options || []).find(d => d.value == value) || {label: value, value}
       ))
-      : options.find(d => d.value == value) || {}
+      : (options || []).find(d => d.value == value) || {label: value, value}
 
     return <Component
         name="select"

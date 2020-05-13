@@ -70,8 +70,10 @@
   }
   &__text {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    // justify-content: space-between;
+    // align-items: center;
+    color: white;
     flex: 1;
     width: 100%;
   }
@@ -122,6 +124,16 @@
       font-weight: 400;
       margin-left: auto;
       text-align: right;
+    }
+
+    &__project {
+      font-size: 0.7em;
+      opacity: 0.6;
+      line-height: 1em;
+      margin-bottom: 0.5em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   &__context-marker {

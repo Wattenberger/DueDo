@@ -72,19 +72,16 @@ export async function auth() {
   // }
   await loadClient()
   await initClient()
+  const isLoggedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
+
+  if (!isLoggedIn) {
+    const auth = await gapi.auth2.getAuthInstance().signIn()
+  }
 
   // gapi.auth2.authorize({client_id: CLIENT_ID, scope: SCOPES, immediate: true});
   // gapi.client.init();
   // gapi.client.setApiKey(API_KEY);
 
-  // const params = {
-  //   'api_key': API_KEY,
-  //   'client_id': CLIENT_ID,
-  //   'calendarId': 'primary',
-  // //   'calendar_id': 'wattenberger@gmail.com',
-  //   'scope': SCOPES.join(' '),
-  //   'immediate': true
-  // }
   // var auth = await new Promise(async function(resolve, reject) {
   //   await gapi.auth2.authorize(params, res => {
   //     console.log(res)
@@ -94,7 +91,7 @@ export async function auth() {
 
 //   })
 //   var auth = await gapi.auth2.authorize(params)
-  return { type: REPLACE_AUTH, auth: 1 }
+  return { type: REPLACE_AUTH, auth: true }
 }
 
 /**
@@ -114,12 +111,11 @@ function initClient() {
 
     gapi.client.init(params)
       .then(function (res) {
-        console.log(res)
         // Listen for sign-in state changes.
         // gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
         // Handle the initial sign-in state.
-        resolve(gapi.auth2.getAuthInstance().isSignedIn.get())
+        resolve()
       }, function(error) {
         reject(error)
       });

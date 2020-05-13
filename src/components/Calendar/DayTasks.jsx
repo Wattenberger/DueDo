@@ -14,6 +14,7 @@ const weekends = ["Fr", "Sa", "Su"]
 @connect(state => ({
   tasks: state.tasks.get('list'),
   habits: state.tasks.get('habits'),
+  projects: state.tasks.get('projects'),
   events: state.googleCalendar.get('events'),
   ongoing: state.googleCalendar.get('ongoing'),
 }))
@@ -33,15 +34,25 @@ class DayTasks extends Component {
   }
 
   renderTask = (task, idx) => {
-    let {day, detailed} = this.props
+    let {day, detailed, projects} = this.props
 
-    return detailed ? <Task className={getDayItemClassNames("task", task, day, "DayView__task")}
-                            task={task}
-                            dayContext={day}
-                            key={task.id} />
-                    : <div className={getDayItemClassNames("task", task, day, "DayTasks__task")} key={task.id}>
-                        {task.fields.Title}
-                      </div>
+    return detailed ? (
+      <Task
+        className={getDayItemClassNames("task", task, day, "DayView__task")}
+        task={task}
+        dayContext={day}
+        key={task.id} />
+    ) : (
+      <div
+        className={getDayItemClassNames("task", task, day, "DayTasks__task")} key={task.id}>
+          {!!task.fields.Project && !!task.fields.Project.length && (
+            <div className="DayTasks__task__project">
+              { task.fields.Project.map(d => projects[d] || d).join(",") }
+            </div>
+          )}
+        {task.fields.Title}
+      </div>
+    )
   }
 
   renderHabit = (habit, idx) => {

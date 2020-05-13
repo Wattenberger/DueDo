@@ -14,6 +14,7 @@ const filters = [
   {field: "Title", type: "text"},
   {field: "Tags", type: "select"},
   {field: "Contexts", type: "select"},
+  {field: "Project", type: "select"},
   {field: "Done", type: "checkbox"}
 ]
 

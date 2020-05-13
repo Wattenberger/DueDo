@@ -33,7 +33,8 @@ const dragConfig = {
 }))
 @connect(state => ({
   tags: state.tasks.get('tags'),
-  contexts: state.tasks.get('contexts')
+  contexts: state.tasks.get('contexts'),
+  projects: state.tasks.get('projects'),
 }))
 class Task extends Component {
   constructor(props) {
@@ -112,7 +113,7 @@ class Task extends Component {
     const isToday = moment(fields.When).isSame(now, "day")
 
     const buttons = [
-      {icon: "🍅", label: "Pomodoro", onClick: this.startPomodoro, exists: !isDone},
+      {icon: "🍅", label: "", onClick: this.startPomodoro, exists: !isDone},
       {icon: "⏰", label: "Move to today", onClick: this.moveTaskToToday, exists: this.isScheduled() && !isToday},
       {icon: "🗑", label: "Delete", onClick: this.deleteTask, exists: true},
       {icon: "✓", label: fields.Type == "habit" ? "Done" : "Finish", onClick: this.finishTask, exists: !isDone},
@@ -148,7 +149,7 @@ class Task extends Component {
   }
 
   render() {
-    let {task, contexts, dayContext, connectDragSource} = this.props
+    let {task, contexts, projects, dayContext, connectDragSource} = this.props
     let {fields} = task
     let {expanded} = this.state
 
@@ -158,6 +159,9 @@ class Task extends Component {
               direction="row"
               onClick={this.editTask}>
           <div className="Task__text">
+            {!!fields.Project && (
+              <div className="Task__title__project">{fields.Project.map(d => projects[d] || d).join(",")}</div>
+            )}
             <div className="Task__title">
               <div className="Task__title__title">{fields.Title}</div>
               {this.isScheduled() &&

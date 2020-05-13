@@ -38,6 +38,9 @@ const airtableAPI = {
   fetchContexts() {
     return fetch(`${API_ROOT}/contexts?${expandParams(params)}`)
   },
+  fetchProjects() {
+    return fetch(`${API_ROOT}/projects?${expandParams(params)}`)
+  },
   createTask(fields) {
     return fetch(`${API_ROOT}/Tasks?${expandParams(params)}`, {
       method: "POST",

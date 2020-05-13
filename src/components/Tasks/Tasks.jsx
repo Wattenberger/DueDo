@@ -11,7 +11,7 @@ import Task from "./Task/Task"
 import TasksFilters from "./TasksFilters/TasksFilters"
 import Pomodoro from "components/Pomodoro/Pomodoro"
 
-import {addNewTask, getTasks, updateTasks, getTags, getContexts, changeFormField} from "actions/taskActions"
+import {addNewTask, getTasks, updateTasks, getTags, getContexts, getProjects, changeFormField} from "actions/taskActions"
 import {airtableDateFormat} from "api/airtableAPI"
 
 require('./Tasks.scss')
@@ -29,6 +29,7 @@ class Tasks extends Component {
     })
     this.props.dispatch(getTags())
     this.props.dispatch(getContexts())
+    this.props.dispatch(getProjects())
   }
 
   getClassName() {

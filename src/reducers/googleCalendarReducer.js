@@ -17,7 +17,7 @@ const separateOngoingEvents = events => {
 }
 
 const initialState = Immutable.Map({
-  auth: Immutable.Map(),
+  auth: false,
   events: Immutable.List(),
   ongoing: Immutable.List(),
 })
@@ -33,12 +33,12 @@ function googleCalendar(state = initialState, action) {
     case "POPULATE_CALENDAR_EVENTS":
       let newEvents = separateOngoingEvents(action.events)
       const events = [
-        ...(state.events || []).filter(d => d.calendarId == calendarId),
-        ...(newEvents.oneDay || []).map(d => ({...d, calendarId: action.calendarId}))
+        ...(state.get("events") || []).filter(d => d.calendarId != action.calendarId),
+        ...(newEvents.oneDay || []).map(d => ({...d, calendarId: action.calendarId})),
       ]
       const ongoing = [
-        ...(state.ongoing || []).filter(d => d.calendarId == calendarId),
-        ...(newEvents.ongoing || []).map(d => ({...d, calendarId: action.calendarId}))
+        ...(state.get("ongoing") || []).filter(d => d.calendarId != action.calendarId),
+        ...(newEvents.ongoing || []).map(d => ({...d, calendarId: action.calendarId})),
       ]
       return state
         .set('events', events)

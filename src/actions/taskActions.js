@@ -3,7 +3,7 @@ import moment from "moment"
 import _ from "lodash"
 import {openModal, closeModal} from "actions/modalActions"
 
-const taskTableFields = ["Title", "Description", "Tags", "When", "Contexts", "Poms", "Blocked", "Important", "Done", "Type", "Habit--Done", "Habit--DOW"]
+const taskTableFields = ["Title", "Description", "Tags", "When", "Contexts", "Project", "Poms", "Blocked", "Important", "Done", "Type", "Habit--Done", "Habit--DOW"]
 export const dateFormat = {
   form: airtableDateFormat,
   airtable: airtableDateFormat
@@ -16,6 +16,7 @@ export const dateFormat = {
 let REPLACE_TASKS = 'REPLACE_TASKS'
 let REPLACE_TAGS = 'REPLACE_TAGS'
 let REPLACE_CONTEXTS = 'REPLACE_CONTEXTS'
+let REPLACE_PROJECTS = 'REPLACE_PROJECTS'
 
 let CREATE_TASK = 'CREATE_TASK'
 let DELETE_TASK = 'DELETE_TASK'
@@ -78,6 +79,15 @@ export async function getContexts() {
   return { type: REPLACE_CONTEXTS, contexts }
 }
 
+export async function getProjects() {
+  let res = await(airtableAPI.fetchProjects())
+  var projects = {}
+  res.records.map(project => {
+    projects[project.id] = project.fields.Name
+  })
+  return { type: REPLACE_PROJECTS, projects }
+}
+
 export function createTask(fields) {
   return async (dispatch, getState) => {
     let res = await(airtableAPI.createTask(fields))
@@ -118,7 +128,7 @@ export function finishTask(task, dayContext) {
 export function createNewOption(slug, name) {
   return async (dispatch, getState) => {
     let res = await(airtableAPI.createNewOption(slug, name))
-    dispatch({ type: CREATE_NEW_OPTION, name: res })
+    dispatch({ type: CREATE_NEW_OPTION, name: res.fields.Name, id: res.id, field: slug })
     return res
   }
 }
@@ -144,12 +154,16 @@ export function changeFormField(field, newVal) {
 export function submitForm() {
   return async (dispatch, getState) => {
 
+    const parseOption = async (slug, option, list) => (
+      !option      ? null :
+      list[option] ? option :
+        (await dispatch(createNewOption(slug.toLowerCase(), option))).id
+    )
+
     const parseOptions = async (slug, options, list) => {
       if (!options) return
       options = await Promise.all(options.map(async (option, i) => {
-        return list[option] ?
-                 option :
-                 (await dispatch(createNewOption(slug.toLowerCase(), option))).id
+        return parseOption(slug, option, list)
       }))
       return options
     }
@@ -158,8 +172,10 @@ export function submitForm() {
     let formId = getState().tasks.get('formId')
     let tags = getState().tasks.get('tags')
     let contexts = getState().tasks.get('contexts')
+    let projects = getState().tasks.get('projects')
     formFields.Tags = await parseOptions("Tags", formFields.Tags, tags)
     formFields.Contexts = await parseOptions("Contexts", formFields.Contexts, contexts)
+    formFields.Project = [await parseOption("Projects", formFields.Project, projects)]
     if (formFields.Type == "habit") {
       formFields["When"] = null
     } else {

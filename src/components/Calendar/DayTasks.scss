@@ -2,7 +2,7 @@
 
 .DayTasks {
     &__task, &__event, &__habit {
-      margin: 0.4em 0;
+      margin: 0.5em 0;
       line-height: 1.2em;
       padding: 0;
       color: $accent-4;
@@ -17,9 +17,19 @@
       }
     }
 
+    &__task {
+      &__project {
+        font-size: 0.7em;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        line-height: 1em;
+        color: $gray-medium;
+        margin: 0.2em 0;
+      }
+    }
+
     &__event {
       color: $accent-5;
-      padding-top: 6px;
       margin-top: 0;
 
       &__ongoing {

@@ -45,6 +45,7 @@ const daysOfTheWeek = [
 @connect(state => ({
   Tags: state.tasks.get('tags'),
   Contexts: state.tasks.get('contexts'),
+  Projects: state.tasks.get('projects'),
   formId: state.tasks.get('formId'),
   form: state.tasks.get('form').toJS()
 }))
@@ -65,8 +66,9 @@ class TaskForm extends Component {
       {slug: "Goal--Index", label: "Index", type: "number", fieldOptions: {positive: true}, mustHaveType: "goal"},
       {slug: "Goal--Interval", label: "Interval", type: "toggle", options: goalIntervalOptions, mustHaveType: "goal"},
       {slug: "Description", type: "textarea", mustHaveType: taskTypes},
-      {slug: "Tags", type: "select", options: this.getOptions("Tags"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Make a new tag "${label}"`}, mustHaveType: taskTypes},
-      {slug: "Contexts", type: "select", options: this.getOptions("Contexts"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Make a new context "${label}"`}, mustHaveType: taskTypes},
+      {slug: "Tags", type: "select", options: this.getOptions("Tags"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Create a new tag "${label}"`}, mustHaveType: taskTypes},
+      {slug: "Contexts", type: "select", options: this.getOptions("Contexts"), fieldOptions: {isMulti: true, allowCreate: true, promptTextCreator: label => `Create a new context "${label}"`}, mustHaveType: taskTypes},
+      {slug: "Project", type: "select", options: this.getOptions("Projects"), fieldOptions: {allowCreate: true, promptTextCreator: label => `Create a new project "${label}"`}, mustHaveType: taskTypes},
       {slug: "When", type: "date", fieldOptions: {dateFormat: dateFormat.form}, mustHaveType: ["task", "bucketlist"]},
       {slug: "Done", type: "date", fieldOptions: {dateFormat: dateFormat.form}, mustHaveType: ["task", "bucketlist"]},
       {slug: "Blocked", type: "checkbox", mustHaveType: taskTypes},
